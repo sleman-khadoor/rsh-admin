@@ -1,10 +1,6 @@
-<script setup>
-import AppIndex from './layouts/app-index.vue'
-</script>
-
 <template>
  <div>
-  <app-index/>
+  <router-view/>
  </div>
 </template>
 

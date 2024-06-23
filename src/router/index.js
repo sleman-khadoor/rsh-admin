@@ -1,8 +1,8 @@
 // import Vue from 'vue';
-import { createRouter} from 'vue-router';
-import authHelper from '@/utils/auth-helper';
+import { createRouter, createWebHistory} from 'vue-router';
+// import authHelper from '@/utils/auth-helper';
 import { store } from '../store';
-// import routes from './routes';
+import routes from './routes';
 // import { const_roles } from '@/utils/authorization-helper';
 
 // Vue.use(VueRouter);
@@ -16,20 +16,15 @@ import { store } from '../store';
  * with the router instance.
  */
 
-/**
+/*
  * @returns {VueRouter}
  */
 export default function (/* { store, ssrContext } */) {
 	if (router == null) {
 		router = createRouter({
 			scrollBehavior: () => ({ x: 0, y: 0 }),
-			// routes,
-
-			// Leave these as they are and change in quasar.conf.js instead!
-			// quasar.conf.js -> build -> vueRouterMode
-			// quasar.conf.js -> build -> publicPath
-			// mode: process.env.VUE_ROUTER_MODE,
-			// base: process.env.VUE_ROUTER_BASE,
+			history: createWebHistory(),
+			routes,
 		});
 	}
 
@@ -43,9 +38,9 @@ export default function (/* { store, ssrContext } */) {
 				next('/reset-password');
 			}
 		} else {
-			store
-				.dispatch('Auth/getAccessToken')
-				.then(() => {
+			// store
+			// 	.dispatch('Auth/getAccessToken')
+			// 	.then(() => {
 					if (whiteList.includes(to.path)) {
 						// if is logged in, redirect to the home page
 						next('/');
@@ -57,16 +52,16 @@ export default function (/* { store, ssrContext } */) {
 							}
 						}
 					}
-				)
-				.catch(() => {
-					if (whiteList.includes(to.path)) {
-						next();
-					} else {
-						authHelper.reset();
-						next('/unauth');
-					}
-				});
-		}
+				// )
+				// .catch(() => {
+				// 	if (whiteList.includes(to.path)) {
+				// 		next();
+				// 	} else {
+				// 		authHelper.reset();
+				// 		next('/unauth');
+				// 	}
+				// });
+		// }
 	});
 
 	return router;
