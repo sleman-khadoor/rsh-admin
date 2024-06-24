@@ -1,9 +1,12 @@
 import { createStore } from 'vuex';
 import User from './modules/user';
-export default function (/* { ssrContext } */) {
+import Books from '../modules/books/store'
+
+export default function () {
 	store = createStore({
 		modules: {
-            User
+            User,
+			Books,
 		},
 
 		// enable strict mode (adds overhead!)
