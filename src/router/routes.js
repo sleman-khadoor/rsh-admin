@@ -1,10 +1,12 @@
 import BooksModuleRoutes from '@/modules/books/routes'
+import AuthorsModuleRoutes from '@/modules/authors/routes'
 const routes = [
 	{
 		path: '/',
 		component: () => import(/* webpackChunkName: "MainLayout" */ '@/layouts/main/app-index.vue'),
 		children: [
-			BooksModuleRoutes
+			BooksModuleRoutes,
+			AuthorsModuleRoutes
 		],
 	},
 	// {

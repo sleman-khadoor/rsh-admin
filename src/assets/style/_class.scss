@@ -1,0 +1,182 @@
+// overwrite
+.v-sheet.v-card{
+  border-radius: unset;
+  padding: 2px !important;
+}
+@each $name, $color in $colors {
+  .v-application .#{$name} {
+    background-color: unset !important;
+    border-color: unset !important;
+  }
+}
+.v-tab{
+  text-transform: capitalize !important;
+}
+.v-tab--active{
+  color: map-get($colors, 'orange') !important;
+  font-family: map_get($fontFamily, 'bold') !important;
+}
+.orange-overlay{
+  background-color: map-get($colors, 'orange') !important;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius:  10px;
+}
+.v-card__subtitle, .v-card__text, .v-card__title{
+  padding: unset !important;
+}
+.v-avatar{
+  border-radius: unset !important;
+}
+.v-list--dense .v-list-item{
+  min-height: 15px !important;
+}
+.v-btn{
+  text-transform: capitalize !important;
+}
+.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) > .v-input__control > .v-input__slot{
+  box-shadow: unset !important;
+}
+.v-label{
+  font-size: map_get($fontSize, 'size-20') !important;
+}
+.row{
+  margin: 0!important;
+}
+.theme--dark.v-divider{
+  border-color: map-get($colors, 'grey') !important;
+  border: 1px solid;
+}
+.v-application{
+  font-family: map-get($fontFamily, 'regular') !important;
+}
+.v-textarea.v-text-field--enclosed.v-text-field--single-line.v-input--dense textarea, .v-textarea.v-text-field--enclosed.v-text-field--outlined:not(.v-input--dense) textarea{
+  margin: 6px !important;
+}
+.v-application--is-ltr .v-textarea.v-text-field--enclosed .v-text-field__slot {
+  margin-right: -12px;
+  margin-left: -12px;
+}
+.v-text-field.v-text-field--solo .v-label{
+  padding-left: 12px;
+  padding-right: 12px;
+}
+.v-dialog {
+  border-radius: 10px !important;
+}
+.v-application .card-shadow {
+  -webkit-box-shadow: inset 18px 18px 15px -15px rgba(255,255,255,0.3), 20px 20px 30px -10px rgba(0,0,0,0.25) !important;
+  box-shadow: inset 18px 18px 15px -15px rgba(255,255,255,0.3), 20px 20px 30px -10px rgba(0,0,0,0.25) !important;
+}
+.v-toolbar__content, .v-toolbar__extension{
+  height: 13vh !important;
+}
+//.v-dialog__content{
+//  backdrop-filter: blur(10px);
+//}
+// new class
+.h-69{
+  height: 69.3vh;
+}
+.h-65{
+  height: 65.5vh;
+}
+.h-100{
+  height: 100%;
+}
+.h-50 {
+  height: 50vh;
+}
+.h-13 {
+  height: 13.5vh !important;
+}
+.h-10{
+  height: 10vh;
+}
+.h-11{
+  height: 10.5vh;
+}
+.h-7{
+  height: 7vh;
+}
+.h-62{
+  height: 62vh;
+}
+.h-5{
+  height: 5vh;
+}
+.h-fc{
+  height: fit-content;
+ }
+.img-container{
+  height: 10vh;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+}
+.img-browse-container{
+  min-height: 9vh;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  width: 100%;
+  overflow: hidden;
+  height: max-content;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 5px;
+}
+.file-container{
+  height: fit-content;
+  min-height: 7vh;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  width: 95%;
+  max-width: 95%;
+  padding: 0.5%;
+  overflow: hidden;
+}
+.red-border{
+  border: 1px solid map-get($colors, 'red') !important;
+}
+.img-browse-container:hover, .file-container:hover, .img-container:hover{
+  border: 1px solid black;
+}
+.img-browse-container:active, .file-container:active, .img-container:active{
+  border: 2px solid map-get($colors, 'blue');
+}
+.w-mc{
+  width: max-content;
+}
+.w-5per{
+  width: 5%;
+}
+.w-80per{
+  width: 80%;
+}
+.w-100per{
+  width: 100%;
+  max-width: 100%;
+}
+.h-80per{
+  height: 80%;
+}
+.bottom-1{
+  bottom: 2vh !important;
+}
+.right-1{
+  right: 2vh !important;
+}
+.display-inline-grid{
+  display: inline-grid;
+}
+.border-10{
+  @include border(map-get($colors, 'grey'), 10px, 1px)
+}
+.rotate-180{
+  transform:  rotate(180deg);
+}
+.break-word{
+  white-space: unset;
+  word-break: break-word;
+}
+.rtl {
+  direction: rtl;
+}

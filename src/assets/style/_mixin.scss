@@ -1,0 +1,8 @@
+//font
+@mixin border ($color,$percent, $size) {
+  border: $size solid $color !important;
+  border-radius: $percent !important;
+}
+@mixin background-color ($color) {
+  background-color: $color !important;
+}

@@ -1,17 +1,12 @@
 import { createStore } from 'vuex';
 import User from './modules/user';
-export default function (/* { ssrContext } */) {
-	store = createStore({
-		modules: {
-            User
-		},
+import Authors from '../modules/authors/store'
 
-		// enable strict mode (adds overhead!)
-		// for dev mode only
-		// strict: process.env.DEBUGGING,
-	});
+const store = createStore({
+	modules: {
+		User,
+		Authors
+	}
+});
 
-	return store;
-}
-
-export var store;
+export { store }

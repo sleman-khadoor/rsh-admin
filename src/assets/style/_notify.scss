@@ -1,0 +1,19 @@
+.vue-notification {
+  border-radius: 3px;
+  margin-top: 5px !important;
+  font-size: 15px !important;
+  &.error {
+    background: #EF5350 !important;
+    border-left-color: #EF5350 !important;
+  }
+
+  &.success {
+    background: #66BB6A !important;
+    border-left-color: #66BB6A !important;
+  }
+
+  &.war {
+    background: #ffb648 !important;
+    border-left-color: #f48a06 !important;
+  }
+}

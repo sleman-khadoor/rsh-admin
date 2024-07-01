@@ -1,13 +1,13 @@
 <template>
   <v-layout class="rounded rounded-md">
-    <top-bar/>
+    
 
     <side-bar/>
-
-    <v-main class="d-flex align-center justify-center" style="min-height: 300px;">
-      <div>
+    <top-bar/>
+    <v-main class="d-flex align-center justify-center bg-white-grey" style="min-height: 100vh;">
+      <v-container fluid>
         <router-view></router-view>
-      </div>
+      </v-container>
     </v-main>
   </v-layout>
 </template>

@@ -9,7 +9,7 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import * as plugins from '@/plugins/vuetify'
 import createRouter from './router'
-import store from './store';
+import { store } from './store';
 // Components
 import App from './App.vue'
 

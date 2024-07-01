@@ -1,0 +1,20 @@
+@each $name, $size in $fontSize {
+  .#{$name} {
+    font-size: $size !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+@each $name, $family in $fontFamily {
+  .#{$name} {
+    font-family: $family !important;
+  }
+}
+@each $name, $color in $colors {
+  .font-#{$name} {
+    color: $color !important;
+  }
+  .bg-#{$name} {
+    background-color: $color !important;
+  }
+}

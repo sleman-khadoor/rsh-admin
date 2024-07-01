@@ -2,13 +2,12 @@
       <v-navigation-drawer
         v-model="drawer"
         :rail="rail"
-        color="blue"
+        color="dark-blue"
+        class="text-white"
         permanent
         @click="rail = false"
       >
         <v-list-item
-          prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
-          title="John Leider"
           nav
         >
           <template v-slot:append>
@@ -23,9 +22,9 @@
         <v-divider></v-divider>
 
         <v-list density="compact" nav>
-          <v-list-item prepend-icon="mdi-home-city" title="Home" value="home"></v-list-item>
-          <v-list-item prepend-icon="mdi-account" title="My Account" value="account"></v-list-item>
-          <v-list-item prepend-icon="mdi-account-group-outline" title="Users" value="users"></v-list-item>
+          <v-list-item prepend-icon="mdi-account-group-outline" title="Authors" value="home"></v-list-item>
+          <v-list-item prepend-icon="mdi-account" title="Books" value="account"></v-list-item>
+          <v-list-item prepend-icon="mdi-home-city" title="Services" value="users"></v-list-item>
         </v-list>
       </v-navigation-drawer>
 </template>
