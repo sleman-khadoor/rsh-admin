@@ -57,22 +57,13 @@ export default {
 				commit('setLoading', false);
 			}
 		},
-		async getAuthorById({ commit }, id) {
-			commit('setLoading', true);
-			try {
-				let { data } = await AuthorsService.getAuthorById(id);
-				commit('setSelectedAuthor', data);
-			} catch (err) {
-				console.log(err);
-			} finally {
-				commit('setLoading', false);
-			}
-		},
-		async createAuthor({ commit }, payload) {
+
+		async createAuthor({ commit, dispatch}, payload) {
 			commit('setLoading', true);
 			let res = null;
 			try {
 				res = await AuthorsService.createAuthor(payload);
+				dispatch('fetchAuthors'); // Use dispatch to call fetchAuthors
 				// if(res) {
 				// 	payload.attachments.forEach((file) => {
 				// 		file.append('attachable_id', res?.data?.id);
@@ -84,9 +75,11 @@ export default {
 			}
 			return res;
 		},
-		async editAuthor({ commit }, { payload, id }) {
+
+		async editAuthor({ commit, dispatch }, { payload, slug } ) {
 			commit('setLoading', true);
-			let res = await AuthorsService.editAuthor(id, payload);
+			let res = await AuthorsService.editAuthor(slug, payload);
+			dispatch('fetchAuthors'); // Use dispatch to call fetchAuthors
 			try {
 				// payload.attachments.forEach((file) => {
 				// 	console.log('object contract inside if', res);
@@ -98,10 +91,11 @@ export default {
 				commit('setLoading', false);
 			}
 		},
-		async deleteAuthor({ commit }, id) {
+
+		async deleteAuthor({ commit }, slug) {
 			commit('setLoading', true);
 			try {
-				let res = await AuthorsService.deleteAuthor(id);
+				let res = await AuthorsService.deleteAuthor(slug);
 				return res;
 			} finally {
 				commit('setLoading', false);

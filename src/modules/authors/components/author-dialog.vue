@@ -4,16 +4,12 @@
       v-model="props.dialog"
       max-width="600"
     >
-      <!-- <template v-slot:activator>
-        
-      </template> -->
-
       <v-card
         prepend-icon="mdi-account"
-        title="Add Author"
+        :title="title" 
         class="pa-1"
       >
-        <v-card-text class="pb-0">
+        <v-card-text :v-if="props.eventType!=='delete'" class="pb-0">
           <v-row dense>
             <v-col
               cols="12"
@@ -91,7 +87,7 @@
                     size="large"
                     color="dark-blue"
                     block
-                    @click="props.selectedAuthor !== {} ? $emit('edit', JSON.stringify(form)) :  $emit('add', JSON.stringify(form))"
+                    @click="Object.keys(props.selectedAuthor).length !== 0 ? $emit('edit', JSON.stringify(form), 'edit') :  $emit('add', JSON.stringify(form),'add')"
                   ></v-btn>
             </v-col>
         </v-row>
@@ -100,11 +96,12 @@
   </div>
 </template>
 <script>
-import { defineComponent, onUpdated, reactive } from 'vue'
+import { defineComponent, onUpdated, reactive, computed } from 'vue'
 
 export default defineComponent({
-    props: ['dialog', 'selectedAuthor'],
+    props: ['dialog', 'selectedAuthor', 'eventType'],
     setup(props) {
+        console.log('event type is', props.eventType);
         let form = reactive({
           name: {
             ar: '',
@@ -131,9 +128,13 @@ export default defineComponent({
             form.avatar = null
           }
         })
+        const title = computed(() => {
+            return Object.keys(props.selectedAuthor).length !== 0 ? `Edit Author` : `Add Author`;
+        })
         return {
             props,
-            form
+            form,
+            title
         }        
     },
 })

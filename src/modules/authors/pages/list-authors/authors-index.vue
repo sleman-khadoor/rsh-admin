@@ -10,9 +10,10 @@
                     color="dark-blue"
                     @click="openDialog()"
                     ></v-btn>
-                <AuthorDialog :dialog="dialog" :selectedAuthor="selectedAuthor" @edit="submit($event)" @add="submit($event)"/>
+                <AuthorDialog :dialog="dialog" :selectedAuthor="selectedAuthor" :eventType="eventType"  @edit="submit($event, 'edit')" @add="submit($event, 'add')"/>
+                <DeleteAuthorDialog :deleteDialog="deleteDialog" :selectedAuthor="selectedAuthor" :eventType="eventType"  @delete="submit($event, 'delete')"/>
             </div>
-            <DataTable :headers="headers" :data="data" @OpenDialog="openDialog($event)"/>
+            <DataTable :headers="headers" :data="data" @OpenDialog="openDialog($event)" @openDeleteDialog="openDeleteDialog($event)"/>
         </div>
     </div>
 </template>
@@ -20,29 +21,34 @@
 import { computed, defineComponent, onMounted, watch, ref } from 'vue'
 import DataTable from '@/components/data-table.vue'
 import AuthorDialog from '../../components/author-dialog.vue'
+import DeleteAuthorDialog from '../../components/delete-author-dialog.vue'
 import { useStore } from 'vuex'
 export default defineComponent({
     components: {
         DataTable,
-        AuthorDialog
+        AuthorDialog,
+        DeleteAuthorDialog
     },
     setup() {
         const store = useStore();
         let dialog = ref(false);
+        let deleteDialog = ref(false);
         let selectedAuthor = ref('');
+        let eventType = "";
+
         const headers =  [
         {
-            title: "slug",
+            title: "Slug",
             align: "start",
             sortable: false,
             key: "slug",
             subKey: "en"
         },
         {
-            title: "Author name (arabic)",key: "name",
+            title: "Author Name In Arabic",key: "name",
             subKey: "ar"
         },
-        { title: "Author name (english)", key: "name",
+        { title: "Author Name In English", key: "name",
             subKey: "en"
         },
         { title: "Actions", key: "actions", sortable: false },
@@ -55,9 +61,22 @@ export default defineComponent({
                 selectedAuthor.value = {}
             }
         }
-        function submit(e) {
-            dialog.value = false;
+        function openDeleteDialog(e) {
+            deleteDialog.value = true;
+            selectedAuthor.value = e
+            eventType = "delete"
+        }
+        function submit(e, eventType) 
+        {
             console.log(e);
+            if (eventType === 'add') {
+                store.dispatch('Authors/createAuthor', JSON.parse(e));
+            } else if (eventType === 'edit') {
+                store.dispatch('Authors/editAuthor', { 'payload': JSON.parse(e), 'slug': selectedAuthor.value.slug.en });
+            } else if (eventType === 'delete') {
+                store.dispatch('Authors/deleteAuthor', selectedAuthor.value.slug.en);
+            }
+            dialog.value = false;
         }
         onMounted(() => {
             store.dispatch('Authors/fetchAuthors');
@@ -65,18 +84,23 @@ export default defineComponent({
         watch(dialog, (newV) => {
             console.log(newV);
         }, { deep: true });
+        watch(deleteDialog, (newV) => {
+            console.log(newV);
+        }, { deep: true });
         watch(selectedAuthor, (newV) => {
             console.log(newV);
-            // Your code
         }, { deep: true });
         const data = computed(() => store.getters['Authors/authors'])
         return {
             headers,
             dialog,
+            deleteDialog,
             selectedAuthor,
             openDialog,
+            openDeleteDialog,
+            eventType,
             submit,
-            data
+            data,
         }
     },
 })
