@@ -5,11 +5,11 @@
     white-space: nowrap;
   }
 }
-@each $name, $family in $fontFamily {
-  .#{$name} {
-    font-family: $family !important;
-  }
-}
+// @each $name, $family in $fontFamily {
+//   .#{$name} {
+//     font-family: $family !important;
+//   }
+// }
 @each $name, $color in $colors {
   .font-#{$name} {
     color: $color !important;

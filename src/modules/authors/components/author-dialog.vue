@@ -39,39 +39,60 @@
             </v-col>
 
             <v-col
-              cols="12"
-              md="12"
-              sm="12"
+              cols="6"
+              md="6"
+              sm="6"
             >
               <v-textarea
                 variant="outlined"
                 label="About Author in Arabic"
                 v-model="form.about.ar"
-                rows="3"
+                rows="7"
                 persistent-hint
                 required
               ></v-textarea>
             </v-col>
 
             <v-col
-              cols="12"
-              md="12"
-              sm="12"
+              cols="6"
+              md="6"
+              sm="6"
             >
               <v-textarea
                 variant="outlined"
                 label="About Author in English*"
                 v-model="form.about.en"
-                rows="3"
+                rows="7"
                 required
               ></v-textarea>
             </v-col>
-            <v-col
+             <v-col
                 cols="12"
                 md="12"
-                sm="12">
-                <v-file-input label="File input" v-model="form.avatar" variant="outlined"></v-file-input>
-            </v-col>
+                sm="12"
+                class="mb-5"
+              >
+                <div :class="'img-container'"  @click="clickInputFile">
+                  <p class="size-22 overflow-hidden w-25 mb-0 pt-3 pl-3 position-absolute v-label v-field-label" >Author photo*</p>
+                  <div class="w-mc ma-auto h-100 d-flex justify-center align-center pa-2">
+                    <img v-if="form.avatar" width="70" height="70" ref="imgRef" src="@/assets/icons/logo.svg" class="my-auto"/>
+                    <img v-else width="30" height="30" src="@/assets/icons/img-upload.svg" class="my-auto"/>
+                    <v-file-input
+                      accept="image/png, image/jpeg, image/bmp"
+                      class="mx-auto w-mc pa-0"
+                      id="hidenFileInput"
+                      hide-input
+                      v-model="form.avatar"
+                      truncate-length="15"
+                      :prepend-icon="null"
+                      append-outer="mdi-close"
+                      @change="printFiles(form.avatar, 'image')"
+                    >
+                    </v-file-input>
+                    <p class="size-22 overflow-hidden font-deep-grey bold text-start">{{ form.avatar ? form.avatar.name :  ''}}</p>
+                  </div>
+                </div>
+          </v-col>
           </v-row>
         </v-card-text>
         <v-row dense>
@@ -131,11 +152,35 @@ export default defineComponent({
         const title = computed(() => {
             return Object.keys(props.selectedAuthor).length !== 0 ? `Edit Author` : `Add Author`;
         })
+        function clickInputFile () {
+          document.getElementById('hidenFileInput').click()
+        }
+        function printFiles (file) {
+          const img = this.$refs.imgRef;
+
+          if (file) {
+            let reader = new FileReader();
+
+            reader.onload = function (e) {
+              img.src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+          }
+        }
         return {
             props,
             form,
-            title
+            title,
+            clickInputFile,
+            printFiles
         }        
     },
 })
 </script>
+<style scoped>
+.img-container{
+  height: 14.5vh !important;
+  border: 1px solid rgba(118,118,118) !important;
+}
+</style>

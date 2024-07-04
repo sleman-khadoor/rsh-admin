@@ -7,6 +7,7 @@ function getState() {
 		loading: false,
 		selectedAuthor: null,
 		authors: [],
+		meta: {},
 	};
 }
 
@@ -27,6 +28,10 @@ export default {
             console.log('object store auther', state.authors);
 			return state.authors;
 		},
+		meta(state) {
+            console.log('object store meta', state.meta);
+			return state.meta;
+		},
 	},
 	mutations: {
 		setLoading(state, value) {
@@ -38,6 +43,9 @@ export default {
 		setAuthors(state, value) {
 			state.authors = value;
 		},
+		setMeta(state, value) {
+			state.meta = value;
+		},
 		deleteAuthor(state, id) {
 			state.authors = state.contracts.filter((e) => e.id !== id);
 			// state.authors = state.authors;
@@ -48,11 +56,12 @@ export default {
 	},
 	actions: {
 		async fetchAuthors({ commit }, queryParams) {
-			console.log('inside fetch authors');
+			console.log('inside fetch authors', queryParams);
 			commit('setLoading', true);
 			try {
 				const  response  = await AuthorsService.getAuthors(queryParams);
 				commit('setAuthors', response.data);
+				commit('setMeta', response.meta);
 			} finally {
 				commit('setLoading', false);
 			}

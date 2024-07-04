@@ -3,6 +3,7 @@ import * as ep from './endpoints';
 
 export default class Service {
 	static getAuthors(qp = {}) {
+		console.log(' pagination', qp);
 		return api.get(ep.AUTHORS, qp).then((res) => res.data);
 	}
 

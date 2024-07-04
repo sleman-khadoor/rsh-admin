@@ -13,7 +13,14 @@
                 <AuthorDialog :dialog="dialog" :selectedAuthor="selectedAuthor" :eventType="eventType"  @edit="submit($event, 'edit')" @add="submit($event, 'add')"/>
                 <DeleteAuthorDialog :deleteDialog="deleteDialog" :selectedAuthor="selectedAuthor" :eventType="eventType"  @delete="submit($event, 'delete')"/>
             </div>
-            <DataTable :headers="headers" :data="data" @OpenDialog="openDialog($event)" @openDeleteDialog="openDeleteDialog($event)"/>
+            <DataTable 
+                :headers="headers" 
+                :data="data" 
+                :meta="meta"
+                @OpenDialog="openDialog($event)"
+                @openDeleteDialog="openDeleteDialog($event)"
+                @newPage="fetchData($event)"
+                />
         </div>
     </div>
 </template>
@@ -78,8 +85,19 @@ export default defineComponent({
             }
             dialog.value = false;
         }
+        function fetchData(currentPage) {
+            console.log('currentPage', currentPage);
+             store.dispatch('Authors/fetchAuthors',
+                { 
+                    params : {
+                        page: currentPage ? currentPage : 1,
+                        perPage: 6,
+                    }
+                }
+            );
+        }
         onMounted(() => {
-            store.dispatch('Authors/fetchAuthors');
+           fetchData()
         })
         watch(dialog, (newV) => {
             console.log(newV);
@@ -91,6 +109,7 @@ export default defineComponent({
             console.log(newV);
         }, { deep: true });
         const data = computed(() => store.getters['Authors/authors'])
+        const meta = computed(() => store.getters['Authors/meta'])
         return {
             headers,
             dialog,
@@ -98,9 +117,11 @@ export default defineComponent({
             selectedAuthor,
             openDialog,
             openDeleteDialog,
+            fetchData,
             eventType,
             submit,
             data,
+            meta
         }
     },
 })

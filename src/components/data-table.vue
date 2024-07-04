@@ -1,7 +1,8 @@
 <template>
   <v-data-table 
     hide-default-footer
-    height="390px">
+    hover
+    height="320px">
     <thead class="bg-white-grey">
       <tr>
         <th v-for="header in headers" :key="header.title" class="text-center font-weight-bold">
@@ -10,15 +11,11 @@
       </tr>
     </thead>
     <tbody class="text-center">
-      <tr v-for="item in data" :key="item.slug.en">
+      <tr v-for="(item, index) in data" :key="item.slug.en" :style="index%2 !== 0 ? 'background: #FCFCFC' : ''">
         <td v-for="subItem in headers" :key="subItem.key">
           <div v-if="subItem.key === 'actions'" >
-            <v-btn variant="flat" @click="$emit('OpenDialog', item)" class="action-btn">
-              <img  width="30px" src="@/assets/icons/edit.svg"  class="px-1"/>
-            </v-btn>
-            <v-btn  width="30px" variant="text" @click="$emit('OpenDeleteDialog', item)" class="action-btn">
-              <img width="30px" src="@/assets/icons/trash.svg" class="px-1" />
-            </v-btn>
+              <img @click="$emit('OpenDialog', item)" width="30px" src="@/assets/icons/edit.svg"  class="px-1 cursor-pointer"/>
+              <img @click="$emit('OpenDeleteDialog', item)" width="30px" src="@/assets/icons/trash.svg" class="px-1 cursor-pointer" />
           </div>
           <div v-else>
             {{ item[subItem.key][subItem.subKey] }}
@@ -27,7 +24,7 @@
       </tr>
     </tbody>
     </v-data-table>
-    <paginate />
+    <paginate :meta="props.meta" @newPage="$emit('newPage',$event)" />
 </template>
 
 <script>
@@ -38,7 +35,7 @@ export default defineComponent({
     components: {
       paginate,
     },
-    props: ['headers','data'],
+    props: ['headers','data', 'meta'],
     setup(props) {
         return {
             props,
@@ -52,5 +49,9 @@ export default defineComponent({
 }
 .action-btn:hover {
   background-color: transparent !important
+}
+.v-table--density-default {
+    --v-table-header-height: 49px;
+    --v-table-row-height: 44px;
 }
 </style>

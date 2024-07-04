@@ -14,7 +14,7 @@
 }
 .v-tab--active{
   color: map-get($colors, 'orange') !important;
-  font-family: map_get($fontFamily, 'bold') !important;
+  // font-family: map_get($fontFamily, 'bold') !important;
 }
 .orange-overlay{
   background-color: map-get($colors, 'orange') !important;
@@ -46,9 +46,9 @@
   border-color: map-get($colors, 'grey') !important;
   border: 1px solid;
 }
-.v-application{
-  font-family: map-get($fontFamily, 'regular') !important;
-}
+// .v-application{
+//   font-family: map-get($fontFamily, 'regular') !important;
+// }
 .v-textarea.v-text-field--enclosed.v-text-field--single-line.v-input--dense textarea, .v-textarea.v-text-field--enclosed.v-text-field--outlined:not(.v-input--dense) textarea{
   margin: 6px !important;
 }
