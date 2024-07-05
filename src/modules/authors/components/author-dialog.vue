@@ -8,7 +8,9 @@
         prepend-icon="mdi-account"
         :title="title" 
         class="pa-1"
-      >
+        >
+        <v-icon class="close-icon" @click="Object.keys(props.selectedAuthor).length !== 0 ? $emit('closeEditDialog', 'edit'): $emit('closeAddDialog', 'add')">mdi-close</v-icon>
+        <v-form ref="formv" @submit.prevent="handleSubmit" class="form">
         <v-card-text :v-if="props.eventType!=='delete'" class="pb-0">
           <v-row dense>
             <v-col
@@ -21,6 +23,7 @@
                 class="pa-0"
                 label="Author name in Arabic*"
                 v-model="form.name.ar"
+                :rules="rules.arName"
                 required
               ></v-text-field>
             </v-col>
@@ -34,6 +37,7 @@
                 variant="outlined"
                 hint="example of helper text only on focus"
                 label="Author name in English"
+                :rules="rules.enName"
                 v-model="form.name.en"
               ></v-text-field>
             </v-col>
@@ -49,6 +53,7 @@
                 v-model="form.about.ar"
                 rows="7"
                 persistent-hint
+                :rules="rules.arAbout"
                 required
               ></v-textarea>
             </v-col>
@@ -63,6 +68,7 @@
                 label="About Author in English*"
                 v-model="form.about.en"
                 rows="7"
+                :rules="rules.enAbout"
                 required
               ></v-textarea>
             </v-col>
@@ -101,28 +107,45 @@
               cols="12"
               md="12"
               sm="12">
-                 <v-btn
+                 <v-btn type="submit"
                     class="text-none text-white font-weight-regular pa-0"
                     prepend-icon="mdi-checkbox-marked-circle"
                     text="Save"
                     size="large"
                     color="dark-blue"
                     block
-                    @click="Object.keys(props.selectedAuthor).length !== 0 ? $emit('edit', JSON.stringify(form), 'edit') :  $emit('add', JSON.stringify(form),'add')"
                   ></v-btn>
             </v-col>
         </v-row>
+      </v-form>
       </v-card>
     </v-dialog>
   </div>
 </template>
+
+
 <script>
-import { defineComponent, onUpdated, reactive, computed } from 'vue'
+import { defineComponent, onUpdated, reactive, computed, ref } from 'vue'
 
 export default defineComponent({
     props: ['dialog', 'selectedAuthor', 'eventType'],
-    setup(props) {
-        console.log('event type is', props.eventType);
+    data: () => ({
+      rules : {
+        arName: [
+          v => !!v || 'Author name in Arabic is required',
+        ],
+        enName: [
+          v => !!v || 'Author name in English is required',
+        ],
+        arAbout: [
+          v => !!v || 'About Author in Arabic is required',
+        ],
+        enAbout: [
+          v => !!v || 'About Author in English is required',
+        ]
+      }
+    }),
+    setup(props, {emit}) {
         let form = reactive({
           name: {
             ar: '',
@@ -134,6 +157,7 @@ export default defineComponent({
           },
           avatar: ''
         })
+        const formv = ref(null);
         onUpdated(() => {
           if(props.selectedAuthor) {
             form.name.ar = props.selectedAuthor.name?.ar
@@ -166,21 +190,46 @@ export default defineComponent({
             };
 
             reader.readAsDataURL(file);
+          } 
+        }
+        function handleSubmit() {
+          if (formv.value) {
+            if(formv.value.validate()){
+              if (Object.keys(props.selectedAuthor).length !== 0) {
+                  emit('edit', JSON.stringify(form), 'edit')
+                } else {
+                  emit('add', JSON.stringify(form), 'add')
+                }
+            }
           }
         }
         return {
             props,
             form,
+            formv,
             title,
             clickInputFile,
-            printFiles
+            printFiles,
+            handleSubmit, 
         }        
     },
 })
 </script>
+
 <style scoped>
-.img-container{
-  height: 14.5vh !important;
-  border: 1px solid rgba(118,118,118) !important;
-}
+  .img-container{
+    height: 14.5vh !important;
+    border: 1px solid rgba(118,118,118) !important;
+  }
+
+  .close-icon::before {
+    content: "\F0156";
+    padding-block-end: 86px;
+    padding-left: 1095px !important;
+    margin-bottom: 0px !important;
+  }
+
+  .form{
+    margin-top: -40px;
+  }
 </style>

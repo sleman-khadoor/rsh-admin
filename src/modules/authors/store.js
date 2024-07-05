@@ -72,7 +72,7 @@ export default {
 			let res = null;
 			try {
 				res = await AuthorsService.createAuthor(payload);
-				dispatch('fetchAuthors'); // Use dispatch to call fetchAuthors
+				dispatch('fetchAuthors');
 				// if(res) {
 				// 	payload.attachments.forEach((file) => {
 				// 		file.append('attachable_id', res?.data?.id);
@@ -88,7 +88,7 @@ export default {
 		async editAuthor({ commit, dispatch }, { payload, slug } ) {
 			commit('setLoading', true);
 			let res = await AuthorsService.editAuthor(slug, payload);
-			dispatch('fetchAuthors'); // Use dispatch to call fetchAuthors
+			dispatch('fetchAuthors');
 			try {
 				// payload.attachments.forEach((file) => {
 				// 	console.log('object contract inside if', res);
@@ -101,10 +101,11 @@ export default {
 			}
 		},
 
-		async deleteAuthor({ commit }, slug) {
+		async deleteAuthor({ commit, dispatch }, slug) {
 			commit('setLoading', true);
 			try {
 				let res = await AuthorsService.deleteAuthor(slug);
+				dispatch('fetchAuthors'); 
 				return res;
 			} finally {
 				commit('setLoading', false);
