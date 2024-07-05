@@ -3,14 +3,15 @@
     <v-dialog
       v-model="props.dialog"
       max-width="600"
+      class="dialog"
     >
       <v-card
-        prepend-icon="mdi-account"
-        :title="title" 
-        class="pa-1 dialog"
+        class="pa-5 font-dark-blue"
         >
-        <v-icon class="close-icon" size="23px" @click="Object.keys(props.selectedAuthor).length !== 0 ? $emit('closeEditDialog', 'edit'): $emit('closeAddDialog', 'add')">mdi-close</v-icon>
-        <v-form ref="formv" @submit.prevent="handleSubmit" class="form">
+        <div class="px-4">
+          <v-icon icon="mdi-account" class="mr-2"/><span class="size-35">{{title}}</span>
+        </div>
+        <v-form ref="formv" @submit.prevent="handleSubmit">
         <v-card-text :v-if="props.eventType!=='delete'" class="pb-0">
           <v-row dense>
             <v-col
@@ -103,30 +104,26 @@
         </v-card-text>
         <v-row dense class="justify-end px-4">
             <v-col
-              class="pb-7"
               cols="12"
               md="3"
               sm="3">
                  <v-btn
-                    class="text-none text-white font-weight-regular px-3 close-btn"
+                    class="text-none text-white font-weight-regular close-btn"
                     prepend-icon="mdi-close-circle"
                     text="Cancel"
-                    size="large"
-                    color="ff-orange"
-                    width="300px"
+                    color="grey"
                     block
                   ></v-btn>
             </v-col>
             <v-col
-              class="pb-7"
               cols="12"
               md="3"
               sm="3">
                  <v-btn type="submit"
-                    class="text-none text-white font-weight-regular px-3"
+                    class="text-none text-white font-weight-regular"
                     prepend-icon="mdi-checkbox-marked-circle"
                     text="Save"
-                    size="large"
+                    
                     color="dark-blue"
                     block
                   ></v-btn>
@@ -244,12 +241,8 @@ export default defineComponent({
     margin-bottom: 0px !important;
   }
 
-  .form{
-    margin-top: -40px;
-  }
-
-  .dialog, .close-btn {
-    color: #0C2748;
+  .dialog {
+    height: 1000px;
   }
 
 </style>

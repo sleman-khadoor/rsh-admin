@@ -3,12 +3,12 @@
     <v-dialog
       v-model="props.dialog"
       max-width="600"
-      class="pa-4"
+      
     >
       <v-card
         prepend-icon="mdi-book-multiple"
         :title="title" 
-        class="pa-0 dialog"
+        class="pa-5 font-dark-blue"
         >
         <v-form ref="formv" @submit.prevent="handleSubmit" class="form">
         <v-card-text :v-if="props.eventType!=='delete'" class="pb-0">
