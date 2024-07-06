@@ -5,7 +5,6 @@
         v-model="props.meta.current_page"
         color="dark-blue"
         active-color="white"
-        :length="props.meta.last_page"
         :total-visible="5"
         :size="32"
         @update:modelValue="$emit('newPage',props.meta.current_page)"

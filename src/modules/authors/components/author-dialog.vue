@@ -7,9 +7,9 @@
       <v-card
         prepend-icon="mdi-account"
         :title="title" 
-        class="pa-1"
+        class="pa-1 dialog"
         >
-        <v-icon class="close-icon" @click="Object.keys(props.selectedAuthor).length !== 0 ? $emit('closeEditDialog', 'edit'): $emit('closeAddDialog', 'add')">mdi-close</v-icon>
+        <v-icon class="close-icon" size="23px" @click="Object.keys(props.selectedAuthor).length !== 0 ? $emit('closeEditDialog', 'edit'): $emit('closeAddDialog', 'add')">mdi-close</v-icon>
         <v-form ref="formv" @submit.prevent="handleSubmit" class="form">
         <v-card-text :v-if="props.eventType!=='delete'" class="pb-0">
           <v-row dense>
@@ -101,14 +101,29 @@
           </v-col>
           </v-row>
         </v-card-text>
-        <v-row dense>
+        <v-row dense class="justify-end px-4">
             <v-col
-              class="px-7 pb-2"
+              class="pb-7"
               cols="12"
-              md="12"
-              sm="12">
+              md="3"
+              sm="3">
+                 <v-btn
+                    class="text-none text-white font-weight-regular px-3 close-btn"
+                    prepend-icon="mdi-close-circle"
+                    text="Cancel"
+                    size="large"
+                    color="ff-orange"
+                    width="300px"
+                    block
+                  ></v-btn>
+            </v-col>
+            <v-col
+              class="pb-7"
+              cols="12"
+              md="3"
+              sm="3">
                  <v-btn type="submit"
-                    class="text-none text-white font-weight-regular pa-0"
+                    class="text-none text-white font-weight-regular px-3"
                     prepend-icon="mdi-checkbox-marked-circle"
                     text="Save"
                     size="large"
@@ -232,4 +247,9 @@ export default defineComponent({
   .form{
     margin-top: -40px;
   }
+
+  .dialog, .close-btn {
+    color: #0C2748;
+  }
+
 </style>

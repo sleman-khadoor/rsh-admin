@@ -1,0 +1,150 @@
+<template>
+  <div class="text-center">
+    <v-dialog
+      v-model="props.dialog"
+      max-width="600"
+      class="pa-4"
+    >
+      <v-card
+        prepend-icon="mdi-book-multiple"
+        :title="title" 
+        class="pa-0 dialog"
+        >
+        <v-form ref="formv" @submit.prevent="handleSubmit" class="form">
+        <v-card-text :v-if="props.eventType!=='delete'" class="pb-0">
+          <v-row dense>
+            <v-col
+              cols="12"
+              md="12"
+              sm="12"
+            >
+              <v-text-field
+                variant="outlined"
+                class="pa-0"
+                label="Category name in Arabic*"
+                v-model="form.title.ar"
+                :rules="rules.arTitle"
+                required
+              ></v-text-field>
+            </v-col>
+
+            <v-col
+              cols="12"
+              md="12"
+              sm="12"
+            >
+              <v-text-field
+                variant="outlined"
+                hint="example of helper text only on focus"
+                label="Category name in English"
+                :rules="rules.enTitle"
+                v-model="form.title.en"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-row dense>
+            <v-col
+              class="px-7 pb-2"
+              cols="12"
+              md="12"
+              sm="12">
+                 <v-btn type="submit"
+                    class="text-none text-white font-weight-regular pa-0 save-btn"
+                    prepend-icon="mdi-checkbox-marked-circle"
+                    text="Save"
+                    size="large"
+                    color="dark-blue"
+                    block
+                  ></v-btn>
+            </v-col>
+        </v-row>
+      </v-form>
+      </v-card>
+    </v-dialog>
+  </div>
+</template>
+
+
+<script>
+import { defineComponent, onUpdated, reactive, computed, ref } from 'vue'
+
+export default defineComponent({
+    props: ['dialog', 'selectedCategory', 'eventType'],
+    data: () => ({
+      rules : {
+        arTitle: [
+          v => !!v || 'Category name in Arabic is required',
+        ],
+        enTitle: [
+          v => !!v || 'Category name in English is required',
+        ]
+      }
+    }),
+    setup(props, {emit}) {
+        let form = reactive({
+          title: {
+            ar: '',
+            en: ''
+          }
+        })
+        const formv = ref(null);
+        onUpdated(() => {
+          if(props.selectedCategory) {
+            form.title.ar = props.selectedCategory.title?.ar
+            form.title.en = props.selectedCategory.title?.en
+          } else {
+            form.title.ar = null
+            form.title.en = null
+          }
+        })
+        const title = computed(() => {
+            return Object.keys(props.selectedCategory).length !== 0 ? `Edit Category` : `Add Category`;
+        })
+        function handleSubmit() {
+          if (formv.value) {
+            if(formv.value.validate()){
+              if (Object.keys(props.selectedCategory).length !== 0) {
+                  emit('edit', JSON.stringify(form), 'edit')
+                } else {
+                  emit('add', JSON.stringify(form), 'add')
+                }
+            }
+          }
+        }
+        return {
+            props,
+            form,
+            formv,
+            title,
+            handleSubmit, 
+        }        
+    },
+})
+</script>
+
+<style scoped>
+  .img-container{
+    height: 14.5vh !important;
+    border: 1px solid rgba(118,118,118) !important;
+  }
+
+  .close-icon::before {
+    content: "\F0156";
+    padding-block-end: 88px;
+    padding-left: 655px !important;
+    margin-bottom: 0px !important;
+  }
+
+  .form{
+    margin-top: -35px;
+  }
+  
+  .save-btn{
+    margin-bottom: 10px !important;
+  }
+
+  .dialog{
+    color: #0C2748;
+  }
+</style>
