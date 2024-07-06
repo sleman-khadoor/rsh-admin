@@ -1,5 +1,5 @@
 <template>
-  <v-data-table 
+    <v-data-table 
     hide-default-footer
     hover
     height="320px">

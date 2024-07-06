@@ -1,30 +1,72 @@
 <template>
       <v-navigation-drawer
-        v-model="drawer"
-        :rail="rail"
         color="dark-blue"
         class="text-white"
         permanent
-        @click="rail = false"
+        app
       >
-        <v-list-item
-          nav
-        >
-          <template v-slot:append>
-            <v-btn
-              icon="mdi-chevron-left"
-              variant="text"
-              @click.stop="rail = !rail"
-            ></v-btn>
-          </template>
-        </v-list-item>
+        <v-list class="mt-5" height="95%" min-height="30" v-model:opened="open" dense>
+          <v-list-item-group
+              active-class="orange-overlay"
+              v-model="selectedItem"
+              color="red"
+              mandatory
+              class="height-100-per w-80per"
+            >
+            <div v-for="(item, index) in sidebar"
+              :key="index">
+              <v-list-item
+                v-if="item.path !== undefined"
+                :value="item.title"
+                class="height-10-per mx-auto white-active"
+                @click="go(item.path, index)"
+              >
+              <v-list-item-title class="size-25">
+                      {{item.title}}
+              </v-list-item-title>
+              <template v-slot:prepend>
+                <v-list-item-icon class="my-auto mr-4 height-unset">
+                  <img width="18" min-width="8" height="18" v-bind:src="iconUrl(item.icon)">
+                </v-list-item-icon>
+              </template>
+              </v-list-item>
+              <!--group-->
+              <v-list-group v-else>
+                
+                <template v-slot:activator="{ props }">
+                  <v-list-item
+                    v-bind="props"
+                  >
+                    <v-list-group-title class="size-25">
+                      {{item.title}}
+                    </v-list-group-title>
+                    <template v-slot:prepend>
+                          <v-list-group-icon class="my-auto height-unset mr-4">
+                            <img width="18" min-width="8" height="18" v-bind:src="iconUrl(item.icon)">
+                          </v-list-group-icon>
+                    </template>
+                    <template v-slot:append>
+                          <v-list-group-icon class="my-auto height-unset mr-4">
+                            <img width="18" min-width="8" height="18" src="@/assets/icons/arrow-circle-right.svg">
+                          </v-list-group-icon>
+                    </template>
+                  </v-list-item>
+                </template>
 
-        <v-divider></v-divider>
-
-        <v-list density="compact" nav>
-          <v-list-item prepend-icon="mdi-account-group-outline" title="Authors" value="home"></v-list-item>
-          <v-list-item prepend-icon="mdi-account" title="Books" value="account"></v-list-item>
-          <v-list-item prepend-icon="mdi-home-city" title="Services" value="users"></v-list-item>
+                  <v-list-item
+                    v-for="([title], i) in item.subtitles"
+                    :key="i"
+                    :value="title"
+                    class="white-active"
+                  >
+                    <v-list-item-title class="size-18">
+                      {{title}}
+                    </v-list-item-title>
+                  </v-list-item>
+                  
+              </v-list-group>
+            </div>
+          </v-list-item-group>
         </v-list>
       </v-navigation-drawer>
 </template>
@@ -34,7 +76,115 @@
       return {
         drawer: true,
         rail: true,
+        selectedItem: null,
+        open: ['Book Management', 'Blog Management', 'News',],
+        sidebar: [
+          {
+            title: 'Book Management',
+            icon: 'book',
+            subtitles: [
+                ['Book categories', 'img-upload', '/authors'],
+                ['Authors', 'img-upload', '/books'],
+                ['Books', 'img-upload', '/books'],
+              ]
+          },
+          {
+            title: 'Blog Management',
+            icon: 'blog',
+            subtitles: [
+                ['Blog categories', 'img-upload', '/authors'],
+                ['Blogs', 'img-upload', '/books'],
+              ]
+          },
+          {
+            title: 'News',
+            path: '/authors',
+            icon: 'news',
+          },
+          {
+            title: 'User Management',
+            path: '/authors', 
+            icon: 'user-managment',
+          },
+          {
+            title: 'Represented Authors',
+            path: '/authors', 
+            icon: 'user-tag',
+          },
+          {
+            title: 'Our Partners',
+            path: '/authors', 
+            icon: 'partner',
+          },
+          {
+            title: 'Achievements',
+            path: '/authors', 
+            icon: 'award',
+          },
+          {
+            title: 'Contact Us',
+            path: '/authors', 
+            icon: 'sms',
+          },
+          {
+            title: 'Service requests',
+            icon: 'category-2',
+            subtitles: [
+                ['Translation', 'img-upload', '/authors'],
+                ['Proofreading', 'img-upload', '/books'],
+                ['Creative editing', 'img-upload', '/books'],
+                ['Literary agency', 'img-upload', '/books'],
+                ['Marketing', 'img-upload', '/books'],
+                ['Content writing', 'img-upload', '/books'],
+                ['Book delivery', 'img-upload', '/books'],
+                ['Organizing events & conferences', 'img-upload', '/books'],
+              ]
+          },
+        ],
+        
       }
     },
+    computed: {
+      sidebarItems: function () {
+        return this.sidebar.filter(i => i.path !== undefined )
+      },
+      sidebarGroups: function () {
+        return this.sidebar.filter(i => i.subtitles !== undefined)
+      }
+    },
+    methods: {
+      go (route, index) {
+        localStorage.setItem('sidebarCurrentItem', index)
+        this.$router.push(route)
+      },
+      iconUrl (icon) {
+        let im
+        try {
+          im = `../../assets/icons/${icon}.svg`
+        } catch (err) {
+          im = '@/assets/icons/logo.svg'
+        }
+        console.log('object icon', icon);
+        return new URL(`${im}`,import.meta.url).href
+      }
+    },
+    mounted() {
+      this.selectedItem = Number(localStorage.getItem('sidebarCurrentItem'))
+    }
   }
 </script>
+<style>
+.v-list-item--density-default.v-list-item--one-line {
+    min-height: 30px !important;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+.white-active.v-list-item--active {
+  background-color: white !important;
+  color: #0C2748;
+  border-radius: 0 20px 20px 0 !important;
+}
+.v-list-group__items .v-list-item {
+    padding-inline-start: 50px !important;
+}
+</style>
