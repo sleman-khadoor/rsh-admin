@@ -1,16 +1,21 @@
 <template>
 <div class="text-center">
-    <v-dialog v-model="props.warningDialog" max-width="435" persistent>
-        <v-card>
-            <v-card-title class="headline">
-                <img width="55px" src="@/assets/icons/warning.svg" class="font-weight-bold ms-1 warning-icon" />
+    <v-dialog v-model="props.warningDialog" max-width="400" persistent class="dialog">
+        <v-card class="pa-5">
+            <v-card-title class="headline text-center font-weight-bold">
+                <img width="60px" src="@/assets/icons/warning.svg" class="font-weight-bold ms-1 delete-icon bg-red-opacity pa-2 rounded-circle" />
             </v-card-title>
-            <v-card-text class="styled-text">
+            <v-card-text class="styled-text font-weight-bold text-center">
                 {{ props.message}}
             </v-card-text>
-            <v-card-actions class="pa-5 flex-column justify-center align-center">
-                <v-btn class="text-none text-white font-weight-regular pa-0 back-btn" text="Back" size="large" color="black" block @click="$emit('closeDialog', 'delete')"></v-btn>
-            </v-card-actions>
+            <!-- <v-card-actions class="pa-4 flex-column justify-center align-center">
+                <v-btn class="text-none text-white font-weight-regular pa-0 back-btn bg-grey" text="Back" size="large" color="black" block @click="$emit('closeDialog', 'delete')"></v-btn>
+            </v-card-actions> -->
+            <v-row dense class="justify-end px-6">
+                <v-col cols="12" md="3" sm="3">
+                    <v-btn class="text-none text-white font-weight-regular close-btn bg-grey" text="Cancel" block @click="$emit('closeDialog', 'delete')"></v-btn>
+                </v-col>
+            </v-row>
         </v-card>
     </v-dialog>
 </div>
@@ -28,34 +33,3 @@ export default defineComponent({
     },
 })
 </script>
-
-<style scoped>
-.headline {
-    font-weight: bold;
-    text-align: center;
-    font-size: 18px;
-}
-
-.ms-1 {
-    margin-top: 20px !important;
-}
-
-.back-btn {
-    margin-inline-start: 0.0rem !important;
-    background-color: gray;
-    color: white !important;
-    border-radius: 10px;
-}
-
-.warning-icon {
-    background-color: rgba(255, 0, 0, 0.08);
-    border-radius: 100%;
-    padding: 10px;
-}
-
-.styled-text {
-    font-weight: bold;
-    margin-top: -15px;
-    margin-bottom: -15px;
-}
-</style>

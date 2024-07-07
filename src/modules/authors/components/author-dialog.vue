@@ -109,10 +109,10 @@
               sm="3">
                  <v-btn
                     class="text-none text-white font-weight-regular close-btn"
-                    prepend-icon="mdi-close-circle"
                     text="Cancel"
                     color="grey"
                     block
+                    @click="Object.keys(props.selectedAuthor).length !== 0 ? $emit('closeEditDialog', 'edit'): $emit('closeAddDialog', 'add')"
                   ></v-btn>
             </v-col>
             <v-col
@@ -122,7 +122,6 @@
                  <v-btn 
                     type="submit"
                     class="text-none text-white font-weight-regular"
-                    prepend-icon="mdi-checkbox-marked-circle"
                     text="Save"
                     color="dark-blue"
                     :loading="props.loading"
@@ -235,13 +234,6 @@ export default defineComponent({
   .img-container{
     height: 14.5vh !important;
     border: 1px solid rgba(118,118,118) !important;
-  }
-
-  .close-icon::before {
-    content: "\F0156";
-    padding-block-end: 86px;
-    padding-left: 1095px !important;
-    margin-bottom: 0px !important;
   }
 
   .dialog {

@@ -1,18 +1,22 @@
 <template>
 <div class="text-center">
     <v-dialog v-model="props.deleteDialog" max-width="425" persistent>
-        <v-card>
-            <v-card-title class="headline">
-                <img width="55px" src="@/assets/icons/trash.svg" class="font-weight-bold ms-1 delete-icon" />
+        <v-card class="pa-5">
+            <v-card-title class="headline text-center font-weight-bold">
+                <img width="60px" src="@/assets/icons/trash.svg" class="font-weight-bold ms-1 delete-icon bg-red-opacity pa-2 rounded-circle" />
                 <p>Are you sure to delete the item?</p>
             </v-card-title>
             <v-card-text class="styled-text">
-                Please note that an item cannot be restored once <span class="break-line"> it has been permanently deleted.</span>
+                <p class="text-center">Please note that an item cannot be restored once it has been permanently deleted.</p>
             </v-card-text>
-            <v-card-actions class="pa-5 flex-column justify-center align-center">
-                <v-btn class="text-none text-white font-weight-regular pa-0 delete-btn" text="Delete" :loading="props.loading" size="large" block @click="$emit('delete', JSON.stringify(form), 'delete')"></v-btn>
-                <v-btn class="text-none text-white font-weight-regular pa-0 back-btn" text="Back" size="large" color="black" block @click="$emit('closeDialog', 'delete')"></v-btn>
-            </v-card-actions>
+            <v-row dense class="justify-end px-6">
+                <v-col cols="12" md="4" sm="4">
+                    <v-btn class="text-none text-white font-weight-regular close-btn bg-grey" text="Cancel" block @click="$emit('closeDialog', 'delete')"></v-btn>
+                </v-col>
+                <v-col cols="12" md="4" sm="4">
+                    <v-btn type="submit" class="text-none text-white font-weight-regular bg-red" text="Delete" block @click="$emit('delete', JSON.stringify(form), 'delete')"></v-btn>
+                </v-col>
+            </v-row>
         </v-card>
     </v-dialog>
 </div>
@@ -32,38 +36,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.headline {
-    font-weight: bold;
-    text-align: center;
-    font-size: 18px;
-}
-
-.ms-1 {
-    margin-top: 8px !important;
-}
-
-.break-line {
-    margin-left: 70px;
-}
-
-.delete-btn {
-    background-color: red;
-    color: white;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    margin-top: -4px
-}
-
-.back-btn {
-    margin-inline-start: 0.0rem !important;
-    color: grey !important;
-    border-radius: 10px;
-}
-
-.delete-icon {
-    margin-top: 8px !important;
-    background-color: rgba(255, 0, 0, 0.08);
-    border-radius: 100%;
-    padding: 10px;
+.dialog {
+    height: 1000px;
 }
 </style>

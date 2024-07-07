@@ -1,6 +1,4 @@
 import categoriesService from './service';
-// import categoriesTable from './components/contracts-table/store';
-// import AttachmentsService from '@/modules/attachments/service';
 
 function getState() {
 	return {
@@ -13,9 +11,6 @@ function getState() {
 
 export default {
 	namespaced: true,
-	modules: {
-		// categoriesTable,
-	},
 	state: getState,
 	getters: {
 		loading(state) {
@@ -69,13 +64,7 @@ export default {
 			let res = null;
 			try {
 				res = await categoriesService.createBookCategory(payload);
-				dispatch('fetchCategories');
-				// if(res) {
-				// 	payload.attachments.forEach((file) => {
-				// 		file.append('attachable_id', res?.data?.id);
-				// 		AttachmentsService.createAttachement(file);
-				// 	});	
-				// }			
+				dispatch('fetchCategories');		
 			} finally {
 				commit('setLoading', false);
 			}
@@ -87,11 +76,6 @@ export default {
 			let res = await categoriesService.editBookCategory(slug, payload);
 			dispatch('fetchCategories');
 			try {
-				// payload.attachments.forEach((file) => {
-				// 	console.log('object contract inside if', res);
-				// 	file.append('attachable_id', res?.data?.id);
-				// 	AttachmentsService.createAttachement(file);
-				// });	
 				return res;
 			} finally {
 				commit('setLoading', false);
@@ -99,10 +83,10 @@ export default {
 		},
 
 		async deleteCategory({ commit, dispatch }, slug) {
-			console.log('hiiii from delete', slug);
 			commit('setLoading', true);
 			try {
-				let res = await categoriesService.deleteCategory(slug);
+				let res = await categoriesService.deleteBookCategory(slug);
+				console.log('hiiii from delete', res);
 				dispatch('fetchCategories'); 
 				return res;
 			} finally {

@@ -2,14 +2,15 @@
   <div class="text-center">
     <v-dialog
       v-model="props.dialog"
-      max-width="600"
-      
+      max-width="400"
+      class="dialog"
     >
-      <v-card
-        prepend-icon="mdi-book-multiple"
-        :title="title" 
+        <v-card
         class="pa-5 font-dark-blue"
         >
+        <div class="px-4">
+          <v-icon icon="mdi-book-multiple" class="mr-2"/><span class="size-35">{{title}}</span>
+        </div>
         <v-form ref="formv" @submit.prevent="handleSubmit" class="form">
         <v-card-text :v-if="props.eventType!=='delete'" class="pb-0">
           <v-row dense>
@@ -43,22 +44,31 @@
             </v-col>
           </v-row>
         </v-card-text>
-        <v-row dense>
-            <v-col
-              class="px-7 pb-2"
-              cols="12"
-              md="12"
-              sm="12">
-                 <v-btn type="submit"
-                    class="text-none text-white font-weight-regular pa-0 save-btn"
-                    prepend-icon="mdi-checkbox-marked-circle"
-                    text="Save"
-                    size="large"
-                    color="dark-blue"
-                    block
-                  ></v-btn>
-            </v-col>
-        </v-row>
+        <v-row dense class="justify-end px-4">
+          <v-col
+            cols="12"
+            md="4"
+            sm="4">
+               <v-btn
+                  class="text-none text-white font-weight-regular close-btn"
+                  text="Cancel"
+                  color="grey"
+                  block
+                  @click="Object.keys(props.selectedCategory).length !== 0 ? $emit('closeEditDialog', 'edit'): $emit('closeAddDialog', 'add')"
+                ></v-btn>
+          </v-col>
+          <v-col
+            cols="12"
+            md="4"
+            sm="4">
+               <v-btn type="submit"
+                  class="text-none text-white font-weight-regular"
+                  text="Save"
+                  color="dark-blue"
+                  block
+                ></v-btn>
+          </v-col>
+      </v-row>
       </v-form>
       </v-card>
     </v-dialog>
@@ -129,22 +139,7 @@ export default defineComponent({
     border: 1px solid rgba(118,118,118) !important;
   }
 
-  .close-icon::before {
-    content: "\F0156";
-    padding-block-end: 88px;
-    padding-left: 655px !important;
-    margin-bottom: 0px !important;
-  }
-
-  .form{
-    margin-top: -35px;
-  }
-  
-  .save-btn{
-    margin-bottom: 10px !important;
-  }
-
-  .dialog{
-    color: #0C2748;
+  .dialog {
+    height: 1000px;
   }
 </style>

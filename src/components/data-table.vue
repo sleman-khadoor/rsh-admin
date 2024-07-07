@@ -6,11 +6,11 @@
     hover
     height="50px">
     <thead class="bg-white-grey">
-      <tr>
-        <th v-for="header in headers" :key="header.title" class="text-center font-weight-bold">
-          {{ header.title }}
-        </th>
-      </tr>
+        <tr>
+            <th v-for="header in headers" :key="header.title" class="text-center font-weight-bold">
+                {{ header.title }}
+            </th>
+        </tr>
     </thead>
     </v-data-table>
     <div class="d-flex justify-center align-center" style="height: 270px" >
@@ -38,8 +38,9 @@
         <tr v-for="(item, index) in data" :key="item.slug.en" :style="index%2 !== 0 ? 'background: #FCFCFC' : ''">
           <td v-for="subItem in headers" :key="subItem.key">
             <div v-if="subItem.key === 'actions'" >
-                <img @click="$emit('OpenDialog', item)" width="30px" src="@/assets/icons/edit.svg"  class="px-1 cursor-pointer"/>
-                <img @click="$emit('OpenDeleteDialog', item)" width="30px" src="@/assets/icons/trash.svg" class="px-1 cursor-pointer" />
+                <img v-if="actionsTable[0]['edit']" @click="$emit('OpenDialog', item)" width="30px" src="@/assets/icons/edit.svg" class="px-1 cursor-pointer" />
+                <img v-if="actionsTable[1]['delete']" @click="$emit('OpenDeleteDialog', item)" width="30px" src="@/assets/icons/trash.svg" class="px-1 cursor-pointer" />
+                <img v-if="actionsTable[2]['view']" width="30px" src="@/assets/icons/view.svg" class="px-1 cursor-pointer" />
             </div>
             <div v-else>
               {{ item[subItem.key][subItem.subKey] }}
@@ -58,23 +59,26 @@ import paginate from './v-pagination.vue';
 
 export default defineComponent({
     components: {
-      paginate,
+        paginate,
     },
-    props: ['headers','data', 'meta', 'loading'],
+    props: ['headers','actionsTable','data', 'meta', 'loading'],
     setup(props) {
         return {
             props,
-        }        
+        }
     },
 })
 </script>
+
 <style>
 .action-btn {
-   margin: -18px;
+    margin: -18px;
 }
+
 .action-btn:hover {
-  background-color: transparent !important
+    background-color: transparent !important
 }
+
 .v-table--density-default {
     --v-table-header-height: 49px;
     --v-table-row-height: 44px;

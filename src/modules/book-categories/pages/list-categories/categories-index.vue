@@ -2,12 +2,12 @@
 <div id="categories">
     <div class="row ma-5 bg-white">
         <div class="d-flex flex-row-reverse pa-4">
-            <v-btn class="text-none text-white font-weight-regular" prepend-icon="mdi-plus" :text="`Add Category`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
+            <v-btn class="text-none text-white font-weight-regular" :text="`Add Category`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
             <CategoryDialog :dialog="dialog" :selectedCategory="selectedCategory" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
-            <DeleteCategoryDialog :deleteDialog="deleteDialog" :selectedCategory="selectedCategory" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
+            <DeleteCategoryDialog :deleteDialog="deleteDialog" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
             <WarningDialog :warningDialog="warningDialog" :message="message" @closeDialog="closeDialog($event, 'warning')" />
         </div>
-        <DataTable :headers="headers" :data="data" :meta="meta" @OpenDialog="openDialog($event)" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)" />
+        <DataTable :headers="headers" :actionsTable="actionsTable" :data="data" :meta="meta" @OpenDialog="openDialog($event)" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)" />
     </div>
 </div>
 </template>
@@ -54,6 +54,12 @@ export default defineComponent({
             },
             { title: "Actions", key: "actions", sortable: false },
         ]
+
+        const actionsTable = [
+            { 'edit': true },
+            { 'delete': true },
+            { 'view': false },
+        ];
 
         function openDialog(e) {
             dialog.value = true;
@@ -152,6 +158,7 @@ export default defineComponent({
             submit,
             data,
             meta,
+            actionsTable
         }
     }
 })

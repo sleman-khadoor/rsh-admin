@@ -16,6 +16,7 @@ export default class Service {
 	}
 
 	static deleteBookCategory(slug) {
+		console.log('kfkfkfkfkfkfkfkfkfkfk');
 		return api.delete(ep.CATEGORY_BY_SLUG(slug)).then((res) => res.data);
 	}
 }
