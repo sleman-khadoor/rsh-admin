@@ -11,7 +11,6 @@
         <div class="px-4">
           <v-icon icon="mdi-account" class="mr-2"/><span class="size-35">{{title}}</span>
         </div>
-        <v-form ref="formv" @submit.prevent="handleSubmit">
         <v-card-text :v-if="props.eventType!=='delete'" class="pb-0">
           <v-row dense>
             <v-col
@@ -28,7 +27,6 @@
                 required
               ></v-text-field>
             </v-col>
-
             <v-col
               cols="12"
               md="6"
@@ -59,6 +57,8 @@
               ></v-textarea>
             </v-col>
 
+            
+
             <v-col
               cols="6"
               md="6"
@@ -82,7 +82,7 @@
                 <div :class="'img-container'"  @click="clickInputFile">
                   <p class="size-22 overflow-hidden w-25 mb-0 pt-3 pl-3 position-absolute v-label v-field-label" >Author photo*</p>
                   <div class="w-mc ma-auto h-100 d-flex justify-center align-center pa-2">
-                    <img v-if="form.avatar" width="70" height="70" ref="imgRef" :src="form.avatar" class="my-auto"/>
+                    <img v-if="form.avatar" width="70" height="70" ref="imgRef" :src="props.selectedAuthor.avatar ? baseUrl + form.avatar : form.avatar" class="my-auto"/>
                     <img v-else width="30" height="30" src="@/assets/icons/img-upload.svg" class="my-auto"/>
                     <v-file-input
                       accept="image/png, image/jpeg, image/bmp"
@@ -93,6 +93,7 @@
                       truncate-length="15"
                       :prepend-icon="null"
                       append-outer="mdi-close"
+                      required
                       @change="printFiles(form.avatar, 'image')"
                     >
                     </v-file-input>
@@ -102,7 +103,7 @@
           </v-col>
           </v-row>
         </v-card-text>
-        <v-row dense class="justify-end px-4">
+        <v-row dense class="justify-end px-6">
             <v-col
               cols="12"
               md="3"
@@ -111,8 +112,8 @@
                     class="text-none text-white font-weight-regular close-btn"
                     text="Cancel"
                     color="grey"
+                    type="reset"
                     block
-                    @click="Object.keys(props.selectedAuthor).length !== 0 ? $emit('closeEditDialog', 'edit'): $emit('closeAddDialog', 'add')"
                   ></v-btn>
             </v-col>
             <v-col
@@ -123,13 +124,13 @@
                     type="submit"
                     class="text-none text-white font-weight-regular"
                     text="Save"
+                    @click="handleSubmit()"
                     color="dark-blue"
                     :loading="props.loading"
                     block
                   ></v-btn>
             </v-col>
         </v-row>
-      </v-form>
       </v-card>
     </v-dialog>
   </div>
@@ -156,28 +157,39 @@ export default defineComponent({
         enAbout: [
           v => !!v || 'About Author in English is required',
         ]
-      }
+      },
+      baseUrl
     }),
     setup(props, {emit}) {
         let form = reactive({
           name: {
-            ar: '',
-            en: ''
+            ar: null,
+            en: null
           },
           about: {
-            ar: '',
-            en: ''
+            ar: null,
+            en: null
           },
-          avatar: ''
+          avatar: null
         })
-        const formv = ref(null);
+        const formv = ref({
+          name: {
+            ar: null,
+            en: null
+          },
+          about: {
+            ar: null,
+            en: null
+          },
+          avatar: null
+        });
         onUpdated(() => {
           if(props.selectedAuthor) {
             form.name.ar = props.selectedAuthor.name?.ar
             form.name.en = props.selectedAuthor.name?.en
             form.about.ar = props.selectedAuthor.about?.ar
             form.about.en = props.selectedAuthor.about?.en
-            form.avatar =  baseUrl + props.selectedAuthor.avatar
+            form.avatar =  props.selectedAuthor.avatar
           } else {
             form.name.ar = null
             form.name.en = null
@@ -206,15 +218,35 @@ export default defineComponent({
           } 
           console.log('object file', form.avatar);
         }
+        function checkValidation() {
+          if(form.name.en && form.name.ar && form.about.en && form.about.ar) {
+            return true
+          } else {
+            return false
+          }
+        }
+
         function handleSubmit() {
-          if (formv.value) {
-            if(formv.value.validate()){
+          if (checkValidation()) {
               if (Object.keys(props.selectedAuthor).length !== 0) {
-                  emit('edit', JSON.stringify(form), 'edit')
+                  if(props.selectedAuthor.avatar === form.avatar) {
+                    let data = {
+                      name : {
+                        en: form.name.en,
+                        ar: form.name.ar,
+                      },
+                      about : {
+                        en: form.name.en,
+                        ar: form.name.ar,
+                      },
+                    }
+                    emit('edit', data, 'edit')
+                  } else {
+                    emit('edit', form, 'edit')
+                  }
                 } else {
                   emit('add', form, 'add')
                 }
-            }
           }
         }
         return {
@@ -234,6 +266,13 @@ export default defineComponent({
   .img-container{
     height: 14.5vh !important;
     border: 1px solid rgba(118,118,118) !important;
+  }
+
+  .close-icon::before {
+    content: "\F0156";
+    padding-block-end: 86px;
+    padding-left: 1095px !important;
+    margin-bottom: 0px !important;
   }
 
   .dialog {

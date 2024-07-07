@@ -70,9 +70,10 @@ export default defineComponent({
             selectedAuthor.value = e
             eventType = "delete"
         }
-
+        
         function submit(e, eventType) {
             console.log(e);
+
             if (eventType === 'add') {
                 store.dispatch('Authors/createAuthor', e)
                     .then(response => {
@@ -80,7 +81,7 @@ export default defineComponent({
                             dialog.value = false;
                     });
             } else if (eventType === 'edit') {
-                store.dispatch('Authors/editAuthor', { 'payload': JSON.parse(e), 'slug': selectedAuthor.value.slug.en })
+                store.dispatch('Authors/editAuthor', { 'payload': e, 'slug': selectedAuthor.value.slug.en })
                     .then(response => {
                             console.log('Edit response:', response);
                             dialog.value = false;

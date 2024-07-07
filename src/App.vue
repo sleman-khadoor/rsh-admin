@@ -1,7 +1,12 @@
 <template>
- <div>
+ <v-app>
+    <notifications position="top right" group="all" :duration="4000" closeOnClick/>
+    <notification
+    position="top right"
+    group="notification"
+    :duration="10000"/>
   <router-view/>
- </div>
+ </v-app>
 </template>
 
 <style lang="scss">

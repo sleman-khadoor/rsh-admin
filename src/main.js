@@ -12,6 +12,7 @@ import createRouter from './router'
 import { store } from './store';
 // Components
 import App from './App.vue'
+import Notifications from '@kyvg/vue3-notification'
 
 const vuetify = createVuetify({
   components,
@@ -35,6 +36,7 @@ const app = createApp(App);
 const router = createRouter();
 
 app.use(colors);
+app.use(Notifications);
 app.use(router);
 app.use(store);
 app.use(vuetify);
