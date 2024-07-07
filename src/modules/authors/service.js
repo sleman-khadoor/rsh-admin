@@ -1,4 +1,4 @@
-import api  from 'axios';
+import { api } from '@/utils/axios';
 import * as ep from './endpoints';
 
 export default class Service {

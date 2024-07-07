@@ -36,6 +36,7 @@ export default {
 	mutations: {
 		setLoading(state, value) {
 			state.loading = value;
+			console.log('object', state.loading);
 		},
 		setSelectedAuthor(state, value) {
 			state.selectedAuthor = value;

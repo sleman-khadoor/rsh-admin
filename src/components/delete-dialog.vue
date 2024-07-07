@@ -10,7 +10,7 @@
                 Please note that an item cannot be restored once <span class="break-line"> it has been permanently deleted.</span>
             </v-card-text>
             <v-card-actions class="pa-5 flex-column justify-center align-center">
-                <v-btn class="text-none text-white font-weight-regular pa-0 delete-btn" text="Delete" size="large" block @click="$emit('delete', JSON.stringify(form), 'delete')"></v-btn>
+                <v-btn class="text-none text-white font-weight-regular pa-0 delete-btn" text="Delete" :loading="props.loading" size="large" block @click="$emit('delete', JSON.stringify(form), 'delete')"></v-btn>
                 <v-btn class="text-none text-white font-weight-regular pa-0 back-btn" text="Back" size="large" color="black" block @click="$emit('closeDialog', 'delete')"></v-btn>
             </v-card-actions>
         </v-card>
@@ -22,7 +22,7 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-    props: ['deleteDialog', 'selectedAuthor'],
+    props: ['deleteDialog', 'selectedAuthor', 'loading'],
     setup(props) {
         return {
             props,

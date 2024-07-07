@@ -82,7 +82,7 @@
                 <div :class="'img-container'"  @click="clickInputFile">
                   <p class="size-22 overflow-hidden w-25 mb-0 pt-3 pl-3 position-absolute v-label v-field-label" >Author photo*</p>
                   <div class="w-mc ma-auto h-100 d-flex justify-center align-center pa-2">
-                    <img v-if="form.avatar" width="70" height="70" ref="imgRef" src="@/assets/icons/logo.svg" class="my-auto"/>
+                    <img v-if="form.avatar" width="70" height="70" ref="imgRef" :src="form.avatar" class="my-auto"/>
                     <img v-else width="30" height="30" src="@/assets/icons/img-upload.svg" class="my-auto"/>
                     <v-file-input
                       accept="image/png, image/jpeg, image/bmp"
@@ -119,12 +119,13 @@
               cols="12"
               md="3"
               sm="3">
-                 <v-btn type="submit"
+                 <v-btn 
+                    type="submit"
                     class="text-none text-white font-weight-regular"
                     prepend-icon="mdi-checkbox-marked-circle"
                     text="Save"
-                    
                     color="dark-blue"
+                    :loading="props.loading"
                     block
                   ></v-btn>
             </v-col>
@@ -137,10 +138,11 @@
 
 
 <script>
+import { baseUrl } from '@/utils/axios';
 import { defineComponent, onUpdated, reactive, computed, ref } from 'vue'
 
 export default defineComponent({
-    props: ['dialog', 'selectedAuthor', 'eventType'],
+    props: ['dialog', 'selectedAuthor', 'eventType', 'loading'],
     data: () => ({
       rules : {
         arName: [
@@ -176,7 +178,7 @@ export default defineComponent({
             form.name.en = props.selectedAuthor.name?.en
             form.about.ar = props.selectedAuthor.about?.ar
             form.about.en = props.selectedAuthor.about?.en
-            form.avatar = props.selectedAuthor.avatar
+            form.avatar =  baseUrl + props.selectedAuthor.avatar
           } else {
             form.name.ar = null
             form.name.en = null
@@ -203,6 +205,7 @@ export default defineComponent({
 
             reader.readAsDataURL(file);
           } 
+          console.log('object file', form.avatar);
         }
         function handleSubmit() {
           if (formv.value) {
@@ -210,7 +213,7 @@ export default defineComponent({
               if (Object.keys(props.selectedAuthor).length !== 0) {
                   emit('edit', JSON.stringify(form), 'edit')
                 } else {
-                  emit('add', JSON.stringify(form), 'add')
+                  emit('add', form, 'add')
                 }
             }
           }

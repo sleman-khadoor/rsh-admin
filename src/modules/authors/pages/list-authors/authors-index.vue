@@ -3,11 +3,11 @@
     <div class="row ma-5 bg-white">
         <div class="d-flex flex-row-reverse pa-4">
             <v-btn class="text-none text-white font-weight-regular" prepend-icon="mdi-plus" :text="`Add Author`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
-            <AuthorDialog :dialog="dialog" :selectedAuthor="selectedAuthor" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
-            <DeleteAuthorDialog :deleteDialog="deleteDialog" :selectedAuthor="selectedAuthor" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
+            <AuthorDialog :dialog="dialog" :loading="loading" :selectedAuthor="selectedAuthor" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
+            <DeleteAuthorDialog :deleteDialog="deleteDialog" :loading="loading" :selectedAuthor="selectedAuthor" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
             <WarningDialog :warningDialog="warningDialog" :message="message" @closeDialog="closeDialog($event, 'warning')" />
         </div>
-        <DataTable :headers="headers" :data="data" :meta="meta" @OpenDialog="openDialog($event)" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)" />
+        <DataTable :headers="headers" :data="data" :meta="meta" :loading="loading" @OpenDialog="openDialog($event)" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)" />
     </div>
 </div>
 </template>
@@ -73,9 +73,17 @@ export default defineComponent({
         function submit(e, eventType) {
             console.log(e);
             if (eventType === 'add') {
-                store.dispatch('Authors/createAuthor', JSON.parse(e));
+                store.dispatch('Authors/createAuthor', e)
+                    .then(response => {
+                            console.log('Add response:', response);
+                            dialog.value = false;
+                    });
             } else if (eventType === 'edit') {
-                store.dispatch('Authors/editAuthor', { 'payload': JSON.parse(e), 'slug': selectedAuthor.value.slug.en });
+                store.dispatch('Authors/editAuthor', { 'payload': JSON.parse(e), 'slug': selectedAuthor.value.slug.en })
+                    .then(response => {
+                            console.log('Edit response:', response);
+                            dialog.value = false;
+                    });
             } else if (eventType === 'delete') {
                 store.dispatch('Authors/deleteAuthor', selectedAuthor.value.slug.en)
                     .then(response => {
@@ -92,8 +100,6 @@ export default defineComponent({
                         }
                     });
             }
-            dialog.value = false;
-
         }
 
         function fetchData(currentPage) {
@@ -136,6 +142,7 @@ export default defineComponent({
         }, { deep: true });
         const data = computed(() => store.getters['Authors/authors'])
         const meta = computed(() => store.getters['Authors/meta'])
+        const loading = computed(() => store.getters['Authors/loading'])
         return {
             headers,
             dialog,
@@ -150,7 +157,8 @@ export default defineComponent({
             eventType,
             submit,
             data,
-            meta
+            meta,
+            loading
         }
     }
 })
