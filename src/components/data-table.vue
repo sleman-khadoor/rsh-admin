@@ -35,7 +35,8 @@
         </tr>
       </thead>
       <tbody class="text-center">
-        <tr v-for="(item, index) in data" :key="item.slug.en" :style="index%2 !== 0 ? 'background: #FCFCFC' : ''">
+        <p>{{console.log(props.itemKey)}}</p>
+        <tr v-for="(item, index) in data" :key="itemRouteKey(item)" :style="index%2 !== 0 ? 'background: #FCFCFC' : ''">
           <td v-for="subItem in headers" :key="subItem.key">
             <div v-if="subItem.key === 'actions'" >
                 <img v-if="actionsTable[0]['edit']" @click="$emit('OpenDialog', item)" width="30px" src="@/assets/icons/edit.svg" class="px-1 cursor-pointer" />
@@ -43,7 +44,7 @@
                 <img v-if="actionsTable[2]['view']" width="30px" src="@/assets/icons/view.svg" class="px-1 cursor-pointer" />
             </div>
             <div v-else>
-              {{ item[subItem.key][subItem.subKey] }}
+              {{ item[subItem.key][subItem.subKey]?? item[subItem.key] }}
             </div>
           </td>
         </tr>
@@ -54,18 +55,30 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent} from 'vue'
 import paginate from './v-pagination.vue';
 
 export default defineComponent({
     components: {
         paginate,
     },
-    props: ['headers','actionsTable','data', 'meta', 'loading'],
+    props: ['headers','actionsTable','data', 'meta', 'loading', 'itemKey'],
     setup(props) {
-        return {
-            props,
+      
+      function itemRouteKey(item){
+        console.log('kfkkfkfkfkf', props.itemKey);
+        if(props.itemKey == 'translationSlug'){
+          return item.slug.en;
+        }else if(props.itemKey == 'slug'){
+          return item.slug;
+        }else{
+          return item.id;
         }
+      }
+      return {
+          props,
+          itemRouteKey,
+      }
     },
 })
 </script>

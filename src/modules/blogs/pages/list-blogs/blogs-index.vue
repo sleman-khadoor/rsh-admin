@@ -1,13 +1,13 @@
 <template>
-<div id="categories">
+<div id="blogs">
     <div class="row ma-5 bg-white">
         <div class="d-flex flex-row-reverse pa-4">
-            <v-btn class="text-none text-white font-weight-regular" :text="`Add Category`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
-            <CategoryDialog :dialog="dialog" :selectedCategory="selectedCategory" :loading="loading" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
-            <DeleteCategoryDialog :deleteDialog="deleteDialog" :loading="loading" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
+            <v-btn class="text-none text-white font-weight-regular" :text="`Add Blog`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
+            <BlogDialog :dialog="dialog" :loading="loading" :selectedBlog="selectedBlog" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
+            <DeleteBlogDialog :deleteDialog="deleteDialog" :loading="loading" :selectedBlog="selectedBlog" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
             <WarningDialog :warningDialog="warningDialog" :message="message" @closeDialog="closeDialog($event, 'warning')" />
         </div>
-        <DataTable :headers="headers" itemKey="slugTranslation" :actionsTable="actionsTable" :data="data" :meta="meta" :loading="loading" @OpenDialog="openDialog($event)" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)" />
+        <DataTable :headers="headers" itemKey="slug" :actionsTable="actionsTable" :data="data" :meta="meta" :loading="loading" @OpenDialog="openDialog($event)" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)" />
     </div>
 </div>
 </template>
@@ -15,15 +15,15 @@
 <script>
 import { computed, defineComponent, onMounted, watch, ref } from 'vue'
 import DataTable from '@/components/data-table.vue'
-import CategoryDialog from '../../components/category-dialog.vue'
-import DeleteCategoryDialog from '@/components/delete-dialog.vue'
+import BlogDialog from '../../components/blog-dialog.vue'
+import DeleteBlogDialog from '@/components/delete-dialog.vue'
 import WarningDialog from '@/components/warning-dialog.vue'
 import { useStore } from 'vuex'
 export default defineComponent({
     components: {
         DataTable,
-        CategoryDialog,
-        DeleteCategoryDialog,
+        BlogDialog,
+        DeleteBlogDialog,
         WarningDialog
     },
     setup() {
@@ -32,20 +32,18 @@ export default defineComponent({
         let deleteDialog = ref(false);
         let warningDialog = ref(false);
         let message = ref("");
-        let selectedCategory = ref('');
+        let selectedBlog = ref('');
         let eventType = "";
 
         const headers = [{
-                title: "Category name in Arabic",
+                title: "Blog Title",
                 align: "start",
                 sortable: false,
                 key: "title",
-                subKey: "ar"
             },
             {
-                title: "Category name in English",
-                key: "title",
-                subKey: "en"
+                title: "Author Name",
+                key: "writer",
             },
             { title: "Actions", key: "actions", sortable: false },
         ]
@@ -59,35 +57,34 @@ export default defineComponent({
         function openDialog(e) {
             dialog.value = true;
             if (e) {
-                selectedCategory.value = e
+                selectedBlog.value = e
             } else {
-                selectedCategory.value = {}
+                selectedBlog.value = {}
             }
         }
 
         function openDeleteDialog(e) {
             deleteDialog.value = true;
-            selectedCategory.value = e
+            selectedBlog.value = e
             eventType = "delete"
         }
 
         function submit(e, eventType) {
             console.log(e);
             if (eventType === 'add') {
-                store.dispatch('BlogCategories/createCategory', e)
-                .then(response => {
-                        console.log('Add response:', response);
-                        deleteDialog.value = false;
+                store.dispatch('Blogs/createBlog', e)
+                    .then(response => {
+                            console.log('Add response:', response);
+                            dialog.value = false;
                     });
             } else if (eventType === 'edit') {
-                store.dispatch('BlogCategories/editCategory', { 'payload': JSON.parse(e), 'slug': selectedCategory.value.slug.en })
-                .then(response => {
-                        console.log('Edit response:', response);
-                        deleteDialog.value = false;
+                store.dispatch('Blogs/editBlog', { 'payload': JSON.parse(e), 'slug': selectedBlog.value.slug.en })
+                    .then(response => {
+                            console.log('Edit response:', response);
+                            dialog.value = false;
                     });
             } else if (eventType === 'delete') {
-                console.log('event type is', selectedCategory.value.slug.en);
-                store.dispatch('BlogCategories/deleteCategory', selectedCategory.value.slug.en)
+                store.dispatch('Blogs/deleteBlog', selectedBlog.value.slug.en)
                     .then(response => {
                         console.log('Delete response:', response);
                         deleteDialog.value = false;
@@ -102,13 +99,11 @@ export default defineComponent({
                         }
                     });
             }
-            dialog.value = false;
-
         }
 
         function fetchData(currentPage) {
             console.log('currentPage', currentPage);
-            store.dispatch('BlogCategories/fetchCategories', {
+            store.dispatch('Blogs/fetchBlogs', {
                 params: {
                     page: currentPage ? currentPage : 1,
                     perPage: 6,
@@ -141,17 +136,17 @@ export default defineComponent({
         watch(message, (newV) => {
             console.log(newV);
         }, { deep: true });
-        watch(selectedCategory, (newV) => {
+        watch(selectedBlog, (newV) => {
             console.log(newV);
         }, { deep: true });
-        const data = computed(() => store.getters['BlogCategories/categories'])
-        const meta = computed(() => store.getters['BlogCategories/meta'])
-        const loading = computed(() => store.getters['BlogCategories/loading'])
+        const data = computed(() => store.getters['Blogs/blogs'])
+        const meta = computed(() => store.getters['Blogs/meta'])
+        const loading = computed(() => store.getters['Blogs/loading'])
         return {
             headers,
             dialog,
             deleteDialog,
-            selectedCategory,
+            selectedBlog,
             openDialog,
             openDeleteDialog,
             warningDialog,

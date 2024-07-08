@@ -7,7 +7,7 @@
             <DeleteAuthorDialog :deleteDialog="deleteDialog" :loading="loading" :selectedAuthor="selectedAuthor" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
             <WarningDialog :warningDialog="warningDialog" :message="message" @closeDialog="closeDialog($event, 'warning')" />
         </div>
-        <DataTable :headers="headers" :actionsTable="actionsTable" :data="data" :meta="meta" :loading="loading" @OpenDialog="openDialog($event)" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)" />
+        <DataTable :headers="headers" itemKey="slugTranslation" :actionsTable="actionsTable" :data="data" :meta="meta" :loading="loading" @OpenDialog="openDialog($event)" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)" />
     </div>
 </div>
 </template>
@@ -36,14 +36,9 @@ export default defineComponent({
         let eventType = "";
 
         const headers = [{
-                title: "Slug",
+            title: "Author Name In Arabic",
                 align: "start",
                 sortable: false,
-                key: "slug",
-                subKey: "en"
-            },
-            {
-                title: "Author Name In Arabic",
                 key: "name",
                 subKey: "ar"
             },
