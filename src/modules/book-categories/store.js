@@ -59,23 +59,21 @@ export default {
 			}
 		},
 
-		async createCategory({ commit, dispatch}, payload) {
+		async createCategory({ commit }, payload) {
 			commit('setLoading', true);
 			let res = null;
 			try {
 				res = await categoriesService.createBookCategory(payload);
-				dispatch('fetchCategories');		
 			} finally {
 				commit('setLoading', false);
 			}
 			return res;
 		},
 
-		async editCategory({ commit, dispatch }, { payload, slug } ) {
+		async editCategory({ commit }, { payload, slug } ) {
 			payload['_method'] = 'PUT';
 			commit('setLoading', true);
 			let res = await categoriesService.editBookCategory(slug, payload);
-			dispatch('fetchCategories');
 			try {
 				return res;
 			} finally {
@@ -83,12 +81,11 @@ export default {
 			}
 		},
 
-		async deleteCategory({ commit, dispatch }, slug) {
+		async deleteCategory({ commit }, slug) {
 			commit('setLoading', true);
 			try {
 				let res = await categoriesService.deleteBookCategory(slug);
 				console.log('hiiii from delete', res);
-				dispatch('fetchCategories'); 
 				return res;
 			} finally {
 				commit('setLoading', false);

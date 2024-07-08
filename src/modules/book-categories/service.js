@@ -1,5 +1,6 @@
 import { api } from '@/utils/axios';
 import * as ep from './endpoints';
+import notify from '@/utils/notify';
 
 export default class Service {
 	static getBookCategories(qp = {}) {
@@ -8,14 +9,20 @@ export default class Service {
 	}
 
 	static createBookCategory(payload = {}) {
-		return api.post(ep.CATEGORY, payload).then((res) => res.data);
+		const data = api.post(ep.CATEGORY, payload).then((res) => res.data);
+		notify(data)
+		return data
 	}
 
 	static editBookCategory(slug, payload = {}) {
-		return api.post(ep.CATEGORY_BY_SLUG(slug), payload).then((res) => res.data);
+		const data = api.post(ep.CATEGORY_BY_SLUG(slug), payload).then((res) => res.data);
+		notify(data)
+		return data
 	}
 
 	static deleteBookCategory(slug) {
-		return api.delete(ep.CATEGORY_BY_SLUG(slug)).then((res) => res.data);
+		const data = api.delete(ep.CATEGORY_BY_SLUG(slug)).then((res) => res.data);
+		notify(data)
+		return data
 	}
 }
