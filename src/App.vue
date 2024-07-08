@@ -1,7 +1,7 @@
 <template>
  <v-app>
-    <notifications position="top right" group="all" :duration="4000" closeOnClick/>
-    <notification
+    <Notifications position="top right" group="all" :duration="4000" closeOnClick/>
+    <Notifications
     position="top right"
     group="notification"
     :duration="10000"/>
