@@ -1,7 +1,4 @@
 import AuthorsService from './service';
-// import AuthorsTable from './components/contracts-table/store';
-// import AttachmentsService from '@/modules/attachments/service';
-
 function getState() {
 	return {
 		loading: false,
@@ -13,9 +10,6 @@ function getState() {
 
 export default {
 	namespaced: true,
-	modules: {
-		// AuthorsTable,
-	},
 	state: getState,
 	getters: {
 		loading(state) {
@@ -49,7 +43,6 @@ export default {
 		},
 		deleteAuthor(state, id) {
 			state.authors = state.contracts.filter((e) => e.id !== id);
-			// state.authors = state.authors;
 		},
 		resetState(state) {
 			Object.assign(state, getState());
@@ -68,46 +61,32 @@ export default {
 			}
 		},
 
-		async createAuthor({ commit, dispatch}, payload) {
+		async createAuthor({ commit }, payload) {
 			commit('setLoading', true);
 			let res = null;
 			try {
 				res = await AuthorsService.createAuthor(payload);
-				dispatch('fetchAuthors');
-				// if(res) {
-				// 	payload.attachments.forEach((file) => {
-				// 		file.append('attachable_id', res?.data?.id);
-				// 		AttachmentsService.createAttachement(file);
-				// 	});	
-				// }			
 			} finally {
 				commit('setLoading', false);
 			}
 			return res;
 		},
 
-		async editAuthor({ commit, dispatch }, { payload, slug } ) {
+		async editAuthor({ commit }, { payload, slug } ) {
 			payload['_method'] = 'PUT';
 			commit('setLoading', true);
 			let res = await AuthorsService.editAuthor(slug, payload);
-			dispatch('fetchAuthors');
 			try {
-				// payload.attachments.forEach((file) => {
-				// 	console.log('object contract inside if', res);
-				// 	file.append('attachable_id', res?.data?.id);
-				// 	AttachmentsService.createAttachement(file);
-				// });	
 				return res;
 			} finally {
 				commit('setLoading', false);
 			}
 		},
 
-		async deleteAuthor({ commit, dispatch }, slug) {
+		async deleteAuthor({ commit }, slug) {
 			commit('setLoading', true);
 			try {
 				let res = await AuthorsService.deleteAuthor(slug);
-				dispatch('fetchAuthors'); 
 				return res;
 			} finally {
 				commit('setLoading', false);

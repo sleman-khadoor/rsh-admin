@@ -9,15 +9,15 @@ export default class Service {
 	}
 
 	static createAuthor(payload = {}) {
-		const { data } = api.post(ep.AUTHORS, payload).then((res) => res.data);
+		const data = api.post(ep.AUTHORS, payload).then((res) => res.data);
 		notify(data)
 		return data
 	}
 
 	static editAuthor(slug, payload = {}) {
-		return api.post(ep.AUTHORS_BY_SLUG(slug), payload, { params: {
-			_method: 'PUT'
-		}}).then((res) => res.data);
+		const data = api.post(ep.AUTHORS_BY_SLUG(slug), payload).then((res) => res.data);
+		notify(data)
+		return data
 	}
 
 	static deleteAuthor(slug) {

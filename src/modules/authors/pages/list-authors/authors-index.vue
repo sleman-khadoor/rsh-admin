@@ -11,7 +11,6 @@
         </v-row>
         <AuthorDialog :dialog="dialog" :loading="loading" :selectedAuthor="selectedAuthor" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
         <DeleteAuthorDialog :deleteDialog="deleteDialog" :loading="loading" :selectedAuthor="selectedAuthor" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
-        <WarningDialog :warningDialog="warningDialog" :message="message" @closeDialog="closeDialog($event, 'warning')" />
         <DataTable :headers="headers" itemKey="slugTranslation" :actionsTable="actionsTable" :data="data" :meta="meta" :loading="loading" @OpenDialog="openDialog($event)" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)" />
     </div>
 </div>
@@ -23,36 +22,34 @@ import DataTable from '@/components/data-table.vue'
 import SearchByFilters from '@/components/search-by-filters.vue'
 import AuthorDialog from '../../components/author-dialog.vue'
 import DeleteAuthorDialog from '@/components/delete-dialog.vue'
-import WarningDialog from '@/components/warning-dialog.vue'
+
 import { useStore } from 'vuex'
 export default defineComponent({
     components: {
         DataTable,
         AuthorDialog,
         DeleteAuthorDialog,
-        WarningDialog,
         SearchByFilters
     },
     setup() {
         const store = useStore();
         let dialog = ref(false);
         let deleteDialog = ref(false);
-        let warningDialog = ref(false);
         let message = ref("");
         let selectedAuthor = ref('');
         let eventType = "";
 
         const headers = [{
-            title: "Author Name In Arabic",
-                align: "start",
-                sortable: false,
-                key: "name",
-                subKey: "ar"
+            title: "Author Name In English",
+            align: "start",
+            sortable: false,
+            key: "name",
+            subKey: "en"
             },
             {
-                title: "Author Name In English",
+                title: "Author Name In Arabic",
                 key: "name",
-                subKey: "en"
+                subKey: "ar"
             },
             { title: "Actions", key: "actions", sortable: false },
         ]
@@ -79,26 +76,28 @@ export default defineComponent({
             selectedAuthor.value = e
             eventType = "delete"
         }
-        
+
         function submit(e, eventType) {
             console.log(e);
-
             if (eventType === 'add') {
                 store.dispatch('Authors/createAuthor', e)
                     .then(response => {
-                            console.log('Add response:', response);
-                            dialog.value = false;
+                        console.log('Add response:', response);
+                        fetchData()
+                        dialog.value = false;
                     });
             } else if (eventType === 'edit') {
                 store.dispatch('Authors/editAuthor', { 'payload': e, 'slug': selectedAuthor.value.slug.en })
                     .then(response => {
-                            console.log('Edit response:', response);
-                            dialog.value = false;
-                    });
+                        console.log('Edit response:', response);
+                        fetchData()
+                        dialog.value = false;
+                    })
             } else if (eventType === 'delete') {
                 store.dispatch('Authors/deleteAuthor', selectedAuthor.value.slug.en)
                     .then(response => {
                         console.log('Delete response:', response);
+                        fetchData()
                         deleteDialog.value = false;
                     })
                     .catch(error => {
@@ -106,7 +105,6 @@ export default defineComponent({
                             if (error.response.status == 409) {
                                 closeDialog(e, 'delete');
                                 message.value = "You can't delete this record, it has related data."
-                                warningDialog.value = true;
                             }
                         }
                     });
@@ -131,8 +129,6 @@ export default defineComponent({
                 dialog.value = false;
             } else if (eventType == 'delete') {
                 deleteDialog.value = false;
-            } else {
-                warningDialog.value = false;
             }
         }
         onMounted(() => {
@@ -142,9 +138,6 @@ export default defineComponent({
             console.log(newV);
         }, { deep: true });
         watch(deleteDialog, (newV) => {
-            console.log(newV);
-        }, { deep: true });
-        watch(warningDialog, (newV) => {
             console.log(newV);
         }, { deep: true });
         watch(message, (newV) => {
@@ -163,7 +156,6 @@ export default defineComponent({
             selectedAuthor,
             openDialog,
             openDeleteDialog,
-            warningDialog,
             message,
             fetchData,
             closeDialog,

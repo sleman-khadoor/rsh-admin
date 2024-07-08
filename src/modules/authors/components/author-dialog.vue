@@ -13,20 +13,7 @@
         </div>
         <v-card-text :v-if="props.eventType!=='delete'" class="pb-0">
           <v-row dense>
-            <v-col
-              cols="12"
-              md="6"
-              sm="6"
-            >
-              <v-text-field
-                variant="outlined"
-                class="pa-0"
-                label="Author Name In Arabic*"
-                v-model="form.name.ar"
-                :rules="rules.arName"
-                required
-              ></v-text-field>
-            </v-col>
+           
             <v-col
               cols="12"
               md="6"
@@ -42,23 +29,20 @@
             </v-col>
 
             <v-col
-              cols="6"
+              cols="12"
               md="6"
               sm="6"
             >
-              <v-textarea
+              <v-text-field
                 variant="outlined"
-                label="About Author In Arabic*"
-                v-model="form.about.ar"
-                rows="7"
-                persistent-hint
-                :rules="rules.arAbout"
+                class="pa-0"
+                label="Author Name In Arabic*"
+                v-model="form.name.ar"
+                :rules="rules.arName"
                 required
-              ></v-textarea>
+              ></v-text-field>
             </v-col>
-
-            
-
+          
             <v-col
               cols="6"
               md="6"
@@ -73,6 +57,21 @@
                 required
               ></v-textarea>
             </v-col>
+            <v-col
+            cols="6"
+            md="6"
+            sm="6"
+          >
+            <v-textarea
+              variant="outlined"
+              label="About Author In Arabic*"
+              v-model="form.about.ar"
+              rows="7"
+              persistent-hint
+              :rules="rules.arAbout"
+              required
+            ></v-textarea>
+          </v-col>
              <v-col
                 cols="12"
                 md="12"
@@ -114,6 +113,7 @@
                     color="grey"
                     type="reset"
                     block
+                    @click="Object.keys(props.selectedAuthor).length !== 0 ? $emit('closeEditDialog', 'edit'): $emit('closeAddDialog', 'add')"
                   ></v-btn>
             </v-col>
             <v-col
