@@ -6,12 +6,10 @@
         app
       >
         <v-list class="mt-5" height="95%" min-height="30" v-model:opened="open" dense>
-          <v-list-item-group
-              active-class="orange-overlay"
+          <v-list-item
               v-model="selectedItem"
-              color="red"
               mandatory
-              class="height-100-per w-80per"
+              class="height-100 w-100"
             >
             <div v-for="(item, index) in sidebar"
               :key="index">
@@ -46,8 +44,8 @@
                           </v-list-group-icon>
                     </template>
                     <template v-slot:append>
-                          <v-list-group-icon class="my-auto height-unset mr-4">
-                            <img width="18" min-width="8" height="18" src="@/assets/icons/arrow-circle-right.svg">
+                          <v-list-group-icon class="my-auto height-unset" style="height: 18px">
+                            <img width="18" min-width="8" height="18" class="my-auto" src="@/assets/icons/arrow-circle-right.svg">
                           </v-list-group-icon>
                     </template>
                   </v-list-item>
@@ -66,7 +64,7 @@
                   
               </v-list-group>
             </div>
-          </v-list-item-group>
+          </v-list-item>
         </v-list>
       </v-navigation-drawer>
 </template>

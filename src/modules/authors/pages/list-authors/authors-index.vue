@@ -1,12 +1,17 @@
 <template>
 <div id="authors">
     <div class="row ma-5 bg-white">
-        <div class="d-flex flex-row-reverse pa-4">
-            <v-btn class="text-none text-white font-weight-regular" :text="`Add Author`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
-            <AuthorDialog :dialog="dialog" :loading="loading" :selectedAuthor="selectedAuthor" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
-            <DeleteAuthorDialog :deleteDialog="deleteDialog" :loading="loading" :selectedAuthor="selectedAuthor" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
-            <WarningDialog :warningDialog="warningDialog" :message="message" @closeDialog="closeDialog($event, 'warning')" />
-        </div>
+        <v-row class="py-2 px-16 justify-center">
+            <v-col lg="9" md="9" sm="9">
+                <SearchByFilters :items="filterBy" @fetchData="fetchData(1,$event)"/>
+            </v-col>
+            <v-col lg="3" md="3" sm="3" class="px-0">
+                <v-btn class="text-none text-white font-weight-regular" height="47" width="180" :text="`Add Author`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
+            </v-col>
+        </v-row>
+        <AuthorDialog :dialog="dialog" :loading="loading" :selectedAuthor="selectedAuthor" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
+        <DeleteAuthorDialog :deleteDialog="deleteDialog" :loading="loading" :selectedAuthor="selectedAuthor" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
+        <WarningDialog :warningDialog="warningDialog" :message="message" @closeDialog="closeDialog($event, 'warning')" />
         <DataTable :headers="headers" itemKey="slugTranslation" :actionsTable="actionsTable" :data="data" :meta="meta" :loading="loading" @OpenDialog="openDialog($event)" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)" />
     </div>
 </div>
@@ -15,6 +20,7 @@
 <script>
 import { computed, defineComponent, onMounted, watch, ref } from 'vue'
 import DataTable from '@/components/data-table.vue'
+import SearchByFilters from '@/components/search-by-filters.vue'
 import AuthorDialog from '../../components/author-dialog.vue'
 import DeleteAuthorDialog from '@/components/delete-dialog.vue'
 import WarningDialog from '@/components/warning-dialog.vue'
@@ -24,7 +30,8 @@ export default defineComponent({
         DataTable,
         AuthorDialog,
         DeleteAuthorDialog,
-        WarningDialog
+        WarningDialog,
+        SearchByFilters
     },
     setup() {
         const store = useStore();
@@ -55,6 +62,8 @@ export default defineComponent({
             { 'delete': true },
             { 'view': false },
         ];
+
+        const filterBy = ['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']
 
         function openDialog(e) {
             dialog.value = true;
@@ -104,12 +113,14 @@ export default defineComponent({
             }
         }
 
-        function fetchData(currentPage) {
+        function fetchData(currentPage, search = {}) {
             console.log('currentPage', currentPage);
             store.dispatch('Authors/fetchAuthors', {
                 params: {
                     page: currentPage ? currentPage : 1,
                     perPage: 6,
+                    search: search?.value,
+                    filter: search?.key
                 }
             });
         }
@@ -161,6 +172,7 @@ export default defineComponent({
             data,
             meta,
             loading,
+            filterBy,
             actionsTable
         }
     }

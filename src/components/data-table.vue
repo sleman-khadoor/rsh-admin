@@ -17,7 +17,7 @@
           <v-progress-circular
             :size="50"
             :width="7"
-            color="#7B7045"
+            :color="$colors.choco"
             indeterminate
           ></v-progress-circular>
     </div>

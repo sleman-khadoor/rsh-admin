@@ -20,22 +20,18 @@ const vuetify = createVuetify({
   plugins,
 })
 
-const colors = createApp(App).colors = {
-  ff_orange: '#1a238a',
-  red: 'red',
-  green: '#39df9b',
-  white: '#FFFFFF',
+const colors = {
+  choco: '#7B7045',
+  green: '#218838',
+  red: '#FF2727',
+  white_grey: '#F8F8F8',
   dark_blue: '#0C2748',
-  white_grey: '#E9E9E9',
-  grey: '#DEDEDE',
-  dark_grey: '#BEBEBE',
-  deep_grey: '#4b4b4b'
 }
 // createApp(App).use(vuetify).mount('#app')
 const app = createApp(App);
 const router = createRouter();
 
-app.use(colors);
+app.config.globalProperties.$colors = colors;
 app.use(Notifications);
 app.use(router);
 app.use(store);
