@@ -1,6 +1,8 @@
 import BooksModuleRoutes from '@/modules/books/routes'
 import AuthorsModuleRoutes from '@/modules/authors/routes'
 import BookCategoriesModuleRoutes from '@/modules/book-categories/routes'
+import BlogCategoriesModuleRoutes from '@/modules/blog-categories/routes'
+
 const routes = [
 	{
 		path: '/',
@@ -8,7 +10,8 @@ const routes = [
 		children: [
 			BooksModuleRoutes,
 			AuthorsModuleRoutes,
-			BookCategoriesModuleRoutes
+			BookCategoriesModuleRoutes,
+			BlogCategoriesModuleRoutes
 		],
 	},
 	// {
