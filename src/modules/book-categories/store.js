@@ -72,6 +72,7 @@ export default {
 		},
 
 		async editCategory({ commit, dispatch }, { payload, slug } ) {
+			payload['_method'] = 'PUT';
 			commit('setLoading', true);
 			let res = await categoriesService.editBookCategory(slug, payload);
 			dispatch('fetchCategories');

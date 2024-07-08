@@ -1,4 +1,4 @@
-import api  from 'axios';
+import { api } from '@/utils/axios';
 import * as ep from './endpoints';
 
 export default class Service {
@@ -12,11 +12,10 @@ export default class Service {
 	}
 
 	static editBookCategory(slug, payload = {}) {
-		return api.put(ep.CATEGORY_BY_SLUG(slug), payload).then((res) => res.data);
+		return api.post(ep.CATEGORY_BY_SLUG(slug), payload).then((res) => res.data);
 	}
 
 	static deleteBookCategory(slug) {
-		console.log('kfkfkfkfkfkfkfkfkfkfk');
 		return api.delete(ep.CATEGORY_BY_SLUG(slug)).then((res) => res.data);
 	}
 }

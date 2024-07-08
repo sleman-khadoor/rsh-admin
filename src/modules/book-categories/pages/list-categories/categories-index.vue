@@ -3,11 +3,11 @@
     <div class="row ma-5 bg-white">
         <div class="d-flex flex-row-reverse pa-4">
             <v-btn class="text-none text-white font-weight-regular" :text="`Add Category`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
-            <CategoryDialog :dialog="dialog" :selectedCategory="selectedCategory" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
-            <DeleteCategoryDialog :deleteDialog="deleteDialog" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
+            <CategoryDialog :dialog="dialog" :selectedCategory="selectedCategory" :loading="loading" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
+            <DeleteCategoryDialog :deleteDialog="deleteDialog" :loading="loading" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
             <WarningDialog :warningDialog="warningDialog" :message="message" @closeDialog="closeDialog($event, 'warning')" />
         </div>
-        <DataTable :headers="headers" :actionsTable="actionsTable" :data="data" :meta="meta" @OpenDialog="openDialog($event)" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)" />
+        <DataTable :headers="headers" :actionsTable="actionsTable" :data="data" :meta="meta" :loading="loading" @OpenDialog="openDialog($event)" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)" />
     </div>
 </div>
 </template>
@@ -79,9 +79,17 @@ export default defineComponent({
         function submit(e, eventType) {
             console.log(e);
             if (eventType === 'add') {
-                store.dispatch('BookCategories/createCategory', JSON.parse(e));
+                store.dispatch('BookCategories/createCategory', e)
+                .then(response => {
+                        console.log('Add response:', response);
+                        deleteDialog.value = false;
+                    });
             } else if (eventType === 'edit') {
-                store.dispatch('BookCategories/editCategory', { 'payload': JSON.parse(e), 'slug': selectedCategory.value.slug.en });
+                store.dispatch('BookCategories/editCategory', { 'payload': JSON.parse(e), 'slug': selectedCategory.value.slug.en })
+                .then(response => {
+                        console.log('Edit response:', response);
+                        deleteDialog.value = false;
+                    });
             } else if (eventType === 'delete') {
                 console.log('event type is', selectedCategory.value.slug.en);
                 store.dispatch('BookCategories/deleteCategory', selectedCategory.value.slug.en)
@@ -143,6 +151,7 @@ export default defineComponent({
         }, { deep: true });
         const data = computed(() => store.getters['BookCategories/categories'])
         const meta = computed(() => store.getters['BookCategories/meta'])
+        const loading = computed(() => store.getters['BookCategories/loading'])
         return {
             headers,
             dialog,
@@ -158,6 +167,7 @@ export default defineComponent({
             submit,
             data,
             meta,
+            loading,
             actionsTable
         }
     }

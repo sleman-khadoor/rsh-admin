@@ -22,7 +22,7 @@
               <v-text-field
                 variant="outlined"
                 class="pa-0"
-                label="Author name in Arabic*"
+                label="Author Name In Arabic*"
                 v-model="form.name.ar"
                 :rules="rules.arName"
                 required
@@ -36,9 +36,9 @@
             >
               <v-text-field
                 variant="outlined"
-                hint="example of helper text only on focus"
-                label="Author name in English"
+                label="Author Name In English*"
                 :rules="rules.enName"
+                required
                 v-model="form.name.en"
               ></v-text-field>
             </v-col>
@@ -50,7 +50,7 @@
             >
               <v-textarea
                 variant="outlined"
-                label="About Author in Arabic"
+                label="About Author In Arabic*"
                 v-model="form.about.ar"
                 rows="7"
                 persistent-hint
@@ -66,7 +66,7 @@
             >
               <v-textarea
                 variant="outlined"
-                label="About Author in English*"
+                label="About Author In English*"
                 v-model="form.about.en"
                 rows="7"
                 :rules="rules.enAbout"

@@ -14,7 +14,7 @@
                     <v-btn class="text-none text-white font-weight-regular close-btn bg-grey" text="Cancel" block @click="$emit('closeDialog', 'delete')"></v-btn>
                 </v-col>
                 <v-col cols="12" md="4" sm="4">
-                    <v-btn type="submit" class="text-none text-white font-weight-regular bg-red" text="Delete" block @click="$emit('delete', JSON.stringify(form), 'delete')"></v-btn>
+                    <v-btn type="submit" class="text-none text-white font-weight-regular bg-red" text="Delete" block :loading="props.loading" @click="$emit('delete', JSON.stringify(form), 'delete')"></v-btn>
                 </v-col>
             </v-row>
         </v-card>

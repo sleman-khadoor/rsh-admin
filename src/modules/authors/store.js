@@ -87,6 +87,7 @@ export default {
 		},
 
 		async editAuthor({ commit, dispatch }, { payload, slug } ) {
+			payload['_method'] = 'PUT';
 			commit('setLoading', true);
 			let res = await AuthorsService.editAuthor(slug, payload);
 			dispatch('fetchAuthors');

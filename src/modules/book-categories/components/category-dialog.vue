@@ -2,7 +2,7 @@
   <div class="text-center">
     <v-dialog
       v-model="props.dialog"
-      max-width="400"
+      max-width="450"
       class="dialog"
     >
         <v-card
@@ -22,7 +22,7 @@
               <v-text-field
                 variant="outlined"
                 class="pa-0"
-                label="Category name in Arabic*"
+                label="Category Name In Arabic*"
                 v-model="form.title.ar"
                 :rules="rules.arTitle"
                 required
@@ -36,9 +36,9 @@
             >
               <v-text-field
                 variant="outlined"
-                hint="example of helper text only on focus"
-                label="Category name in English"
+                label="Category Name In English*"
                 :rules="rules.enTitle"
+                required
                 v-model="form.title.en"
               ></v-text-field>
             </v-col>
@@ -64,6 +64,7 @@
                <v-btn type="submit"
                   class="text-none text-white font-weight-regular"
                   text="Save"
+                  :loading="props.loading"
                   color="dark-blue"
                   block
                 ></v-btn>
@@ -80,7 +81,7 @@
 import { defineComponent, onUpdated, reactive, computed, ref } from 'vue'
 
 export default defineComponent({
-    props: ['dialog', 'selectedCategory', 'eventType'],
+    props: ['dialog', 'selectedCategory', 'eventType', 'loading'],
     data: () => ({
       rules : {
         arTitle: [
@@ -117,7 +118,7 @@ export default defineComponent({
               if (Object.keys(props.selectedCategory).length !== 0) {
                   emit('edit', JSON.stringify(form), 'edit')
                 } else {
-                  emit('add', JSON.stringify(form), 'add')
+                  emit('add', form, 'add')
                 }
             }
           }
