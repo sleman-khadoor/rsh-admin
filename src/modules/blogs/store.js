@@ -62,23 +62,21 @@ export default {
 			}
 		},
 
-		async createBlog({ commit, dispatch}, payload) {
+		async createBlog({ commit }, payload) {
 			commit('setLoading', true);
 			let res = null;
 			try {
 				res = await BlogsService.createBlog(payload);
-				dispatch('fetchBlogs');			
 			} finally {
 				commit('setLoading', false);
 			}
 			return res;
 		},
 
-		async editBlog({ commit, dispatch }, { payload, slug } ) {
+		async editBlog({ commit }, { payload, slug } ) {
 			payload['_method'] = 'PUT';
 			commit('setLoading', true);
 			let res = await BlogsService.editBlog(slug, payload);
-			dispatch('fetchBlogs');
 			try {
 				return res;
 			} finally {
@@ -86,11 +84,10 @@ export default {
 			}
 		},
 
-		async deleteBlog({ commit, dispatch }, slug) {
+		async deleteBlog({ commit }, slug) {
 			commit('setLoading', true);
 			try {
 				let res = await BlogsService.deleteBlog(slug);
-				dispatch('fetchBlogs'); 
 				return res;
 			} finally {
 				commit('setLoading', false);

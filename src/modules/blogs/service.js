@@ -1,5 +1,6 @@
 import { api } from '@/utils/axios';
 import * as ep from './endpoints';
+import notify from '@/utils/notify';
 
 export default class Service {
 	static getBlogs(qp = {}) {
@@ -8,14 +9,20 @@ export default class Service {
 	}
 
 	static createBlog(payload = {}) {
-		return api.post(ep.AUTHORS, payload).then((res) => res.data);
+		const data =  api.post(ep.AUTHORS, payload).then((res) => res.data);
+		notify(data);
+		return data;
 	}
 
 	static editBlog(slug, payload = {}) {
-		return api.post(ep.AUTHORS_BY_SLUG(slug), payload).then((res) => res.data);
+		const data =  api.post(ep.AUTHORS_BY_SLUG(slug), payload).then((res) => res.data);
+		notify(data);
+		return data;
 	}
 
 	static deleteBlog(slug) {
-		return api.delete(ep.AUTHORS_BY_SLUG(slug)).then((res) => res.data);
+		const data =  api.delete(ep.AUTHORS_BY_SLUG(slug)).then((res) => res.data);
+		notify(data);
+		return data;
 	}
 }
