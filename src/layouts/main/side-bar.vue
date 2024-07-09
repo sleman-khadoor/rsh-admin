@@ -52,10 +52,11 @@
                 </template>
 
                   <v-list-item
-                    v-for="([title], i) in item.subtitles"
+                    v-for="([title, path], i) in item.subtitles"
                     :key="i"
                     :value="title"
                     class="white-active"
+                    @click="go(path, index)"
                   >
                     <v-list-item-title class="size-18">
                       {{title}}
@@ -81,17 +82,17 @@
             title: 'Book Management',
             icon: 'book',
             subtitles: [
-                ['Book categories', 'img-upload', '/authors'],
-                ['Authors', 'img-upload', '/books'],
-                ['Books', 'img-upload', '/books'],
+                ['Book categories', '/book-categories'],
+                ['Authors', '/authors'],
+                ['Books', '/books'],
               ]
           },
           {
             title: 'Blog Management',
             icon: 'blog',
             subtitles: [
-                ['Blog categories', 'img-upload', '/authors'],
-                ['Blogs', 'img-upload', '/books'],
+                ['Blog categories', '/authors'],
+                ['Blogs', '/books'],
               ]
           },
           {
@@ -128,26 +129,18 @@
             title: 'Service requests',
             icon: 'category-2',
             subtitles: [
-                ['Translation', 'img-upload', '/authors'],
-                ['Proofreading', 'img-upload', '/books'],
-                ['Creative editing', 'img-upload', '/books'],
-                ['Literary agency', 'img-upload', '/books'],
-                ['Marketing', 'img-upload', '/books'],
-                ['Content writing', 'img-upload', '/books'],
-                ['Book delivery', 'img-upload', '/books'],
-                ['Organizing events & conferences', 'img-upload', '/books'],
+                ['Translation', '/authors'],
+                ['Proofreading', '/books'],
+                ['Creative editing', '/books'],
+                ['Literary agency', '/books'],
+                ['Marketing', '/books'],
+                ['Content writing', '/books'],
+                ['Book delivery', '/books'],
+                ['Organizing events & conferences', '/books'],
               ]
           },
         ],
         
-      }
-    },
-    computed: {
-      sidebarItems: function () {
-        return this.sidebar.filter(i => i.path !== undefined )
-      },
-      sidebarGroups: function () {
-        return this.sidebar.filter(i => i.subtitles !== undefined)
       }
     },
     methods: {

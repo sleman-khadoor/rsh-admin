@@ -20,7 +20,17 @@
                       </v-col>
 
                       <v-col cols="6" md="8" sm="8">
-                          <v-select variant="outlined" label="categories*" multiple :items="[]" v-model="form.categories" :rules="rules.categories" required></v-select>
+                          <v-select 
+                          variant="outlined"
+                          label="categories*"
+                          multiple 
+                          :items="categories"
+                          v-model="form.categories" 
+                          :rules="rules.categories"
+                          item-title="text"
+                          item-value="value" 
+                          required>
+                          </v-select>
                       </v-col>
 
                       <v-col cols="6" md="4" sm="4">
@@ -59,7 +69,8 @@
 </template>
 
 <script>
-import { defineComponent, onUpdated, reactive, computed, ref } from 'vue'
+import { defineComponent, onUpdated, reactive, computed, ref, onMounted } from 'vue'
+import { useStore } from 'vuex';
 
 export default defineComponent({
     props: ['dialog', 'selectedBlog', 'eventType', 'loading'],
@@ -88,6 +99,7 @@ export default defineComponent({
         langItem: ['English', 'Arabic']
     }),
     setup(props, { emit }) {
+        const store = useStore();
         let form = reactive({
             title: null,
             writer: null,
@@ -116,6 +128,19 @@ export default defineComponent({
                 form.content = null
                 form.cover_image = null
             }
+        })
+        async function getCategories () {
+           await store.dispatch('BlogCategories/fetchCategories')
+                    .then(response => {
+                        console.log('Add response:', response);
+                    });
+        }
+        const categories = computed(() => store.getters['BlogCategories/categories'].map(category => ({
+            text: category.title.en,
+            value: category.id
+        })))
+        onMounted(() => {
+            getCategories()
         })
         const title = computed(() => {
             return Object.keys(props.selectedBlog).length !== 0 ? `Edit Blog` : `Add Blog`;
@@ -176,6 +201,7 @@ export default defineComponent({
             form,
             formv,
             title,
+            categories,
             clickInputFile,
             printFiles,
             handleSubmit
@@ -184,7 +210,7 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
+<style>
 .img-container {
     height: 14.5vh !important;
     border: 1px solid rgba(118, 118, 118) !important;
@@ -192,5 +218,10 @@ export default defineComponent({
 
 .dialog {
     height: 1000px;
+}
+.v-field__input{
+    min-height: 44px !important;
+    padding-top: unset !important;
+    padding-bottom: unset !important
 }
 </style>

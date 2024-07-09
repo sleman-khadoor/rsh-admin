@@ -35,6 +35,7 @@ export default {
 		},
 		setCategories(state, value) {
 			state.categories = value;
+			console.log('set categories response', state.categories);
 		},
 		setMeta(state, value) {
 			state.meta = value;
