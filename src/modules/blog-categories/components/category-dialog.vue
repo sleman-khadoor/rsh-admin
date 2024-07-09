@@ -15,6 +15,20 @@
         <v-card-text :v-if="props.eventType!=='delete'" class="pb-0">
           <v-row dense>
             <v-col
+            cols="12"
+            md="12"
+            sm="12"
+          >
+            <v-text-field
+              variant="outlined"
+              label="Category Name In English*"
+              :rules="rules.enTitle"
+              required
+              v-model="form.title.en"
+            ></v-text-field>
+          </v-col>
+          
+            <v-col
               cols="12"
               md="12"
               sm="12"
@@ -26,20 +40,6 @@
                 v-model="form.title.ar"
                 :rules="rules.arTitle"
                 required
-              ></v-text-field>
-            </v-col>
-
-            <v-col
-              cols="12"
-              md="12"
-              sm="12"
-            >
-              <v-text-field
-                variant="outlined"
-                label="Category Name In English*"
-                :rules="rules.enTitle"
-                required
-                v-model="form.title.en"
               ></v-text-field>
             </v-col>
           </v-row>

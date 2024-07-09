@@ -7,7 +7,7 @@
                     <SearchByFilters :items="filterBy" @fetchData="fetchData(1,$event)"/>
                 </v-col>
                 <v-col lg="3" md="3" sm="3" class="px-0">
-                    <v-btn class="text-none text-white font-weight-regular" :text="`Add Category`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
+                    <v-btn class="text-none text-white font-weight-regular" height="47" width="180" :text="`Add Category`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
                 </v-col>
             </v-row>
             <CategoryDialog :dialog="dialog" :selectedCategory="selectedCategory" :loading="loading" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />

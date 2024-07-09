@@ -48,6 +48,7 @@ export default {
 	},
 	actions: {
 		async fetchCategories({ commit }, queryParams) {
+			console.log('log from bloooooog');
 			console.log('inside fetch categories', queryParams);
 			commit('setLoading', true);
 			try {
@@ -59,23 +60,21 @@ export default {
 			}
 		},
 
-		async createCategory({ commit, dispatch}, payload) {
+		async createCategory({ commit}, payload) {
 			commit('setLoading', true);
 			let res = null;
 			try {
 				res = await categoriesService.createBlogCategory(payload);
-				dispatch('fetchCategories');		
 			} finally {
 				commit('setLoading', false);
 			}
 			return res;
 		},
 
-		async editCategory({ commit, dispatch }, { payload, slug } ) {
+		async editCategory({ commit }, { payload, slug } ) {
 			payload['_method'] = 'PUT';
 			commit('setLoading', true);
 			let res = await categoriesService.editBlogCategory(slug, payload);
-			dispatch('fetchCategories');
 			try {
 				return res;
 			} finally {
@@ -83,12 +82,11 @@ export default {
 			}
 		},
 
-		async deleteCategory({ commit, dispatch }, slug) {
+		async deleteCategory({ commit }, slug) {
 			commit('setLoading', true);
 			try {
 				let res = await categoriesService.deleteBlogCategory(slug);
 				console.log('hiiii from delete', res);
-				dispatch('fetchCategories'); 
 				return res;
 			} finally {
 				commit('setLoading', false);

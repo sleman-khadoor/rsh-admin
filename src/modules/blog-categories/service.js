@@ -1,21 +1,28 @@
 import { api } from '@/utils/axios';
 import * as ep from './endpoints';
+import notify from '@/utils/notify';
 
 export default class Service {
 	static getBlogCategories(qp = {}) {
 		console.log(' pagination', qp);
-		return api.get(ep.CATEGORY, qp).then((res) => res.data);
+		return api.get(ep.BLOG_CATEGORY, qp).then((res) => res.data);
 	}
 
 	static createBlogCategory(payload = {}) {
-		return api.post(ep.CATEGORY, payload).then((res) => res.data);
+		const data =  api.post(ep.BLOG_CATEGORY, payload).then((res) => res.data);
+		notify(data);
+		return data;
 	}
 
 	static editBlogCategory(slug, payload = {}) {
-		return api.post(ep.CATEGORY_BY_SLUG(slug), payload).then((res) => res.data);
+		const data = api.post(ep.BLOG_CATEGORY_BY_SLUG(slug), payload).then((res) => res.data);
+		notify(data);
+		return data;
 	}
 
 	static deleteBlogCategory(slug) {
-		return api.delete(ep.CATEGORY_BY_SLUG(slug)).then((res) => res.data);
+		const data = api.delete(ep.BLOG_CATEGORY_BY_SLUG(slug)).then((res) => res.data);
+		notify(data);
+		return data;
 	}
 }
