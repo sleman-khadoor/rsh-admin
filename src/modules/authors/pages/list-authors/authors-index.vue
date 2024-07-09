@@ -60,7 +60,7 @@ export default defineComponent({
             { 'view': false },
         ];
 
-        const filterBy = ['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']
+        const filterBy = ['name']
 
         function openDialog(e) {
             dialog.value = true;
@@ -117,8 +117,7 @@ export default defineComponent({
                 params: {
                     page: currentPage ? currentPage : 1,
                     perPage: 6,
-                    search: search?.value,
-                    filter: search?.key
+                    [`filter[${search.key}]`]: search.value
                 }
             });
         }

@@ -62,7 +62,7 @@ export default defineComponent({
             { 'view': false },
         ];
 
-        const filterBy = ['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']
+        const filterBy = ['title']
 
         function openDialog(e) {
             dialog.value = true;
@@ -89,7 +89,7 @@ export default defineComponent({
                         deleteDialog.value = false;
                     });
             } else if (eventType === 'edit') {
-                store.dispatch('BookCategories/editCategory', { 'payload': JSON.parse(e), 'slug': selectedCategory.value.slug.en })
+                store.dispatch('BookCategories/editCategory', { 'payload': e, 'slug': selectedCategory.value.slug.en })
                 .then(response => {
                         console.log('Edit response:', response);
                         fetchData()
@@ -122,8 +122,7 @@ export default defineComponent({
                 params: {
                     page: currentPage ? currentPage : 1,
                     perPage: 6,
-                    search: search?.value,
-                    filter: search?.key
+                    [`filter[${search.key}]`]: search.value
                 }
             });
         }

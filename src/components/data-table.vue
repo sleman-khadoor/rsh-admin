@@ -66,7 +66,6 @@ export default defineComponent({
     setup(props) {
       
       function itemRouteKey(item){
-        console.log('kfkkfkfkfkf', props.itemKey);
         if(props.itemKey == 'translationSlug'){
           return item.slug.en;
         }else if(props.itemKey == 'slug'){

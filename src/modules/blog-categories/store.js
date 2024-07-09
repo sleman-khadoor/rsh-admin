@@ -48,7 +48,6 @@ export default {
 	},
 	actions: {
 		async fetchCategories({ commit }, queryParams) {
-			console.log('log from bloooooog');
 			console.log('inside fetch categories', queryParams);
 			commit('setLoading', true);
 			try {

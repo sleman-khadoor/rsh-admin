@@ -11,7 +11,6 @@
         <div class="px-4">
           <v-icon icon="mdi-blog-multiple" class="mr-2"/><span class="size-35">{{title}}</span>
         </div>
-        <v-form ref="formv" @submit.prevent="handleSubmit" class="form">
         <v-card-text :v-if="props.eventType!=='delete'" class="pb-0">
           <v-row dense>
             <v-col
@@ -44,7 +43,7 @@
             </v-col>
           </v-row>
         </v-card-text>
-        <v-row dense class="justify-end px-4">
+        <v-row dense class="justify-end px-6">
           <v-col
             cols="12"
             md="4"
@@ -67,10 +66,10 @@
                   :loading="props.loading"
                   color="dark-blue"
                   block
+                  @click="handleSubmit()"
                 ></v-btn>
           </v-col>
       </v-row>
-      </v-form>
       </v-card>
     </v-dialog>
   </div>
@@ -95,8 +94,8 @@ export default defineComponent({
     setup(props, {emit}) {
         let form = reactive({
           title: {
-            ar: '',
-            en: ''
+            ar: null,
+            en: null
           }
         })
         const formv = ref(null);
@@ -112,15 +111,31 @@ export default defineComponent({
         const title = computed(() => {
             return Object.keys(props.selectedCategory).length !== 0 ? `Edit Category` : `Add Category`;
         })
+        function checkValidation() {
+          if(form.title.en && form.title.ar) {
+            return true
+          } else {
+            return false
+          }
+        }
+
         function handleSubmit() {
-          if (formv.value) {
-            if(formv.value.validate()){
+          if (checkValidation()) {
               if (Object.keys(props.selectedCategory).length !== 0) {
-                  emit('edit', JSON.stringify(form), 'edit')
+                  if(props.selectedCategory.avatar === form.avatar) {
+                    let data = {
+                      title : {
+                        en: form.title.en,
+                        ar: form.title.ar,
+                      },
+                    }
+                    emit('edit', data, 'edit')
+                  } else {
+                    emit('edit', form, 'edit')
+                  }
                 } else {
                   emit('add', form, 'add')
                 }
-            }
           }
         }
         return {
