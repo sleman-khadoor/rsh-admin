@@ -4,6 +4,7 @@ import BookCategoriesModuleRoutes from '@/modules/book-categories/routes'
 import BlogCategoriesModuleRoutes from '@/modules/blog-categories/routes'
 import BlogModuleRoutes from '@/modules/blogs/routes'
 import RepresentedModuleRoutes from '@/modules/represented-authors/routes'
+import PartnerModuleRoutes from '@/modules/partners/routes'
 
 const routes = [
 	{
@@ -16,19 +17,9 @@ const routes = [
 			BlogCategoriesModuleRoutes,
 			BlogModuleRoutes,
 			RepresentedModuleRoutes,
+			PartnerModuleRoutes,
 		],
 	},
-	// {
-	// 	path: '/',
-	// 	component: () => import(/* webpackChunkName: "AuthLayout" */ '@/layouts/auth'),
-	// 	children: [AuthModuleRoutes],
-	// },
-	// // Always leave this as last one,
-	// // but you can also remove it
-	// {
-	// 	path: '*',
-	// 	component: () => import('@/layouts/404'),
-	// },
 ];
 
 export default routes;

@@ -1,0 +1,186 @@
+<template>
+<div class="text-center">
+    <v-dialog v-model="props.dialog" max-width="650" class="dialog">
+        <v-card class="pa-5 font-dark-blue">
+            <div class="px-6">
+                <v-icon icon="mdi-human-greeting" class="mr-2" /><span class="size-35">{{title}}</span>
+            </div>
+            <v-card-text :v-if="props.eventType!=='delete'" class="pb-0">
+                <v-row dense>
+
+                    <v-col cols="12" md="6" sm="6" class="input-field dd">
+                        <v-text-field variant="outlined" class="pb-3" label="Partner Name In English*" :rules="rules.enName" required v-model="form.name.en"></v-text-field>
+                        <v-text-field variant="outlined" class="pb-2" label="Partner Name In Arabic*" :rules="rules.arName" required v-model="form.name.ar"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6" sm="6" class=" mb-8">
+                        <div :class="'img-container'" @click="clickInputFile" style="position: relative; height: 200px;">
+                          <p v-if="!form.avatar" class="size-22 w-100 mb-0 pt-3 pl-3 position-absolute v-label v-field-label z-index-1" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Partner Logo*</p>
+                          <div class="w-mc ma-auto h-100 d-flex justify-center align-center pa-2" style="height: 100%; width: 100%;">
+                            <img v-if="form.avatar" ref="imgRef" :src="props.selectedPartner.avatar ? baseUrl + form.avatar : form.avatar" class="my-auto" style="width: 100%; height: 100%; object-fit: contain;" />
+                            <img v-else width="30" height="30" src="@/assets/icons/img-upload.svg" class="my-auto" />
+                            <v-file-input variant="outlined" accept="image/png, image/jpeg, image/bmp" class="mx-auto w-mc pa-0" id="hidenFileInput" hide-input v-model="form.avatar" truncate-length="15" :prepend-icon="null" append-outer="mdi-close" required @change="printFiles(form.avatar, 'image')" style="position: absolute; width: 100%; height: 100%; opacity: 0;">
+                            </v-file-input>
+                          </div>
+                        </div>
+                      </v-col>
+                     <v-col cols="12" md="12" sm="12" class="input-field">
+                        <v-text-field variant="outlined" class="pa-0" label="Partner URL*" v-model="form.website_link" :rules="rules.website_link" required></v-text-field>
+                    </v-col>
+                </v-row>
+            </v-card-text>
+            <v-row dense class="justify-end px-6">
+                <v-col cols="12" md="3" sm="3">
+                    <v-btn class="text-none text-white font-weight-regular close-btn" text="Cancel" color="grey" type="reset" block @click="Object.keys(props.selectedPartner).length !== 0 ? $emit('closeEditDialog', 'edit'): $emit('closeAddDialog', 'add')"></v-btn>
+                </v-col>
+                <v-col cols="12" md="3" sm="3">
+                    <v-btn type="submit" class="text-none text-white font-weight-regular" text="Save" @click="handleSubmit()" color="dark-blue" :loading="props.loading" block></v-btn>
+                </v-col>
+            </v-row>
+        </v-card>
+    </v-dialog>
+</div>
+</template>
+
+<script>
+import { baseUrl } from '@/utils/axios';
+import { defineComponent, onUpdated, reactive, computed, ref } from 'vue'
+
+export default defineComponent({
+    props: ['dialog', 'selectedPartner', 'eventType', 'loading'],
+    data: () => ({
+        rules: {
+            arName: [
+                v => !!v || 'Partner name in Arabic is required',
+            ],
+            enName: [
+                v => !!v || 'Partner name in English is required',
+            ],
+            website_link: [
+                v => !!v || 'Partner URL is required',
+            ]
+        },
+        baseUrl
+    }),
+    setup(props, { emit }) {
+        let form = reactive({
+            name: {
+                ar: null,
+                en: null
+            },
+            website_link: null,
+            avatar: null
+        })
+        const formv = ref({
+            name: {
+                ar: null,
+                en: null
+            },
+            website_link: null,
+            avatar: null
+        });
+        onUpdated(() => {
+            if (props.selectedPartner) {
+                form.name.ar = props.selectedPartner.name?.ar
+                form.name.en = props.selectedPartner.name?.en
+                form.website_link = props.selectedPartner.website_link
+                form.avatar = props.selectedPartner.avatar
+            } else {
+                form.name.ar = null
+                form.name.en = null
+                form.website_link = null
+                form.avatar = null
+            }
+        })
+        const title = computed(() => {
+            return Object.keys(props.selectedPartner).length !== 0 ? `Edit Partner` : `Add Partner`;
+        })
+
+        function clickInputFile() {
+            document.getElementById('hidenFileInput').click()
+        }
+
+        function printFiles(file) {
+            const img = this.$refs.imgRef;
+
+            if (file) {
+                let reader = new FileReader();
+
+                reader.onload = function (e) {
+                    img.src = e.target.result;
+                };
+
+                reader.readAsDataURL(file);
+            }
+            console.log('object file', form.avatar);
+        }
+
+        function checkValidation() {
+            if (form.name.en && form.name.ar && form.website_link) {
+                return true
+            } else {
+                return false
+            }
+        }
+
+        function handleSubmit() {
+            if (checkValidation()) {
+                if (Object.keys(props.selectedPartner).length !== 0) {
+                    if (props.selectedPartner.avatar === form.avatar) {
+                        let data = {
+                            name: {
+                                en: form.name.en,
+                                ar: form.name.ar,
+                            },
+                            website_link: form.website_link
+                        }
+                        emit('edit', data, 'edit')
+                    } else {
+                        emit('edit', form, 'edit')
+                    }
+                } else {
+                    emit('add', form, 'add')
+                }
+            }
+        }
+        return {
+            props,
+            form,
+            formv,
+            title,
+            clickInputFile,
+            printFiles,
+            handleSubmit,
+        }
+    },
+})
+</script>
+
+<style>
+.img-container {
+    border: 1px solid #a5a5a5 !important;
+    min-height: 127.5px!important;
+    max-height: 127.5px!important;
+}
+
+.img-container:hover {
+    border: 1px solid #0C2748 !important;
+}
+
+.close-icon::before {
+    content: "\F0156";
+    padding-block-end: 86px;
+    padding-left: 1095px !important;
+    margin-bottom: 0px !important;
+}
+
+.dialog {
+    height: 1000px;
+}
+
+.input-field .v-field__input {
+    min-height: 46px !important;
+    padding-top: unset !important;
+    padding-bottom: unset !important
+}
+
+</style>
