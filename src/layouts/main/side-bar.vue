@@ -91,44 +91,45 @@
             title: 'Blog Management',
             icon: 'blog',
             subtitles: [
-                ['Blog categories', '/authors'],
-                ['Blogs', '/books'],
+                ['Blog categories', '/blog-categories'],
+                ['Blogs', '/blogs'],
               ]
           },
           {
             title: 'News',
-            path: '/authors',
+            path: '/news',
             icon: 'news',
           },
           {
             title: 'User Management',
-            path: '/authors', 
+            path: '/users', 
             icon: 'user-managment',
           },
           {
             title: 'Represented Authors',
-            path: '/authors', 
+            path: '/represented-authors', 
             icon: 'user-tag',
           },
           {
             title: 'Our Partners',
-            path: '/authors', 
+            path: '/partners', 
             icon: 'partner',
           },
           {
             title: 'Achievements',
-            path: '/authors', 
+            path: '/achievements', 
             icon: 'award',
           },
           {
             title: 'Contact Us',
-            path: '/authors', 
+            path: '/contact-us', 
             icon: 'sms',
           },
           {
             title: 'Service requests',
-            icon: 'category-2',
+            icon: 'requests',
             subtitles: [
+              // TODO::correct links
                 ['Translation', '/authors'],
                 ['Proofreading', '/books'],
                 ['Creative editing', '/books'],
