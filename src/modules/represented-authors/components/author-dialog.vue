@@ -7,7 +7,6 @@
             </div>
             <v-card-text :v-if="props.eventType!=='delete'" class="pb-0">
                 <v-row dense>
-
                     <v-col cols="12" md="6" sm="6" class="input-field">
                         <v-text-field variant="outlined" label="Author Name In English*" :rules="rules.enName" required v-model="form.name.en"></v-text-field>
                     </v-col>
@@ -195,8 +194,8 @@ export default defineComponent({
 }
 
 .input-field .v-field__input {
-    min-height: 46px !important;
-    padding-top: unset !important;
-    padding-bottom: unset !important
+  min-height: 46px !important;
+  padding-top: unset !important;
+  padding-bottom: unset !important
 }
 </style>

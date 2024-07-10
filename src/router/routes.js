@@ -3,6 +3,7 @@ import AuthorsModuleRoutes from '@/modules/authors/routes'
 import BookCategoriesModuleRoutes from '@/modules/book-categories/routes'
 import BlogCategoriesModuleRoutes from '@/modules/blog-categories/routes'
 import BlogModuleRoutes from '@/modules/blogs/routes'
+import RepresentedModuleRoutes from '@/modules/represented-authors/routes'
 
 const routes = [
 	{
@@ -13,7 +14,8 @@ const routes = [
 			AuthorsModuleRoutes,
 			BookCategoriesModuleRoutes,
 			BlogCategoriesModuleRoutes,
-			BlogModuleRoutes
+			BlogModuleRoutes,
+			RepresentedModuleRoutes,
 		],
 	},
 	// {

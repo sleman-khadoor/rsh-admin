@@ -5,23 +5,23 @@ import notify from '@/utils/notify';
 export default class Service {
 	static getAuthors(qp = {}) {
 		console.log(' pagination', qp);
-		return api.get(ep.MAIN_AUTHORS, qp).then((res) => res.data);
+		return api.get(ep.REPRESENTED_AUTHORS, qp).then((res) => res.data);
 	}
 
 	static createAuthor(payload = {}) {
-		const data = api.post(ep.MAIN_AUTHORS, payload).then((res) => res.data);
+		const data = api.post(ep.REPRESENTED_AUTHORS, payload).then((res) => res.data);
 		notify(data)
 		return data
 	}
 
 	static editAuthor(slug, payload = {}) {
-		const data = api.post(ep.MAIN_AUTHORS_BY_SLUG(slug), payload).then((res) => res.data);
+		const data = api.post(ep.REPRESENTED_AUTHORS_BY_SLUG(slug), payload).then((res) => res.data);
 		notify(data)
 		return data
 	}
 
 	static deleteAuthor(slug) {
-		const data = api.delete(ep.MAIN_AUTHORS_BY_SLUG(slug)).then((res) => res.data);
+		const data = api.delete(ep.REPRESENTED_AUTHORS_BY_SLUG(slug)).then((res) => res.data);
 		notify(data)
 		return data
 	}
