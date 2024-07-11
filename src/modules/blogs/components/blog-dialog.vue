@@ -1,48 +1,35 @@
 <template>
 <div class="text-center">
-    <v-dialog v-model="props.dialog" max-width="700" class="dialog">
+    <v-dialog v-model="props.dialog" max-width="900" class="dialog">
         <v-card class="pa-5 font-dark-blue">
             <div class="px-6">
                 <v-icon icon="mdi-format-align-left" class="mr-2" /><span class="size-35">{{title}}</span>
             </div>
             <v-card-text :v-if="props.eventType!=='delete'" class="pb-0">
                 <v-row dense>
-                    <v-col cols="12" md="12" sm="12" class="input-field">
+                    <v-col cols="8" md="8" sm="8" class="input-field">
                         <v-text-field variant="outlined" class="pa-0" label="Blog Title*" v-model="form.title" :rules="rules.title" required></v-text-field>
                     </v-col>
-
-                    <v-col cols="12" md="6" sm="6" class="input-field">
-                        <v-text-field variant="outlined" label="Author Name*" :rules="rules.writer" required v-model="form.writer"></v-text-field>
+                    <v-col cols="4" md="4" sm="4" class="input-field">
+                        <v-text-field variant="outlined" class="pb-0" label="Author Name*" :rules="rules.writer" required v-model="form.writer"></v-text-field>
                     </v-col>
 
-                    <v-col cols="12" md="6" sm="6" class="input-field">
-                        <v-text-field variant="outlined" class="input-field date" label="date*" :rules="rules.date" required type="date" max_width="100%" persistent-placeholder v-model="form.date"></v-text-field>
-                    </v-col>
-
-                    <v-col cols="6" md="8" sm="8" class="input-field">
-                        <v-select variant="outlined" label="categories*" multiple :items="categories" v-model="form.categories" :rules="rules.categories" item-title="text" item-value="value" required>
-                        </v-select>
-                    </v-col>
-
-                    <v-col cols="6" md="4" sm="4" class="input-field">
-                        <v-select variant="outlined" label="language*" :items="langItem" v-model="form.lang" :rules="rules.lang" required></v-select>
-                    </v-col>
-
-                    <v-col cols="12" md="12" sm="12" class="input-field">
-                        <v-textarea variant="outlined" label="contet*" v-model="form.content" rows="5" :rules="rules.content" required></v-textarea>
-                    </v-col>
-
-                    <v-col cols="12" md="12" sm="12" class="input-field mb-5">
-                        <div :class="'img-container'" @click="clickInputFile">
-                            <p class="size-22 overflow-hidden w-25 mb-0 pt-3 pl-3 position-absolute v-label v-field-label">Author photo*</p>
-                            <div class="w-mc ma-auto h-100 d-flex justify-center align-center pa-2">
-                                <img v-if="form.cover_image" width="70" height="70" ref="imgRef" :src="props.selectedBlog.cover_image ? baseUrl + form.cover_image : form.cover_image" class="my-auto" />
-                                <img v-else width="30" height="30" src="@/assets/icons/img-upload.svg" class="my-auto" />
-                                <v-file-input accept="image/png, image/jpeg, image/bmp" class="mx-auto w-mc pa-0" id="hidenFileInput" hide-input v-model="form.cover_image" truncate-length="15" :prepend-icon="null" append-outer="mdi-close" required @change="printFiles(form.cover_image, 'image')">
-                                </v-file-input>
-                                <p class="size-22 overflow-hidden font-deep-grey bold text-start">{{ form.cover_image ? form.cover_image.name :  ''}}</p>
+                    <v-col cols="12" md="5" sm="5" class="input-field">
+                        <v-text-field variant="outlined" class="pb-3 date" label="date*" :rules="rules.date" required type="date" max_width="100%" persistent-placeholder v-model="form.date"></v-text-field>
+                        <v-select class="pb-3 categories" chips :menu-props="{ offsetY: true, maxHeight: '200px' }" variant="outlined" label="categories*" multiple :items="categories" v-model="form.categories" :rules="rules.categories" item-title="text" item-value="value" required></v-select>
+                        <v-select class="pb-3" variant="outlined" label="language*" :items="languages" item-title="text" item-value="value" v-model="form.lang" :rules="rules.lang" required></v-select>
+                        <div :class="'img-container'" @click="clickInputFile" style="position: relative; height: 200px;">
+                            <p v-if="!form.cover_image" class="size-22 w-100 mb-0 pt-3 pl-3 position-absolute v-label v-field-label z-index-1" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Cover Image</p>
+                            <div class="w-mc ma-auto h-100 d-flex justify-center align-center pa-2" style="height: 100%; width: 100%;">
+                              <img v-if="form.cover_image" ref="imgRef" :src="props.selectedBlog.cover_image ? baseUrl + form.cover_image : form.cover_image" class="my-auto" style="width: 100%; height: 100%; object-fit: contain;" />
+                              <img v-else width="30" height="30" src="@/assets/icons/img-upload.svg" class="my-auto" />
+                              <v-file-input variant="outlined" accept="image/png, image/jpeg, image/bmp" class="mx-auto w-mc pa-0" id="hidenFileInput" hide-input v-model="form.cover_image" truncate-length="15" :prepend-icon="null" append-outer="mdi-close" required @change="printFiles(form.cover_image, 'image')" style="position: absolute; width: 100%; height: 100%; opacity: 0;">
+                              </v-file-input>
                             </div>
-                        </div>
+                          </div>
+                    </v-col>
+                    <v-col cols="12" md="7" sm="7" class="pb-3">
+                        <v-textarea  variant="outlined" label="contet*" v-model="form.content" rows="12" persistent-hint :rules="rules.content" required></v-textarea>
                     </v-col>
                 </v-row>
             </v-card-text>
@@ -60,6 +47,7 @@
 </template>
 
 <script>
+import { baseUrl } from '@/utils/axios';
 import { defineComponent, onUpdated, reactive, computed, ref, onMounted } from 'vue'
 import { useStore } from 'vuex';
 
@@ -87,7 +75,7 @@ export default defineComponent({
             ]
 
         },
-        langItem: ['English', 'Arabic']
+        baseUrl
     }),
     setup(props, { emit }) {
         const store = useStore();
@@ -95,7 +83,8 @@ export default defineComponent({
             title: null,
             writer: null,
             date: null,
-            categories: null,
+            categories: [],
+            languages: null,
             lang: null,
             content: null,
             cover_image: null
@@ -103,10 +92,11 @@ export default defineComponent({
         const formv = ref(null);
         onUpdated(() => {
             if (props.selectedBlog) {
+                console.log('props selected blog is', props.selectedBlog.blog_categories);
                 form.title = props.selectedBlog.title
                 form.writer = props.selectedBlog.writer
                 form.date = props.selectedBlog.date
-                form.categories = props.selectedBlog.categories
+                form.categories = props.selectedBlog.blog_categories
                 form.lang = props.selectedBlog.lang
                 form.content = props.selectedBlog.content
                 form.cover_image = props.selectedBlog.cover_image
@@ -124,18 +114,26 @@ export default defineComponent({
             await store.dispatch('BlogCategories/fetchCategories')
                 .then(response => {
                     console.log('Add response:', response);
-                });
+            });
         }
-        const categories = computed(() => store.getters['BlogCategories/categories'].map(category => ({
+        const categories = computed(() => store.getters['BlogCategories/categories'].map((category) => ({
             text: category.title.en,
-            value: category.id
+            value: {'id':category.id}
         })))
+
+        const languages = computed(() => ['English', 'Arabic'].map(item => ({
+            text: item,
+            value: item == 'English'? 'en':'ar'
+        })))
+        
         onMounted(() => {
             getCategories()
         })
+
         const title = computed(() => {
             return Object.keys(props.selectedBlog).length !== 0 ? `Edit Blog` : `Add Blog`;
         })
+
 
         function clickInputFile() {
             document.getElementById('hidenFileInput').click()
@@ -153,7 +151,7 @@ export default defineComponent({
 
                 reader.readAsDataURL(file);
             }
-            console.log('object file', form.cover_image);
+            console.log('object file', form.cpver_image);
         }
 
         function checkValidation() {
@@ -193,6 +191,7 @@ export default defineComponent({
             formv,
             title,
             categories,
+            languages,
             clickInputFile,
             printFiles,
             handleSubmit
@@ -203,17 +202,35 @@ export default defineComponent({
 
 <style>
 .img-container {
-    height: 14.5vh !important;
-    border: 1px solid rgba(118, 118, 118) !important;
+    border: 1px solid #a5a5a5 !important;
+    min-height: 85px!important;
+    max-height: 85px!important;
 }
 
+.img-container:hover {
+    border: 1px solid #0C2748 !important;
+}
+.categories .v-field__input {
+    overflow-y: auto;
+    overflow-x: clip;
+}
+
+.v-select__selections{
+    padding-left: 16px !important;
+
+}
 .dialog {
     height: 1000px;
 }
 
 .input-field .v-field__input {
     min-height: 45px !important;
+    max-height: 45px !important;
     padding-top: unset !important;
     padding-bottom: unset !important
+}
+
+.date .v-field__input{
+    display: block !important;
 }
 </style>

@@ -117,7 +117,8 @@ export default defineComponent({
                 params: {
                     page: currentPage ? currentPage : 1,
                     perPage: 6,
-                    [`filter[${search.key}]`]: search.value
+                    [`filter[${search.key}]`]: search.value,
+                    [`include[]`]: 'blogCategories',
                 }
             });
         }
