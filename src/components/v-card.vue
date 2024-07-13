@@ -1,0 +1,116 @@
+<template>
+  <div>
+    <div v-if="props.loading">
+      <div class="d-flex justify-center align-center" style="height: 270px">
+        <v-progress-circular :size="50" :width="7" :color="$colors.choco" indeterminate></v-progress-circular>
+      </div>
+    </div>
+    <v-container v-else>
+      <v-row dense class="pl-4 pr-4">
+        <v-col v-for="(item ) in props.data" :key="item.id" cols="12" md="6" sm="6" class="input-field">
+          <v-card class="card pa-1" :text="item.lang === 'en' ? item.content.en : item.content.ar">
+            <v-card-actions class="pl-3 pt-0 d-flex align-center justify-space-between">
+              <div>
+                <img v-if="actionsTable[0]['edit']" @click="$emit('OpenDialog', item)" width="30px" src="@/assets/icons/edit.svg" class="px-1 cursor-pointer" />
+                <img v-if="actionsTable[1]['delete']" @click="$emit('OpenDeleteDialog', item)" width="30px" src="@/assets/icons/trash.svg" class="px-1 cursor-pointer" />
+                <img v-if="actionsTable[2]['view']" @click="item.lang == 'en'? $emit('OpenViewEnDialog', item, 'en'): $emit('OpenViewArDialog', item, 'ar')" width="30px" src="@/assets/icons/view.svg" class="px-1 cursor-pointer" />
+              </div>
+              <v-btn-toggle v-model="item.lang" variant="outlined" divided class="ml-auto toggle bg-white">
+                <v-btn value="en" class="size-18" @click="updateLang(item, 'en')">English</v-btn>
+                <v-btn value="ar" class="size-18" @click="updateLang(item, 'ar')">Arabic</v-btn>
+              </v-btn-toggle>
+            </v-card-actions>
+          </v-card>
+        </v-col> 
+      </v-row>
+    </v-container>  
+    <paginate :meta="props.meta" @newPage="$emit('newPage', $event)" />
+  </div>
+</template>
+
+<script>
+import { defineComponent, watch } from 'vue';
+import paginate from './v-pagination.vue';
+import { ref } from 'vue';
+
+export default defineComponent({
+  components: {
+    paginate,
+  },
+  props: ['headers', 'actionsTable', 'data', 'meta', 'loading', 'itemKey'],
+  setup(props) {
+    let language = ref('');
+    
+    function updateLang(item, lang) {
+      console.log('Updating language to:', lang);
+      if(item.lang !== lang){
+        item.lang = lang;   
+      }
+        
+    }
+    
+    function itemRouteKey(item) {
+      if (props.itemKey === 'translationSlug') {
+        return item.slug.en;
+      } else if (props.itemKey === 'slug') {
+        return item.slug;
+      } else {
+        return item.id;
+      }
+    }
+    watch(props.data, (newV) => {
+            console.log(newV);
+    }, { deep: true });
+    watch(language, (newV) => {
+            console.log(newV);
+    }, { deep: true });
+    return {
+      props,
+      itemRouteKey,
+      updateLang,
+      language
+    };
+  },
+});
+</script>
+
+<style>
+.action-btn {
+  margin: -18px;
+}
+
+.action-btn:hover {
+  background-color: transparent !important;
+}
+
+.v-table--density-default {
+  --v-table-header-height: 49px;
+  --v-table-row-height: 44px;
+}
+
+.loader {
+  position: absolute;
+  margin-left: 37%;
+  margin-top: 8%;
+}
+
+.card {
+  border: 0.5px solid #a5a5a5;
+  border-radius: 10px;
+}
+
+.toggle {
+  border-radius: 1000px;
+  min-height: 32px !important;
+  background-color: #F8F8F8 !important;
+}
+
+.v-btn-group--density-default.v-btn-group {
+  height: unset;
+}
+
+.toggle .v-btn--active {
+  background-color: #0C2748;
+  color: #ffffff;
+}
+</style>

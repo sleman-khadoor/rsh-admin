@@ -6,6 +6,7 @@ import BlogCategories from '../modules/blog-categories/store'
 import Blogs from '../modules/blogs/store'
 import RepresentedAuthors from '../modules/represented-authors/store'
 import Partners from '../modules/partners/store'
+import Achievements from '../modules/achievements/store'
 
 const store = createStore({
 	modules: {
@@ -16,6 +17,7 @@ const store = createStore({
 		Blogs,
 		RepresentedAuthors,
 		Partners,
+		Achievements,
 	}
 });
 
