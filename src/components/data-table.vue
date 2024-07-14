@@ -35,7 +35,6 @@
         </tr>
       </thead>
       <tbody class="text-center">
-        <p>{{console.log(props.itemKey)}}</p>
         <tr v-for="(item, index) in data" :key="itemRouteKey(item)" :style="index%2 !== 0 ? 'background: #FCFCFC' : ''">
           <td v-for="subItem in headers" :key="subItem.key">
             <div v-if="subItem.key === 'actions'" >
