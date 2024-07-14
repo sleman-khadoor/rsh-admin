@@ -1,14 +1,14 @@
 <template>
 <v-row class="justify-center">
-    <v-col lg="8" md="8" sm="8" class="px-0">
-        <v-text-field class="remove-shadow" label="Search.." v-model="search.value" density="comfortable" variant="solo-filled">
+    <v-col lg="8" md="7" sm="12" class="px-lg-0 p-md-0">
+        <v-text-field class="remove-shadow" label="Search.." :hide-details="true" v-model="search.value" density="comfortable" variant="solo-filled">
             <template v-slot:prepend-inner>
                 <img width="27" height="27" src="@/assets/icons/search-normal.svg" class="my-auto" />
             </template>
         </v-text-field>
     </v-col>
-    <v-col lg="4" md="4" sm="4">
-        <v-select label="Search by" class="remove-shadow" :items="props.items" v-model="search.key" variant="solo-filled" density="comfortable" clearable>
+    <v-col lg="4" md="5" sm="12">
+        <v-select label="Search by" class="remove-shadow" :hide-details="true" :items="props.items" v-model="search.key" variant="solo-filled" density="comfortable" clearable>
             <template v-slot:prepend-inner>
                 <img width="27" height="27" src="@/assets/icons/filter.svg" class="my-auto" />
             </template>

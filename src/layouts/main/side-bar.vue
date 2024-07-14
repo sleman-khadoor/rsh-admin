@@ -76,7 +76,7 @@
         drawer: true,
         rail: true,
         selectedItem: null,
-        open: ['Book Management', 'Blog Management', 'News',],
+        open: ['Book Management', 'Blog Management', 'Service requests',],
         sidebar: [
           {
             title: 'Book Management',

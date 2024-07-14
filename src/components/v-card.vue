@@ -6,18 +6,18 @@
       </div>
     </div>
     <v-container v-else>
-      <v-row dense class="pl-4 pr-4">
-        <v-col v-for="(item ) in props.data" :key="item.id" cols="12" md="6" sm="6" class="input-field">
-          <v-card class="card pa-1" :text="item.lang === 'en' ? item.content.en : item.content.ar">
+      <v-row dense class="pl-4 pr-4 align-content-stretch">
+        <v-col v-for="(item, index ) in props.data" :key="item.id" cols="12" md="6" sm="6" class="input-field">
+          <v-card class="card pa-1 h-100" :text="langs[index] === 'en' ? item.content.en : item.content.ar">
             <v-card-actions class="pl-3 pt-0 d-flex align-center justify-space-between">
               <div>
                 <img v-if="actionsTable[0]['edit']" @click="$emit('OpenDialog', item)" width="30px" src="@/assets/icons/edit.svg" class="px-1 cursor-pointer" />
                 <img v-if="actionsTable[1]['delete']" @click="$emit('OpenDeleteDialog', item)" width="30px" src="@/assets/icons/trash.svg" class="px-1 cursor-pointer" />
-                <img v-if="actionsTable[2]['view']" @click="item.lang == 'en'? $emit('OpenViewEnDialog', item, 'en'): $emit('OpenViewArDialog', item, 'ar')" width="30px" src="@/assets/icons/view.svg" class="px-1 cursor-pointer" />
+                <img v-if="actionsTable[2]['view']" @click="langs[index] === 'en' ? $emit('OpenViewEnDialog', item, 'en'): $emit('OpenViewArDialog', item, 'ar')" width="30px" src="@/assets/icons/view.svg" class="px-1 cursor-pointer" />
               </div>
-              <v-btn-toggle v-model="item.lang" variant="outlined" divided class="ml-auto toggle bg-white">
-                <v-btn value="en" class="size-18" @click="updateLang(item, 'en')">English</v-btn>
-                <v-btn value="ar" class="size-18" @click="updateLang(item, 'ar')">Arabic</v-btn>
+              <v-btn-toggle v-model="langs[index]" variant="outlined" divided class="ml-auto toggle bg-white">
+                <v-btn value="en" class="size-18" @click="langs[index]= 'en'"> English</v-btn>
+                <v-btn value="ar" class="size-18" @click="langs[index] = 'ar'">Arabic</v-btn>
               </v-btn-toggle>
             </v-card-actions>
           </v-card>
@@ -39,7 +39,7 @@ export default defineComponent({
   },
   props: ['headers', 'actionsTable', 'data', 'meta', 'loading', 'itemKey'],
   setup(props) {
-    let language = ref('');
+    let langs = ref([]);
     
     function updateLang(item, lang) {
       console.log('Updating language to:', lang);
@@ -58,17 +58,22 @@ export default defineComponent({
         return item.id;
       }
     }
-    watch(props.data, (newV) => {
+    watch(props, (newV) => {
             console.log(newV);
+            langs.value = []
+            props.data.forEach(element => {
+              console.log(element);
+              langs.value.push('en')
+            });
     }, { deep: true });
-    watch(language, (newV) => {
+    watch(langs, (newV) => {
             console.log(newV);
     }, { deep: true });
     return {
       props,
       itemRouteKey,
       updateLang,
-      language
+      langs
     };
   },
 });

@@ -2,11 +2,11 @@
 <div id="blogs">
     <div class="row ma-5 bg-white">
         <div class="d-flex flex-row-reverse pa-4">
-            <v-row class="py-2 px-16 justify-center">
-                <v-col lg="9" md="9" sm="9">
+            <v-row class="py-2 px-lg-16 px-md-7 px-sm-3 justify-center">
+                <v-col lg="9" md="10" sm="12">
                     <SearchByFilters :items="filterBy" @fetchData="fetchData(1,$event)"/>
                 </v-col>
-                <v-col lg="3" md="3" sm="3" class="px-0">
+                <v-col lg="3" md="2" sm="12" class="px-lg-0 px-md-0">
                     <v-btn class="text-none text-white font-weight-regular" height="47" width="180" :text="`Add Blog`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
                 </v-col>
             </v-row>
@@ -67,7 +67,7 @@ export default defineComponent({
             if (e) {
                 selectedBlog.value = e
             } else {
-                selectedBlog.value = {}
+                selectedBlog.value = ''
             }
         }
 
@@ -87,7 +87,8 @@ export default defineComponent({
                             dialog.value = false;
                     });
             } else if (eventType === 'edit') {
-                store.dispatch('Blogs/editBlog', { 'payload': JSON.parse(e), 'slug': selectedBlog.value.slug })
+                console.log('payload', e);
+                store.dispatch('Blogs/editBlog', { 'payload': e, 'slug': selectedBlog.value.slug })
                     .then(response => {
                             console.log('Edit response:', response);
                             fetchData();
