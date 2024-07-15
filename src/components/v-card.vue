@@ -9,16 +9,18 @@
       <v-row dense class="pl-4 pr-4 align-content-stretch">
         <v-col v-for="(item, index ) in props.data" :key="item.id" cols="12" md="6" sm="6" class="input-field">
           <v-card class="card pa-1 " :text="langs[index] === 'en' ? truncatedText(item.content.en)  : truncatedText(item.content.ar)">
-            <v-card-actions class="pl-3 pt-0 d-flex align-center justify-space-between">
+            <v-card-actions class="pl-3 pt-0 d-flex d-flex-column align-center justify-space-between card-actions">
               <div>
                 <img v-if="actionsTable[0]['edit']" @click="$emit('OpenDialog', item)" width="30px" src="@/assets/icons/edit.svg" class="px-1 cursor-pointer" />
                 <img v-if="actionsTable[1]['delete']" @click="$emit('OpenDeleteDialog', item)" width="30px" src="@/assets/icons/trash.svg" class="px-1 cursor-pointer" />
                 <img v-if="actionsTable[2]['view']" @click="langs[index] === 'en' ? $emit('OpenViewEnDialog', item, 'en'): $emit('OpenViewArDialog', item, 'ar')" width="30px" src="@/assets/icons/view.svg" class="px-1 cursor-pointer" />
               </div>
-              <v-btn-toggle v-model="langs[index]" variant="outlined" divided class="ml-auto toggle bg-white">
-                <v-btn value="en" class="size-18" @click="langs[index]= 'en'"> English</v-btn>
-                <v-btn value="ar" class="size-18" @click="langs[index] = 'ar'">Arabic</v-btn>
-              </v-btn-toggle>
+              <div class="toggle-container pb-3">
+                <v-btn-toggle v-model="langs[index]" variant="outlined" divided class="ml-auto toggle bg-white">
+                  <v-btn value="en" class="size-18" @click="langs[index]= 'en'"> English</v-btn>
+                  <v-btn value="ar" class="size-18" @click="langs[index] = 'ar'">Arabic</v-btn>
+                </v-btn-toggle>
+              </div>
             </v-card-actions>
           </v-card>
         </v-col> 
@@ -129,5 +131,13 @@ export default defineComponent({
 .card{
   min-height: 160px;
   max-height: 160px;
+  padding-bottom: 50px;
+}
+.card-actions{
+  position: absolute;
+  bottom: 0;
+}
+.toggle-container{
+  margin-left: 245px;
 }
 </style>
