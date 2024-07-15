@@ -69,7 +69,7 @@ export default defineComponent({
             if (e) {
                 selectedCategory.value = e
             } else {
-                selectedCategory.value = {}
+                selectedCategory.value = ''
             }
         }
 

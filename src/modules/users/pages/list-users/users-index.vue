@@ -71,7 +71,7 @@ export default defineComponent({
             if (e) {
                 selectedUser.value = e
             } else {
-                selectedUser.value = {}
+                selectedUser.value = ''
             }
         }
 
@@ -91,7 +91,7 @@ export default defineComponent({
                         dialog.value = false;
                     });
             } else if (eventType === 'edit') {
-                store.dispatch('Users/editUser', { 'payload': JSON.parse(e), 'slug': selectedUser.value.slug })
+                store.dispatch('Users/editUser', { 'payload': e, 'slug': selectedUser.value.slug })
                     .then(response => {
                         console.log('Edit response:', response);
                         fetchData();

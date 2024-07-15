@@ -67,7 +67,7 @@ export default defineComponent({
             if (e) {
                 selectedAuthor.value = e
             } else {
-                selectedAuthor.value = {}
+                selectedAuthor.value = ''
             }
         }
 

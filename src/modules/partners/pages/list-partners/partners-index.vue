@@ -67,7 +67,7 @@ export default defineComponent({
             if (e) {
                 selectedPartner.value = e
             } else {
-                selectedPartner.value = {}
+                selectedPartner.value = ''
             }
         }
 

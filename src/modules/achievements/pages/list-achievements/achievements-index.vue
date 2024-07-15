@@ -58,7 +58,7 @@ export default defineComponent({
             if (e) {
                 selectedAchievement.value = e
             } else {
-                selectedAchievement.value = {}
+                selectedAchievement.value = ''
             }
         }
 

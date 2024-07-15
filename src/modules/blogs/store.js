@@ -63,6 +63,7 @@ export default {
 		},
 
 		async createBlog({ commit }, payload) {
+			payload['_method'] = 'POST';
 			commit('setLoading', true);
 			let res = null;
 			try {

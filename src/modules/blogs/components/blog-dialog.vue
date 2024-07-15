@@ -17,9 +17,8 @@
                         <v-select class="categories" chips :menu-props="{ offsetY: true, maxHeight: '200px' }" variant="outlined" label="categories*" multiple :items="categories" v-model="form.categories" :rules="rules.categories" item-title="text" item-value="value" required></v-select>
                     </v-col>
                     <v-col cols="12" md="5" sm="5" class="input-field">
-                        <v-text-field variant="outlined" class="pb-3 date" label="date*" :rules="rules.date" required type="date" max_width="100%" persistent-placeholder v-model="form.date"></v-text-field>
-                        
                         <v-select class="pb-3" variant="outlined" label="language*" :items="languages" item-title="text" item-value="value" v-model="form.lang" :rules="rules.lang" required></v-select>
+                        <v-text-field variant="outlined" class="pb-3 date" label="date*" :rules="rules.date" required type="date" max_width="100%" persistent-placeholder v-model="form.date"></v-text-field>
                         <div :class="'img-container'" @click="clickInputFile" style="position: relative; height: 200px;">
                             <p v-if="!form.cover_image" class="size-22 w-100 mb-0 pt-3 pl-3 position-absolute v-label v-field-label z-index-1" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Cover Image</p>
                             <div class="w-mc ma-auto h-100 d-flex justify-center align-center pa-2" style="height: 100%; width: 100%;">
@@ -50,8 +49,9 @@
 
 <script>
 import { baseUrl } from '@/utils/axios';
-import { defineComponent, onUpdated, reactive, computed, ref, onMounted, toRaw } from 'vue'
+import { defineComponent, onUpdated, reactive, computed, ref, onMounted } from 'vue'
 import { useStore } from 'vuex';
+import { format } from 'date-fns';
 
 export default defineComponent({
     props: ['dialog', 'selectedBlog', 'eventType', 'loading'],
@@ -84,7 +84,7 @@ export default defineComponent({
         let form = reactive({
             title: null,
             writer: null,
-            date: null,
+            date: '',
             categories: [],
             languages: null,
             lang: null,
@@ -94,21 +94,16 @@ export default defineComponent({
         const formv = ref(null);
         onUpdated(() => {
             if (props.selectedBlog) {
-                console.log('props selected blog is', toRaw(props.selectedBlog));
-                console.log('props selected blog is', typeof(props.selectedBlog));
+                console.log('date is', props.selectedBlog.date);
                 form.title = props.selectedBlog.title
                 form.writer = props.selectedBlog.writer
-                form.date = props.selectedBlog.date
-                let test = []
+                form.date = format(new Date(props.selectedBlog.date), 'yyyy-MM-dd');
+                let selectedCategories = []
                 form.categories = []
-                test = props.selectedBlog.blog_categories
-                console.log('test array', form.categories);
-                test.forEach(element => {
-                    // form.categories.push({element?.id})
+                selectedCategories = props.selectedBlog.blog_categories
+                selectedCategories.forEach(element => {
                     form.categories.push({text: element.title.en, value: element.id})
                 });
-                console.log('test array', test);
-                // form.categories = test
                 form.lang = props.selectedBlog.lang
                 form.content = props.selectedBlog.content
                 form.cover_image = props.selectedBlog.cover_image
@@ -167,7 +162,6 @@ export default defineComponent({
 
                 reader.readAsDataURL(file);
             }
-            console.log('object file', form.cpver_image);
         }
 
         function checkValidation() {
@@ -182,7 +176,6 @@ export default defineComponent({
             if (checkValidation()) {
                 if (Object.keys(props.selectedBlog).length !== 0) {
                     if (props.selectedBlog.cover_image === form.cover_image) {
-                        console.log('form.categories', form.categories);
                         let data = {
                             title: form.title,
                             writer: form.writer,

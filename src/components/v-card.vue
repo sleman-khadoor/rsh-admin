@@ -8,7 +8,7 @@
     <v-container v-else>
       <v-row dense class="pl-4 pr-4 align-content-stretch">
         <v-col v-for="(item, index ) in props.data" :key="item.id" cols="12" md="6" sm="6" class="input-field">
-          <v-card class="card pa-1 h-100" :text="langs[index] === 'en' ? item.content.en : item.content.ar">
+          <v-card class="card pa-1 " :text="langs[index] === 'en' ? truncatedText(item.content.en)  : truncatedText(item.content.ar)">
             <v-card-actions class="pl-3 pt-0 d-flex align-center justify-space-between">
               <div>
                 <img v-if="actionsTable[0]['edit']" @click="$emit('OpenDialog', item)" width="30px" src="@/assets/icons/edit.svg" class="px-1 cursor-pointer" />
@@ -58,6 +58,12 @@ export default defineComponent({
         return item.id;
       }
     }
+
+    function truncatedText(text){
+      const maxLength = 200;
+      return text.length > maxLength? text.substring(0, maxLength) + '...' : text;
+    }
+
     watch(props, (newV) => {
             console.log(newV);
             langs.value = []
@@ -73,7 +79,8 @@ export default defineComponent({
       props,
       itemRouteKey,
       updateLang,
-      langs
+      langs,
+      truncatedText
     };
   },
 });
@@ -117,5 +124,10 @@ export default defineComponent({
 .toggle .v-btn--active {
   background-color: #0C2748;
   color: #ffffff;
+}
+
+.card{
+  min-height: 160px;
+  max-height: 160px;
 }
 </style>
