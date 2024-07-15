@@ -9,10 +9,10 @@
                 <v-row dense>
 
                     <v-col cols="12" md="6" sm="6" class="input-field">
-                        <v-text-field variant="outlined" class="pb-3" label="Partner Name In English*" :rules="rules.enName" required v-model="form.name.en"></v-text-field>
-                        <v-text-field variant="outlined" class="pb-2" label="Partner Name In Arabic*" :rules="rules.arName" required v-model="form.name.ar"></v-text-field>
+                        <v-text-field variant="outlined" class="pb-2" label="Partner Name In English*" :rules="rules.enName" required v-model="form.name.en"></v-text-field>
+                        <v-text-field variant="outlined" class="pb-1" label="Partner Name In Arabic*" :rules="rules.arName" required v-model="form.name.ar"></v-text-field>
                     </v-col>
-                    <v-col cols="12" md="6" sm="6" class=" mb-8">
+                    <v-col cols="12" md="6" sm="6" class="mb-0">
                         <div :class="'img-container'" @click="clickInputFile" style="position: relative; height: 200px;">
                           <p v-if="!form.avatar" class="size-22 w-100 mb-0 pt-3 pl-3 position-absolute v-label v-field-label z-index-1" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Partner Logo*</p>
                           <div class="w-mc ma-auto h-100 d-flex justify-center align-center pa-2" style="height: 100%; width: 100%;">
@@ -158,8 +158,8 @@ export default defineComponent({
 <style>
 .img-container {
     border: 1px solid #a5a5a5 !important;
-    min-height: 127.5px!important;
-    max-height: 127.5px!important;
+    min-height: 123px!important;
+    max-height: 123px!important;
 }
 
 .img-container:hover {

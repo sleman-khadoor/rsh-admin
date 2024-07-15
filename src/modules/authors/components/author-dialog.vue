@@ -7,32 +7,27 @@
             </div>
             <v-card-text :v-if="props.eventType!=='delete'" class="pb-0">
                 <v-row dense>
-
                     <v-col cols="12" md="6" sm="6" class="input-field">
-                        <v-text-field variant="outlined" label="Author Name In English*" :rules="rules.enName" required v-model="form.name.en"></v-text-field>
+                        <v-text-field variant="outlined" class="pb-2" label="Author Name In English*" :rules="rules.enName" required v-model="form.name.en"></v-text-field>
+                        <v-text-field variant="outlined" class="pb-1"  label="Author Name In Arabic*" v-model="form.name.ar" :rules="rules.arName" required></v-text-field>
                     </v-col>
-
-                    <v-col cols="12" md="6" sm="6" class="input-field">
-                        <v-text-field variant="outlined" class="pa-0" label="Author Name In Arabic*" v-model="form.name.ar" :rules="rules.arName" required></v-text-field>
-                    </v-col>
-
-                    <v-col cols="6" md="6" sm="6">
-                        <v-textarea variant="outlined" label="About Author In English*" v-model="form.about.en" rows="7" :rules="rules.enAbout" required></v-textarea>
-                    </v-col>
-                    <v-col cols="6" md="6" sm="6">
-                        <v-textarea variant="outlined" label="About Author In Arabic*" v-model="form.about.ar" rows="7" persistent-hint :rules="rules.arAbout" required></v-textarea>
-                    </v-col>
-                    <v-col cols="12" md="12" sm="12" class="input-field mb-5">
-                        <div :class="'img-container'" @click="clickInputFile">
-                            <p class="size-22 overflow-hidden w-25 mb-0 pt-3 pl-3 position-absolute v-label v-field-label">Author photo*</p>
-                            <div class="w-mc ma-auto h-100 d-flex justify-center align-center pa-2">
-                                <img v-if="form.avatar" width="70" height="70" ref="imgRef" :src="props.selectedAuthor.avatar ? baseUrl + form.avatar : form.avatar" class="my-auto" />
-                                <img v-else width="30" height="30" src="@/assets/icons/img-upload.svg" class="my-auto" />
-                                <v-file-input accept="image/png, image/jpeg, image/bmp" class="mx-auto w-mc pa-0" id="hidenFileInput" hide-input v-model="form.avatar" truncate-length="15" :prepend-icon="null" append-outer="mdi-close" required @change="printFiles(form.avatar, 'image')">
-                                </v-file-input>
-                                <p class="size-22 overflow-hidden font-deep-grey bold text-start">{{ form.avatar ? form.avatar.name :  ''}}</p>
-                            </div>
+                    <v-col cols="12" md="6" sm="6" class=" mb-0">
+                        <div :class="'img-container'" @click="clickInputFile" style="position: relative; height: 200px;">
+                          <p v-if="!form.avatar" class="size-22 w-100 mb-0 pt-3 pl-3 position-absolute v-label v-field-label z-index-1" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Author avatar*</p>
+                          <div class="w-mc ma-auto h-100 d-flex justify-center align-center pa-2" style="height: 100%; width: 100%;">
+                            <img v-if="form.avatar" ref="imgRef" :src="props.selectedAuthor.avatar ? baseUrl + form.avatar : form.avatar" class="my-auto" style="width: 100%; height: 100%; object-fit: contain;" />
+                            <img v-else width="30" height="30" src="@/assets/icons/img-upload.svg" class="my-auto" />
+                            <v-file-input variant="outlined" accept="image/png, image/jpeg, image/bmp" class="mx-auto w-mc pa-0" id="hidenFileInput" hide-input v-model="form.avatar" truncate-length="15" :prepend-icon="null" append-outer="mdi-close" required @change="printFiles(form.avatar, 'image')" style="position: absolute; width: 100%; height: 100%; opacity: 0;">
+                            </v-file-input>
+                          </div>
                         </div>
+                      </v-col>
+                
+                    <v-col cols="6" md="6" sm="6">
+                        <v-textarea variant="outlined" label="About Author In English*" v-model="form.about.en" rows="8" :rules="rules.enAbout" required></v-textarea>
+                    </v-col>
+                    <v-col cols="6" md="6" sm="6">
+                        <v-textarea variant="outlined" label="About Author In Arabic*" v-model="form.about.ar" rows="8" persistent-hint :rules="rules.arAbout" required></v-textarea>
                     </v-col>
                 </v-row>
             </v-card-text>
@@ -179,8 +174,13 @@ export default defineComponent({
 
 <style>
 .img-container {
-    height: 14.5vh !important;
-    border: 1px solid rgba(118, 118, 118) !important;
+    border: 1px solid #a5a5a5 !important;
+    min-height: 123px!important;
+    max-height: 123px!important;
+}
+
+.img-container:hover {
+    border: 1px solid #0C2748 !important;
 }
 
 .close-icon::before {
