@@ -8,6 +8,7 @@ import RepresentedAuthors from '../modules/represented-authors/store'
 import Partners from '../modules/partners/store'
 import Achievements from '../modules/achievements/store'
 import Users from '../modules/users/store'
+import ContactRequests from '../modules/contact-requests/store'
 
 const store = createStore({
 	modules: {
@@ -20,6 +21,7 @@ const store = createStore({
 		Partners,
 		Achievements,
 		Users,
+		ContactRequests,
 	}
 });
 

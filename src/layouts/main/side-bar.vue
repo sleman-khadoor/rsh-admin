@@ -122,7 +122,7 @@
           },
           {
             title: 'Contact Us',
-            path: '/contact-us', 
+            path: '/contact-requests', 
             icon: 'sms',
           },
           {

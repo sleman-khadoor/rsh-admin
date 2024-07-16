@@ -6,6 +6,7 @@ $colors: (
 "white-grey": #F8F8F8,
 "dark-blue": #0C2748,
 "red-opacity": rgba(255, 0, 0, 0.1),
+"grey": #67676A
 );
 
 // fonts-family
@@ -24,5 +25,8 @@ $fontSize: (
   "size-22" : 2.2vmin,
   "size-20" : 2vmin,
   "size-18" : 1.8vmin,
-  "size-12" : 1.5vmin
+  "size-12" : 1.5vmin,
+  "size-14" : 14px,
+  "size-16" : 16px
+
 );

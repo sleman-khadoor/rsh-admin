@@ -7,6 +7,7 @@ import RepresentedModuleRoutes from '@/modules/represented-authors/routes'
 import PartnerModuleRoutes from '@/modules/partners/routes'
 import AchievementModuleRoutes from '@/modules/achievements/routes'
 import UserModuleRoutes from '@/modules/users/routes'
+import ContactRequestsModuleRoutes from '@/modules/contact-requests/routes'
 
 const routes = [
 	{
@@ -22,6 +23,7 @@ const routes = [
 			PartnerModuleRoutes,
 			AchievementModuleRoutes,
 			UserModuleRoutes,
+			ContactRequestsModuleRoutes,
 		],
 	},
 ];
