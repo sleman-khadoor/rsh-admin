@@ -1,16 +1,18 @@
 <template>
 <div id="partners">
     <div class="row ma-5 bg-white">
-        <v-row class="py-2 px-16 justify-center">
-            <v-col lg="9" md="9" sm="9">
-                <SearchByFilters :items="filterBy" @fetchData="fetchData(1,$event)"/>
-            </v-col>
-            <v-col lg="3" md="3" sm="3" class="px-0">
-                <v-btn class="text-none text-white font-weight-regular" height="47" width="180" :text="`Add Partner`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
-            </v-col>
-        </v-row>
-        <PartnerDialog :dialog="dialog" :loading="loading" :selectedPartner="selectedPartner" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
-        <DeletePartnerDialog :deleteDialog="deleteDialog" :loading="loading" :selectedPartner="selectedPartner" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
+        <div class="d-flex flex-row-reverse pa-4">
+            <v-row class="py-2 px-16 justify-center">
+                <v-col lg="9" md="9" sm="9">
+                    <SearchByFilters :items="filterBy" @fetchData="fetchData(1,$event)" />
+                </v-col>
+                <v-col lg="3" md="3" sm="3" class="px-0">
+                    <v-btn class="text-none text-white font-weight-regular" height="47" width="180" :text="`Add Partner`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
+                </v-col>
+            </v-row>
+            <PartnerDialog :dialog="dialog" :loading="loading" :selectedPartner="selectedPartner" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
+            <DeletePartnerDialog :deleteDialog="deleteDialog" :loading="loading" :selectedPartner="selectedPartner" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
+        </div>
         <DataTable :headers="headers" itemKey="slugTranslation" :actionsTable="actionsTable" :data="data" :meta="meta" :loading="loading" @OpenDialog="openDialog($event)" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)" />
     </div>
 </div>
@@ -40,11 +42,11 @@ export default defineComponent({
         let eventType = "";
 
         const headers = [{
-            title: "Partner Name In English",
-            align: "start",
-            sortable: false,
-            key: "name",
-            subKey: "en"
+                title: "Partner Name In English",
+                align: "start",
+                sortable: false,
+                key: "name",
+                subKey: "en"
             },
             {
                 title: "Partner Name In Arabic",
