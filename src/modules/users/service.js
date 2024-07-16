@@ -30,4 +30,10 @@ export default class Service {
 		console.log(' pagination', qp);
 		return api.get(ep.ROLES, qp).then((res) => res.data);
 	}
+
+	static resetPassword(slug, payload = {}) {
+		const data =  api.post(ep.RESET_PASSWORD(slug), payload).then((res) => res.data);
+		notify(data);
+		return data;
+	}
 }

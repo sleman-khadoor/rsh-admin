@@ -10,10 +10,11 @@
                     <v-btn class="text-none text-white font-weight-regular" height="47" width="180" :text="`Add User`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
                 </v-col>
             </v-row>
-            <UserDialog :dialog="dialog" :loading="loading" :selectedUser="selectedUser" :roles="roles" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
+            <UserDialog :dialog="dialog" :loading="loading" :selectedUser="selectedUser" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
+            <ResetPasswordDialog :resetDialog="resetDialog" :loading="loading" :selectedUser="selectedUser" @reset="submit($event, 'reset')" @closeDialog="closeDialog($event, 'reset')" />
             <DeleteUserDialog :deleteDialog="deleteDialog" :loading="loading" :selectedUser="selectedUser" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
         </div>
-        <DataTable :headers="headers" itemKey="slug" :actionsTable="actionsTable" :data="data" :meta="meta" :loading="loading" @OpenDialog="openDialog($event)" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)" />
+        <DataTable :headers="headers" itemKey="slug" :actionsTable="actionsTable" :data="data" :meta="meta" :loading="loading" @OpenDialog="openDialog($event)" @OpenResetDialog="openResetDialog($event)" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)" />
     </div>
 </div>
 </template>
@@ -23,6 +24,7 @@ import { computed, defineComponent, onMounted, watch, ref } from 'vue'
 import DataTable from '@/components/data-table.vue'
 import UserDialog from '../../components/user-dialog.vue'
 import DeleteUserDialog from '@/components/delete-dialog.vue'
+import ResetPasswordDialog from '../../components/reset-dialog.vue'
 import SearchByFilters from '@/components/search-by-filters.vue'
 
 import { useStore } from 'vuex'
@@ -31,12 +33,14 @@ export default defineComponent({
         DataTable,
         UserDialog,
         DeleteUserDialog,
+        ResetPasswordDialog,
         SearchByFilters
     },
     setup() {
         const store = useStore();
         let dialog = ref(false);
         let deleteDialog = ref(false);
+        let resetDialog = ref(false);
         let message = ref("");
         let selectedUser = ref('');
         let eventType = "";
@@ -62,6 +66,7 @@ export default defineComponent({
             { 'edit': true },
             { 'delete': true },
             { 'view': false },
+            { 'reset': true },
         ];
 
         const filterBy = ['first_name', 'last_name', 'username'];
@@ -79,6 +84,13 @@ export default defineComponent({
             deleteDialog.value = true;
             selectedUser.value = e
             eventType = "delete"
+        }
+
+        function openResetDialog(e) {
+            console.log('i am here', e);
+            resetDialog.value = true;
+            selectedUser.value = e
+            eventType = "reset"
         }
 
         function submit(e, eventType) {
@@ -126,13 +138,6 @@ export default defineComponent({
                 }
             });
         }
-        
-        async function getRoles() {
-            await store.dispatch('Users/fetchRoles')
-                .then(response => {
-                    console.log('Add response:', response);
-            });
-        }
 
         function closeDialog(e, eventType) {
             console.log(e);
@@ -140,16 +145,20 @@ export default defineComponent({
                 dialog.value = false;
             } else if (eventType == 'delete') {
                 deleteDialog.value = false;
+            } else{
+                resetDialog.value = false;
             }
         }
         onMounted(() => {
             fetchData()
-            getRoles()
         })
         watch(dialog, (newV) => {
             console.log(newV);
         }, { deep: true });
         watch(deleteDialog, (newV) => {
+            console.log(newV);
+        }, { deep: true });
+        watch(resetDialog, (newV) => {
             console.log(newV);
         }, { deep: true });
         watch(message, (newV) => {
@@ -166,9 +175,11 @@ export default defineComponent({
             headers,
             dialog,
             deleteDialog,
+            resetDialog,
             selectedUser,
             openDialog,
             openDeleteDialog,
+            openResetDialog,
             message,
             fetchData,
             closeDialog,

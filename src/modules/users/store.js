@@ -114,6 +114,17 @@ export default {
 			}
 		},
 
+		async resetPassword({ commit }, payload) {
+			commit('setLoading', true);
+			let res = null;
+			try {
+				res = await UsersService.resetPassword(payload);
+			} finally {
+				commit('setLoading', false);
+			}
+			return res;
+		},
+
 		resetState({ commit }) {
 			commit('resetState');
 		},

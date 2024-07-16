@@ -1,35 +1,29 @@
 <template>
 <div class="text-center">
-    <v-dialog v-model="props.dialog" max-width="800" class="dialog">
+    <v-dialog v-model="props.dialog" max-width="650" class="dialog">
         <v-card class="pa-5 font-dark-blue">
             <div class="px-6">
                 <v-icon icon="mdi-account" class="mr-2" /><span class="size-35">{{title}}</span>
             </div>
             <v-card-text :v-if="props.eventType!=='delete'" class="pb-0">
                 <v-row dense>
-                    <v-col cols="12" md="5" sm="5" class="input-field">
-                        <v-text-field variant="outlined" class="pb-1" label="User Name*" v-model="form.username" :rules="rules.username" required></v-text-field>
-                        <v-text-field variant="outlined" class="pb-1" label="First Name*" :rules="rules.first_name" required v-model="form.first_name"></v-text-field>
-                        <v-text-field variant="outlined" class="pb-1" label="Last Name*" :rules="rules.last_name" required v-model="form.last_name"></v-text-field>
-                        <v-text-field variant="outlined" type="password" class="pb-1" label="Password*" :rules="rules.password" required v-model="form.password"></v-text-field>
-                        <v-text-field variant="outlined" type="password" class="pb-0" label="Confirm Password*" :rules="rules.password_confirmation" required v-model="form.password_confirmation"></v-text-field>
+                    <v-col cols="4" md="4" sm="4" class="input-field">
+                        <v-text-field variant="outlined" class="pb-0" label="User Name*" v-model="form.username" :rules="rules.username" required></v-text-field>
                     </v-col>
-                    <v-col cols="12" md="7" sm="7" class="pb-3">
-                        <div>
-                            <v-sheet class="d-flex permissions-border" height="305" width="100%" rounded>
-                                <div>
-                                    <p class="ml-2 mt-2 size-30 font-dark-blue">User Roles</p>
-                                    <v-row dense>
-                                        <v-col cols="6" md="6" sm="6">
-                                            <v-checkbox class="no-wrap" v-for="(role) in props.roles.slice(0, 5)" :key="role.id" v-model="form.roles" color="#0C2748" :label="role.name" :value="{ id: role.id }" hide-details></v-checkbox>
-                                        </v-col>
-                                        <v-col cols="6" md="6" sm="6">
-                                            <v-checkbox class="no-wrap" v-for="(role) in props.roles.slice(5)" :key="role.id" v-model="form.roles" color="#0C2748" :label="role.name" :value="{ id: role.id }" hide-details></v-checkbox>
-                                        </v-col>
-                                    </v-row>
-                                </div>
-                            </v-sheet>
-                        </div>
+                    <v-col cols="4" md="4" sm="4" class="input-field">
+                        <v-text-field variant="outlined" class="pb-0" label="First Name*" :rules="rules.first_name" required v-model="form.first_name"></v-text-field>
+                    </v-col>
+                    <v-col cols="4" md="4" sm="4" class="input-field">
+                        <v-text-field variant="outlined" class="pb-0" label="Last Name*" :rules="rules.last_name" required v-model="form.last_name"></v-text-field>
+                    </v-col>
+                    <v-col v-if="Object.keys(props.selectedUser).length === 0" cols="6" md="6" sm="6" class="input-field">   
+                        <v-text-field variant="outlined" type="password" class="pb-0" label="Password*" :rules="rules.password" required v-model="form.password"></v-text-field>
+                    </v-col>
+                    <v-col v-if="Object.keys(props.selectedUser).length === 0" cols="6" md="6" sm="6" class="input-field">   
+                        <v-text-field  variant="outlined" type="password" class="pb-0" label="Confirm Password*" :rules="rules.password_confirmation" required v-model="form.password_confirmation"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="12" sm="12" class="input-field">   
+                        <v-select class="roles" chips :menu-props="{ offsetY: true, maxHeight: '200px' }" variant="outlined" label="User Roles*" multiple :items="roles" v-model="form.roles" :rules="rules.roles" item-title="text" item-value="value" required></v-select>
                     </v-col>
                 </v-row>
             </v-card-text>
@@ -48,10 +42,11 @@
 
     
 <script>
-import { defineComponent, onUpdated, reactive, computed, ref } from 'vue'
+import { defineComponent, onUpdated, reactive, computed, ref, onMounted } from 'vue'
+import { useStore } from 'vuex';
 
 export default defineComponent({
-    props: ['dialog', 'selectedUser', 'eventType', 'loading', 'roles'],
+    props: ['dialog', 'selectedUser', 'eventType', 'loading'],
     data: () => ({
         rules: {
             username: [
@@ -80,6 +75,7 @@ export default defineComponent({
         },
     }),
     setup(props, { emit }) {
+        const store = useStore();
         let form = reactive({
             username: null,
             first_name: null,
@@ -96,8 +92,12 @@ export default defineComponent({
                 form.username = props.selectedUser.username
                 form.first_name = props.selectedUser.first_name
                 form.last_name = props.selectedUser.last_name
-                // form.roles = []
-                form.roles = props.selectedUser.roles ? props.selectedUser.roles.map(role => ({ id: role.id })) : [];
+                let selectedRoles = []
+                form.roles = []
+                selectedRoles = props.selectedUser.roles
+                selectedRoles.forEach(element => {
+                    form.roles.push({text: element.name, value: element.id})
+                });
                 form.password = null
                 form.password_confirmation = null
             } else {
@@ -109,19 +109,37 @@ export default defineComponent({
                 form.password_confirmation = null
             }
         })
-
-        const languages = computed(() => ['English', 'Arabic'].map(item => ({
-            text: item,
-            value: item == 'English' ? 'en' : 'ar'
+        async function getRoles() {
+            await store.dispatch('Users/fetchRoles',{
+                params: {
+                    perPage: 1000
+                }
+            })
+                .then(response => {
+                    console.log('Add response:', response);
+            });
+        }
+        const roles = computed(() => store.getters['Users/roles'].map((role) => ({
+            text: role.name,
+            value: role.id
         })))
+
+        onMounted(() => {
+            getRoles()
+        })
 
         const title = computed(() => {
             return Object.keys(props.selectedUser).length !== 0 ? `Edit User` : `Add User`;
         })
 
         function checkValidation() {
-            return form.username && form.first_name && form.last_name && form.password && form.password_confirmation && form.roles.length > 0;
+            if(props.selectedUser){
+                return form.username && form.first_name && form.last_name  && form.roles.length > 0;
+            }else{
+                return form.username && form.first_name && form.last_name  && form.password && form.password_confirmation && form.roles.length > 0;
         }
+        }
+
         function handleSubmit() {
             if (checkValidation()) {
                 if (Object.keys(props.selectedUser).length !== 0) {
@@ -132,13 +150,12 @@ export default defineComponent({
             }
         }
 
-
         return {
             props,
             form,
             formv,
             title,
-            languages,
+            roles,
             handleSubmit,
         }
     },
@@ -147,16 +164,6 @@ export default defineComponent({
 
     
 <style>
-.img-container {
-    border: 1px solid #a5a5a5 !important;
-    min-height: 85px !important;
-    max-height: 85px !important;
-}
-
-.img-container:hover {
-    border: 1px solid #0C2748 !important;
-}
-
 .dialog {
     height: 1000px;
 }
@@ -170,10 +177,6 @@ export default defineComponent({
 
 .date .v-field__input {
     display: block !important;
-}
-
-.permissions-border {
-    border: 1px solid #a5a5a5;
 }
 
 .v-checkbox .v-selection-control {
