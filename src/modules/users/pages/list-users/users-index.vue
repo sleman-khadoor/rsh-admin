@@ -87,7 +87,6 @@ export default defineComponent({
         }
 
         function openResetDialog(e) {
-            console.log('i am here', e);
             resetDialog.value = true;
             selectedUser.value = e
             eventType = "reset"
@@ -124,6 +123,20 @@ export default defineComponent({
                             }
                         }
                     });
+            } else if(eventType === 'reset') {
+                store.dispatch('Users/resetPassword', e )
+                     .then(response => {
+                        console.log('Reset Password response:', response);
+                        fetchData();
+                        resetDialog.value = false;
+                }).catch(error => {
+                        if (error.response) {
+                            if (error.response.status == 409) {
+                                closeDialog(e, 'reset');
+                                message.value = "Old password doesn't match."
+                            }
+                        }
+                    });
             }
         }
 
@@ -145,7 +158,7 @@ export default defineComponent({
                 dialog.value = false;
             } else if (eventType == 'delete') {
                 deleteDialog.value = false;
-            } else{
+            } else {
                 resetDialog.value = false;
             }
         }

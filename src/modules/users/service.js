@@ -31,8 +31,8 @@ export default class Service {
 		return api.get(ep.ROLES, qp).then((res) => res.data);
 	}
 
-	static resetPassword(slug, payload = {}) {
-		const data =  api.post(ep.RESET_PASSWORD(slug), payload).then((res) => res.data);
+	static resetPassword(payload = {}) {
+		const data =  api.post(ep.RESET_PASSWORD, payload).then((res) => res.data);
 		notify(data);
 		return data;
 	}

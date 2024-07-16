@@ -8,10 +8,13 @@
             <v-card-text :v-if="props.eventType!=='delete'" class="pb-0">
                 <v-row dense>
                     <v-col cols="12" md="12" sm="12" class="input-field">
-                        <v-text-field variant="outlined" type="password" class="pb-0" label="New Password*" :rules="rules.password" required v-model="form.password"></v-text-field>
+                        <v-text-field variant="outlined" type="password" class="pb-0" label="Old Password*" :rules="rules.old_password" required v-model="form.old_password"></v-text-field>
                     </v-col>
                     <v-col cols="12" md="12" sm="12" class="input-field">
-                        <v-text-field variant="outlined" type="password" class="pb-0" label="Confirm New Password*" :rules="rules.password_confirmation" required v-model="form.password_confirmation"></v-text-field>
+                        <v-text-field variant="outlined" type="password" class="pb-0" label="New Password*" :rules="rules.new_password" required v-model="form.new_password"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="12" sm="12" class="input-field">
+                        <v-text-field variant="outlined" type="password" class="pb-0" label="Confirm New Password*" :rules="rules.new_password_confirmation" required v-model="form.new_password_confirmation"></v-text-field>
                     </v-col>
                 </v-row>
             </v-card-text>
@@ -28,46 +31,50 @@
 </div>
 </template>
 
-    
 <script>
-import { defineComponent, onUpdated, reactive, ref} from 'vue'
+import { defineComponent, onUpdated, reactive, ref } from 'vue'
 
 export default defineComponent({
     props: ['resetDialog', 'selectedUser', 'eventType', 'loading'],
     data: () => ({
         rules: {
-            password: [
+            old_password: [
+                v => !!v || 'old password is required',
+            ],
+            new_password: [
                 v => !!v || 'password is required',
                 v => v.length >= 8 || 'password must be at least 8 characters long',
                 v => /[A-Za-z]/.test(v) || 'password must contain at least one letter',
                 v => /[0-9]/.test(v) || 'password must contain at least one number',
 
             ],
-            password_confirmation: [
-                v => !!v || 'password confirmation is required',
-                v => v === this.form.password || 'password confirmation does not match password',
+            new_password_confirmation: [
+                v => !!v || 'password confirmation is required'
             ],
         },
     }),
     setup(props, { emit }) {
         let form = reactive({
-            password: null,
-            password_confirmation: null,
+            old_password: null,
+            new_password: null,
+            new_password_confirmation: null,
         })
 
         const formv = ref(null);
 
         onUpdated(() => {
-            form.password = null
-            form.password_confirmation = null
+            form.old_password = null
+            form.new_password = null
+            form.new_password_confirmation = null
         })
 
         function checkValidation() {
-            return form.password && form.password_confirmation > 0;
+            return form.old_password && form.new_password && form.new_password_confirmation;
         }
 
         function handleSubmit() {
             if (checkValidation()) {
+                form.user_id = props.selectedUser.id;
                 emit('reset', form, 'reset');
             }
         }
@@ -82,7 +89,6 @@ export default defineComponent({
 })
 </script>
 
-    
 <style>
 .dialog {
     height: 1000px;

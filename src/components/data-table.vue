@@ -38,10 +38,10 @@
         <tr v-for="(item, index) in data" :key="itemRouteKey(item)" :style="index%2 !== 0 ? 'background: #FCFCFC' : ''">
           <td v-for="subItem in headers" :key="subItem.key">
             <div v-if="subItem.key === 'actions'" >
-                <img v-if="actionsTable[3]?.['reset']" @click="$emit('OpenResetDialog', item)" width="30px" src="@/assets/icons/view.svg" class="px-1 cursor-pointer" />
-                <img v-if="actionsTable[2]?.['view']" @click="$emit('viewItem', item)" width="30px" src="@/assets/icons/view.svg" class="px-1 cursor-pointer" />
-                <img v-if="actionsTable[0]?.['edit']" @click="$emit('OpenDialog', item)" width="30px" src="@/assets/icons/edit.svg" class="px-1 cursor-pointer" />
-                <img v-if="actionsTable[1]?.['delete']" @click="$emit('OpenDeleteDialog', item)" width="30px" src="@/assets/icons/trash.svg" class="px-1 cursor-pointer" />
+              <img v-if="actionsTable[3]?.['reset']" @click="$emit('OpenResetDialog', item)" width="30px" src="@/assets/icons/password.svg" class="px-1 cursor-pointer" />
+              <img v-if="actionsTable[2]?.['view']" @click="$emit('viewItem', item)" width="30px" src="@/assets/icons/view.svg" class="px-1 cursor-pointer" />
+              <img v-if="actionsTable[0]?.['edit']" @click="$emit('OpenDialog', item)" width="30px" src="@/assets/icons/edit.svg" class="px-1 cursor-pointer" />
+              <img v-if="actionsTable[1]?.['delete']" @click="$emit('OpenDeleteDialog', item)" width="30px" src="@/assets/icons/trash.svg" class="px-1 cursor-pointer" />
             </div>
             <div v-else>
               {{ item[subItem.key][subItem.subKey]?? item[subItem.key] }}
