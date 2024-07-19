@@ -1,15 +1,22 @@
 <template>
   <div>
-    <div v-if="props.loading">
+    <div v-if="props.loading || (!props.data && props.cardType!='achievements')">
       <div class="d-flex justify-center align-center" style="height: 270px">
         <v-progress-circular :size="50" :width="7" :color="$colors.choco" indeterminate></v-progress-circular>
       </div>
     </div>
-    <v-container v-else>
+    <v-container class="container" v-else>
       <v-row dense class="pl-4 pr-4 align-content-stretch">
-        <v-col v-for="(item, index ) in props.data" :key="item.id" cols="12" md="6" sm="6" class="input-field">
-          <v-card class="card pa-1 " :text="langs[index] === 'en' ? truncatedText(item.content.en)  : truncatedText(item.content.ar)">
-            <v-card-actions class="pl-3 pt-0 d-flex d-flex-column align-center justify-space-between card-actions">
+        <v-col v-for="(item, index ) in props.data" :key="item.id" cols="12" md="6" sm="6" class="input-field pa-1">
+          <v-card  class="card pa-1">
+            <v-card-text>
+              {{ langs[index] === 'en' ? truncatedText(item, 'en')  : truncatedText(item, 'ar')}}
+              <p v-if="cardType == 'reviews'" class="font-dark-blue font-weight-bold" >{{item.username.en}}</p>
+
+            </v-card-text>
+            <!-- <div >
+            </div> -->
+            <v-card-actions class="pl-3 d-flex d-flex-column align-center justify-space-between card-actions">
               <div>
                 <img v-if="actionsTable[0]['edit']" @click="$emit('OpenDialog', item)" width="30px" src="@/assets/icons/edit.svg" class="px-1 cursor-pointer" />
                 <img v-if="actionsTable[1]['delete']" @click="$emit('OpenDeleteDialog', item)" width="30px" src="@/assets/icons/trash.svg" class="px-1 cursor-pointer" />
@@ -26,7 +33,7 @@
         </v-col> 
       </v-row>
     </v-container>  
-    <paginate :meta="props.meta" @newPage="$emit('newPage', $event)" />
+    <paginate v-if="props.meta" :meta="props.meta" @newPage="$emit('newPage', $event)" />
   </div>
 </template>
 
@@ -39,7 +46,7 @@ export default defineComponent({
   components: {
     paginate,
   },
-  props: ['headers', 'actionsTable', 'data', 'meta', 'loading', 'itemKey'],
+  props: ['headers', 'actionsTable', 'data', 'meta', 'loading', 'itemKey', 'cardType'],
   setup(props) {
     let langs = ref([]);
     
@@ -61,7 +68,15 @@ export default defineComponent({
       }
     }
 
-    function truncatedText(text){
+    function truncatedText(item, lang){
+      let text = '';
+      if(props.cardType === 'achievements'){
+        text = lang == 'en'? item.content?.en : item.content?.ar;
+      }else if(props.cardType === 'reviews'){
+        text = lang == 'en'? item.review?.en : item.review?.ar;
+      }else if(props.cardType === 'awards'){
+        text = lang == 'en'? item.title?.en : item.title?.ar;
+      }
       const maxLength = 200;
       return text.length > maxLength? text.substring(0, maxLength) + '...' : text;
     }
@@ -129,8 +144,8 @@ export default defineComponent({
 }
 
 .card{
-  min-height: 160px;
-  max-height: 160px;
+  min-height: 170px;
+  max-height: 170px;
   padding-bottom: 50px;
 }
 .card-actions{
@@ -139,5 +154,8 @@ export default defineComponent({
 }
 .toggle-container{
   margin-left: 245px;
+}
+.container{
+  min-height: 320px;
 }
 </style>

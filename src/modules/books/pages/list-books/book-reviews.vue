@@ -1,48 +1,53 @@
 <template>
-<div id="achievements">
-    <div class="row ma-5 bg-white">
-        <v-row class="py-2 px-16 justify-center">
-            <v-col lg="9" md="9" sm="9">
-                <SearchByFilters :items="filterBy" @fetchData="fetchData(1,$event)" />
+<div id="reviews">
+    <div class="py-2 d-flex justify-space-between header">
+        <div>
+            <v-col lg="3" md="3" sm="3" class="px-1 d-flex pt-6">
+                <img @click="redirectBack" width="33px" src="@/assets/icons/back.svg" class="px-1 cursor-pointer" />
+                <p class="font-dark-blue size-30 font-weight-bold">Book Reviews</p>
             </v-col>
-            <v-col lg="3" md="3" sm="3" class="px-0">
-                <v-btn class="text-none text-white font-weight-regular" height="47" width="180" :text="`Add Achievement`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
-            </v-col>
-        </v-row>
-        <AchievementDialog :dialog="dialog" :loading="loading" :selectedAchievement="selectedAchievement" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
-        <AchievementViewDialog cardType="achievements" :viewDialog="viewDialog" :viewLang="viewLang" :loading="loading" :selectedItem="selectedAchievement" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'view')" @closeAddDialog="closeDialog($event, 'view')" />
-        <DeleteAchievementDialog :deleteDialog="deleteDialog" :loading="loading" :selectedAchievement="selectedAchievement" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
-        <VCard cardType="achievements" itemKey="slugTranslation" :actionsTable="actionsTable" :data="data" :meta="meta" :loading="loading" @OpenDialog="openDialog($event)" @OpenViewEnDialog="openViewDialog($event, 'en')" @OpenViewArDialog="openViewDialog($event, 'ar')" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)"></VCard>
+        </div>
+        <v-col lg="3" md="3" sm="3">
+            <v-btn class="text-none text-white font-weight-regular" height="47" width="180" :text="`Add Review`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
+        </v-col>   
     </div>
-</div>
+     <div class="row bg-white">
+        <ReviewDialog :book_id="book_id" :dialog="dialog" :loading="loading" :selectedReview="selectedReview" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
+        <ReviewViewDialog cardType="reviews" :viewDialog="viewDialog" :viewLang="viewLang" :loading="loading" :selectedItem="selectedReview" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'view')" @closeAddDialog="closeDialog($event, 'view')" />
+        <DeleteReviewDialog :deleteDialog="deleteDialog" :loading="loading" :selectedReview="selectedReview" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
+        <VCard cardType="reviews" itemKey="slugTranslation" :actionsTable="actionsTable" :data="data" :loading="loading" @OpenDialog="openDialog($event)" @OpenViewEnDialog="openViewDialog($event, 'en')" @OpenViewArDialog="openViewDialog($event, 'ar')" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)"></VCard>
+    </div>
+ </div>
 </template>
 
 <script>
 import { computed, defineComponent, onMounted, watch, ref } from 'vue'
 import VCard from '@/components/v-card.vue'
-import SearchByFilters from '@/components/search-by-filters.vue'
-import AchievementDialog from '../../components/achievements-dialog.vue'
-import AchievementViewDialog from '@/components/view-dialog.vue'
-import DeleteAchievementDialog from '@/components/delete-dialog.vue'
-
+import ReviewDialog from '../../components/review-dialog.vue'
+import ReviewViewDialog from '@/components/view-dialog.vue'
+import DeleteReviewDialog from '@/components/delete-dialog.vue'
+import { useRoute } from 'vue-router'
+import router from '@/router/routes.js';
 import { useStore } from 'vuex'
+
 export default defineComponent({
     components: {
         VCard,
-        AchievementDialog,
-        DeleteAchievementDialog,
-        AchievementViewDialog,
-        SearchByFilters
+        ReviewDialog,
+        DeleteReviewDialog,
+        ReviewViewDialog,
     },
     setup() {
         const store = useStore();
+        const route = useRoute();
         let dialog = ref(false);
         let deleteDialog = ref(false);
         let viewDialog = ref(false);
         let message = ref("");
-        let selectedAchievement = ref('');
+        let selectedReview = ref('');
         let eventType = "";
         let viewLang = ref('');
+        const slug = ref(route.params.slug);
 
         const actionsTable = [
             { 'edit': true },
@@ -52,25 +57,30 @@ export default defineComponent({
 
         const filterBy = ['content']
 
+        function redirectBack(e) {
+            console.log(e, router);
+            this.$router.push({ name: 'books' });
+        }
+
         function openDialog(e) {
             console.log('event is', e);
             dialog.value = true;
             if (e) {
-                selectedAchievement.value = e
+                selectedReview.value = e
             } else {
-                selectedAchievement.value = ''
+                selectedReview.value = ''
             }
         }
 
         function openDeleteDialog(e) {
             deleteDialog.value = true;
-            selectedAchievement.value = e
+            selectedReview.value = e
             eventType = "delete"
         }
 
         function openViewDialog(e, lang) {
             viewDialog.value = true;
-            selectedAchievement.value = e
+            selectedReview.value = e
             eventType = "view"
             viewLang.value = lang;
         }
@@ -78,21 +88,22 @@ export default defineComponent({
         function submit(e, eventType) {
             console.log(e);
             if (eventType === 'add') {
-                store.dispatch('Achievements/createAchievement', e)
+                store.dispatch('Books/createReview', e)
                     .then(response => {
                         console.log('Add response:', response);
                         fetchData()
                         dialog.value = false;
                     });
             } else if (eventType === 'edit') {
-                store.dispatch('Achievements/editAchievement', { 'payload': e, 'slug': selectedAchievement.value.slug.en })
+                console.log('slug is',selectedReview.value.slug.en);
+                store.dispatch('Books/editReview', { 'payload': e, 'slug': selectedReview.value.slug.en })
                     .then(response => {
                         console.log('Edit response:', response);
                         fetchData()
                         dialog.value = false;
                     })
             } else if (eventType === 'delete') {
-                store.dispatch('Achievements/deleteAchievement', selectedAchievement.value.slug.en)
+                store.dispatch('Books/deleteReview', selectedReview.value.slug.en)
                     .then(response => {
                         console.log('Delete response:', response);
                         fetchData()
@@ -109,15 +120,9 @@ export default defineComponent({
             }
         }
 
-        function fetchData(currentPage, search = {}) {
-            console.log('currentPage', currentPage);
-            store.dispatch('Achievements/fetchAchievements', {
-                params: {
-                    page: currentPage ? currentPage : 1,
-                    perPage: 4,
-                    [`filter[${search.key}]`]: search.value
-                }
-            });
+        function fetchData() {
+            console.log('slug is', slug.value);
+            store.dispatch('Books/getBook', slug.value);
         }
 
         function closeDialog(e, eventType) {
@@ -148,20 +153,22 @@ export default defineComponent({
         watch(message, (newV) => {
             console.log(newV);
         }, { deep: true });
-        watch(selectedAchievement, (newV) => {
+        watch(selectedReview, (newV) => {
             console.log(newV);
         }, { deep: true });
-        const data = computed(() => store.getters['Achievements/achievements'].map(item => ({
+        watch(slug, (newV) => {
+            console.log(newV);
+        }, { deep: true });
+        const book_id = computed(() => store.getters['Books/selectedBook']?.id);
+        const data = computed(() => store.getters['Books/selectedBook']?.book_reviews.map(item => ({
             ...item,
             lang: 'en'
         })));
-        const meta = computed(() => store.getters['Achievements/meta'])
-        const loading = computed(() => store.getters['Achievements/loading'])
         return {
             dialog,
             deleteDialog,
             viewDialog,
-            selectedAchievement,
+            selectedReview,
             openDialog,
             openDeleteDialog,
             openViewDialog,
@@ -171,11 +178,12 @@ export default defineComponent({
             eventType,
             submit,
             data,
-            meta,
-            loading,
             filterBy,
             actionsTable,
-            viewLang
+            viewLang,
+            slug,
+            redirectBack,
+            book_id,
         }
     }
 })

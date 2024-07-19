@@ -8,6 +8,7 @@ import PartnerModuleRoutes from '@/modules/partners/routes'
 import AchievementModuleRoutes from '@/modules/achievements/routes'
 import UserModuleRoutes from '@/modules/users/routes'
 import ContactRequestsModuleRoutes from '@/modules/contact-requests/routes'
+import BookModuleRoutes from '@/modules/books/routes'
 
 const routes = [
 	{
@@ -24,6 +25,7 @@ const routes = [
 			AchievementModuleRoutes,
 			UserModuleRoutes,
 			ContactRequestsModuleRoutes,
+			BookModuleRoutes,
 		],
 	},
 ];

@@ -9,6 +9,7 @@ import Partners from '../modules/partners/store'
 import Achievements from '../modules/achievements/store'
 import Users from '../modules/users/store'
 import ContactRequests from '../modules/contact-requests/store'
+import Books from '../modules/books/store'
 
 const store = createStore({
 	modules: {
@@ -22,6 +23,7 @@ const store = createStore({
 		Achievements,
 		Users,
 		ContactRequests,
+		Books,
 	}
 });
 

@@ -43,14 +43,32 @@
               <img v-if="actionsTable[0]?.['edit']" @click="$emit('OpenDialog', item)" width="30px" src="@/assets/icons/edit.svg" class="px-1 cursor-pointer" />
               <img v-if="actionsTable[1]?.['delete']" @click="$emit('OpenDeleteDialog', item)" width="30px" src="@/assets/icons/trash.svg" class="px-1 cursor-pointer" />
             </div>
-            <div v-else>
-              {{ item[subItem.key][subItem.subKey]?? item[subItem.key] }}
+            <div v-else-if="subItem.key === 'reviews'">
+                <div class="d-flex justify-center">
+                  <img @click="$emit('ViewReviews', item)"  width="25px" src="@/assets/icons/manage.svg" class="px-1 cursor-pointer" />
+                  <p class="font-choco">Manage reviews</p>
+                </div>
             </div>
+            <div v-else-if="subItem.key === 'awards'">
+              <div class="d-flex justify-center">
+                <img @click="$emit('ViewAwards', item)" width="25px" src="@/assets/icons/manage.svg" class="px-1 cursor-pointer" />
+                <p class="font-choco">Manage awards</p>
+              </div>
+          </div>
+          <div v-else-if="subItem.key === 'book_title'">
+            {{ truncatedText(item.title.en) }}
+          </div>
+          <div v-else-if="subItem.key === 'author'">
+            {{ item.author.name.en }}
+          </div>
+          <div v-else>
+            {{ item[subItem.key]?.[subItem.subKey]?? item[subItem.key] }}
+          </div>
           </td>
         </tr>
       </tbody>
     </v-data-table>
-    <paginate :meta="props.meta" @newPage="$emit('newPage',$event)" />    
+    <paginate v-if="props.meta" :meta="props.meta" @newPage="$emit('newPage',$event)" />    
 </div>
 </template>
 
@@ -74,9 +92,14 @@ export default defineComponent({
           return item.id;
         }
       }
+      function truncatedText(text){
+        const maxLength = 30;
+        return text.length > maxLength? text.substring(0, maxLength) + '...' : text;
+      }
       return {
           props,
           itemRouteKey,
+          truncatedText,
       }
     },
 })

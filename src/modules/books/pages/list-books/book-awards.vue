@@ -1,0 +1,212 @@
+<template>
+<div id="awards">
+    <div class="py-2 d-flex justify-space-between header">
+        <div>
+            <v-col lg="3" md="3" sm="3" class="px-1 d-flex pt-6">
+                <img @click="redirectBack" width="33px" src="@/assets/icons/back.svg" class="px-1 cursor-pointer" />
+                <p class="font-dark-blue size-30 font-weight-bold">Book Awards</p>
+            </v-col>
+        </div>
+        <v-col lg="3" md="3" sm="3">
+            <v-btn class="text-none text-white font-weight-regular" height="47" width="180" :text="`Add Award`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
+        </v-col>
+    </div>
+    <div class="row bg-white">
+        <AwardDialog :book_id="book_id" :dialog="dialog" :loading="loading" :selectedAward="selectedAward" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
+        <AwardViewDialog cardType="awards" :viewDialog="viewDialog" :viewLang="viewLang" :loading="loading" :selectedItem="selectedAward" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'view')" @closeAddDialog="closeDialog($event, 'view')" />
+        <DeleteAwardDialog :deleteDialog="deleteDialog" :loading="loading" :selectedAward="selectedAward" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
+        <VCard cardType="awards" itemKey="slugTranslation" :actionsTable="actionsTable" :data="data" :loading="loading" @OpenDialog="openDialog($event)" @OpenViewEnDialog="openViewDialog($event, 'en')" @OpenViewArDialog="openViewDialog($event, 'ar')" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)"></VCard>
+        <!-- <DataTable :headers="headers" itemKey="slugTranslation" :actionsTable="actionsTable" :data="data" :loading="loading" @OpenDialog="openDialog($event)" @OpenViewEnDialog="openViewDialog($event, 'en')" @OpenViewArDialog="openViewDialog($event, 'ar')" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)" /> -->
+
+    </div>
+</div>
+</template>
+
+    
+<script>
+import { computed, defineComponent, onMounted, watch, ref } from 'vue'
+import VCard from '@/components/v-card.vue'
+// import DataTable from '@/components/data-table.vue'
+import AwardDialog from '../../components/award-dialog.vue'
+import AwardViewDialog from '@/components/view-dialog.vue'
+import DeleteAwardDialog from '@/components/delete-dialog.vue'
+import { useRoute } from 'vue-router'
+import router from '@/router/routes.js';
+import { useStore } from 'vuex'
+
+export default defineComponent({
+    components: {
+        VCard,
+        // DataTable,
+        AwardDialog,
+        DeleteAwardDialog,
+        AwardViewDialog,
+    },
+    setup() {
+        const store = useStore();
+        const route = useRoute();
+        let dialog = ref(false);
+        let deleteDialog = ref(false);
+        let viewDialog = ref(false);
+        let message = ref("");
+        let selectedAward = ref('');
+        let eventType = "";
+        let viewLang = ref('');
+        const slug = ref(route.params.slug);
+
+        //     const headers = [{
+        //         title: "Award Name In English",
+        //         align: "start",
+        //         sortable: false,
+        //         key: "title",
+        //         subKey: "en"
+        //     },
+        //     {
+        //         title: "Award Name In English",
+        //         key: "title",
+        //         subKey: "ar"
+        //     },
+        //     { title: "Actions", key: "actions", sortable: false },
+
+        // ]
+
+        const actionsTable = [
+            { 'edit': true },
+            { 'delete': true },
+            { 'view': true },
+        ];
+
+        const filterBy = ['content']
+
+        function redirectBack(e) {
+            console.log(e, router);
+            this.$router.push({ name: 'books' });
+        }
+
+        function openDialog(e) {
+            console.log('event is', e);
+            dialog.value = true;
+            if (e) {
+                selectedAward.value = e
+            } else {
+                selectedAward.value = ''
+            }
+        }
+
+        function openDeleteDialog(e) {
+            deleteDialog.value = true;
+            selectedAward.value = e
+            eventType = "delete"
+        }
+
+        function openViewDialog(e, lang) {
+            viewDialog.value = true;
+            selectedAward.value = e
+            eventType = "view"
+            viewLang.value = lang;
+        }
+
+        function submit(e, eventType) {
+            console.log(e);
+            if (eventType === 'add') {
+                store.dispatch('Books/createAward', e)
+                    .then(response => {
+                        console.log('Add response:', response);
+                        fetchData()
+                        dialog.value = false;
+                    });
+            } else if (eventType === 'edit') {
+                console.log('slug is', selectedAward.value.slug.en);
+                store.dispatch('Books/editAward', { 'payload': e, 'slug': selectedAward.value.slug.en })
+                    .then(response => {
+                        console.log('Edit response:', response);
+                        fetchData()
+                        dialog.value = false;
+                    })
+            } else if (eventType === 'delete') {
+                store.dispatch('Books/deleteAward', selectedAward.value.slug.en)
+                    .then(response => {
+                        console.log('Delete response:', response);
+                        fetchData()
+                        deleteDialog.value = false;
+                    })
+                    .catch(error => {
+                        if (error.response) {
+                            if (error.response.status == 409) {
+                                closeDialog(e, 'delete');
+                                message.value = "You can't delete this record, it has related data."
+                            }
+                        }
+                    });
+            }
+        }
+
+        function fetchData() {
+            console.log('slug is', slug.value);
+            store.dispatch('Books/getBook', slug.value);
+        }
+
+        function closeDialog(e, eventType) {
+            console.log(e);
+            if (eventType == 'add' || eventType == 'edit') {
+                dialog.value = false;
+            } else if (eventType == 'delete') {
+                deleteDialog.value = false;
+            } else {
+                viewDialog.value = false;
+            }
+        }
+        onMounted(() => {
+            fetchData()
+        })
+        watch(dialog, (newV) => {
+            console.log(newV);
+        }, { deep: true });
+        watch(deleteDialog, (newV) => {
+            console.log(newV);
+        }, { deep: true });
+        watch(viewDialog, (newV) => {
+            console.log(newV);
+        }, { deep: true });
+        watch(viewLang, (newV) => {
+            console.log(newV);
+        }, { deep: true });
+        watch(message, (newV) => {
+            console.log(newV);
+        }, { deep: true });
+        watch(selectedAward, (newV) => {
+            console.log(newV);
+        }, { deep: true });
+        watch(slug, (newV) => {
+            console.log(newV);
+        }, { deep: true });
+        const book_id = computed(() => store.getters['Books/selectedBook']?.id);
+        const data = computed(() => store.getters['Books/selectedBook']?.book_awards.map(item => ({
+            ...item,
+            lang: 'en'
+        })));
+        return {
+            dialog,
+            deleteDialog,
+            viewDialog,
+            selectedAward,
+            openDialog,
+            openDeleteDialog,
+            openViewDialog,
+            message,
+            fetchData,
+            closeDialog,
+            eventType,
+            submit,
+            data,
+            filterBy,
+            actionsTable,
+            viewLang,
+            slug,
+            redirectBack,
+            book_id,
+            // headers
+        }
+    }
+})
+</script>
