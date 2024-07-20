@@ -129,15 +129,14 @@
             title: 'Service requests',
             icon: 'requests',
             subtitles: [
-              // TODO::correct links
-                ['Translation', '/authors'],
-                ['Proofreading', '/books'],
-                ['Creative editing', '/books'],
-                ['Literary agency', '/books'],
-                ['Marketing', '/books'],
-                ['Content writing', '/books'],
-                ['Book delivery', '/books'],
-                ['Organizing events & conferences', '/books'],
+                ['Translation', '/service-requests/translation'],
+                ['Proofreading', '/service-requests/proofreading'],
+                ['Creative editing', '/service-requests/creative-editing'],
+                ['Literary agency', '/service-requests/literary-agency'],
+                ['Marketing', '/service-requests/marketing'],
+                ['Content writing', '/service-requests/content-writing'],
+                ['Book delivery', '/service-requests/book-delivery'],
+                ['Organizing events & conferences', '/service-requests/organizing-events-conferences'],
               ]
           },
         ],

@@ -27,7 +27,7 @@
         </v-data-table>
         <v-card-text>
             <h4 class="pb-2 size-16"> Message Content</h4>
-            <p class="font-grey">{{ props.data?.message }}</p>
+            <p class="font-grey">{{ props.itemType =='contact'? props.data?.message : props.data?.description}}</p>
         </v-card-text>
     </v-card>
 </div>
@@ -38,7 +38,7 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
 
-    props: ['headers', 'actionsTable', 'data', 'meta', 'loading', 'itemKey', 'selectedContactRequest'],
+    props: ['headers', 'actionsTable', 'data', 'meta', 'loading', 'itemKey', 'selectedContactRequest', 'itemType'],
     setup(props) {
 
         function itemRouteKey(item) {

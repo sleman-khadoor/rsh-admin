@@ -1,11 +1,11 @@
 <template>
-<div id="contactRequests">
+<div id="serviceRequests">
     <div class="row ma-5">
         <v-col lg="3" md="3" sm="3" class="px-1 d-flex pt-2">
             <img @click="redirectBack" width="33px" src="@/assets/icons/back.svg" class="px-1 cursor-pointer" />
             <p class="font-dark-blue size-30 font-weight-bold">Message Content</p>
         </v-col>
-        <viewItem :headers="headers" :data="data" :loading="loading" itemType='contact'/>
+        <viewItem :headers="headers" :data="data" :loading="loading" itemType='service'/>
     </div>
 </div>
 </template>
@@ -26,6 +26,7 @@ export default defineComponent({
         const route = useRoute()
         let message = ref("");
         const slug = ref(route.params.slug);
+        const serviceType = ref(route.params.serviceType);
 
         const headers = [{
                 title: "Full Name",
@@ -49,16 +50,17 @@ export default defineComponent({
 
         function redirectBack(e) {
             console.log(e, router);
-            this.$router.push({ name: 'contact-requests' });
+            console.log('props is ', serviceType.value);
+            this.$router.push({ name: serviceType.value+'-requests' });
         }
 
-        function getContactRequest() {
+        function getServiceRequest() {
             console.log('slug is', slug.value);
-            store.dispatch('ContactRequests/getContactRequest', slug.value);
+            store.dispatch('ServiceRequests/getServiceRequest', slug.value);
         }
 
         onMounted(() => {
-            getContactRequest()
+            getServiceRequest()
         })
 
         watch(message, (newV) => {
@@ -68,17 +70,18 @@ export default defineComponent({
             console.log(newV);
         }, { deep: true });
 
-        const data = computed(() => store.getters['ContactRequests/selectedContactRequest'])
-        const loading = computed(() => store.getters['ContactRequests/loading'])
+        const data = computed(() => store.getters['ServiceRequests/selectedServiceRequest'])
+        const loading = computed(() => store.getters['ServiceRequests/loading'])
         return {
             headers,
             data,
             loading,
             message,
-            getContactRequest,
+            getServiceRequest,
             viewItem,
             redirectBack,
-            slug
+            slug,
+            serviceType
         }
     }
 })
