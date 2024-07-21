@@ -77,7 +77,7 @@ export default defineComponent({
             { 'view': false },
         ];
 
-        const filterBy = ['title', 'ISBN', 'EISBN'];
+        const filterBy = ['title', 'author', 'ISBN', 'EISBN'];
 
         function openDialog(e) {
             dialog.value = true;

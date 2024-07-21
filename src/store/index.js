@@ -11,6 +11,7 @@ import Users from '../modules/users/store'
 import ContactRequests from '../modules/contact-requests/store'
 import Books from '../modules/books/store'
 import ServiceRequests from '../modules/service-requests/store'
+import Contacts from '../modules/contact/store'
 
 const store = createStore({
 	modules: {
@@ -26,6 +27,7 @@ const store = createStore({
 		ContactRequests,
 		Books,
 		ServiceRequests,
+		Contacts,
 	}
 });
 

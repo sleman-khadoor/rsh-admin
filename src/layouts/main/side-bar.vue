@@ -121,6 +121,11 @@
             icon: 'award',
           },
           {
+            title: 'Contact Information',
+            path: '/contacts',
+            icon: 'contact',
+          },
+          {
             title: 'Contact Us',
             path: '/contact-requests', 
             icon: 'sms',

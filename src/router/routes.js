@@ -10,6 +10,7 @@ import UserModuleRoutes from '@/modules/users/routes'
 import ContactRequestsModuleRoutes from '@/modules/contact-requests/routes'
 import BookModuleRoutes from '@/modules/books/routes'
 import ServiceRequestsModuleRoutes from '@/modules/service-requests/routes'
+import ContactModuleRoutes from '@/modules/contact/routes'
 
 const routes = [
 	{
@@ -28,6 +29,7 @@ const routes = [
 			ContactRequestsModuleRoutes,
 			BookModuleRoutes,
 			ServiceRequestsModuleRoutes,
+			ContactModuleRoutes,
 		],
 	},
 ];
