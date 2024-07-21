@@ -98,12 +98,7 @@ export default defineComponent({
                 form.title = props.selectedBlog.title
                 form.writer = props.selectedBlog.writer
                 form.date = format(new Date(props.selectedBlog.date), 'yyyy-MM-dd');
-                let selectedCategories = []
-                form.categories = []
-                selectedCategories = props.selectedBlog.blog_categories
-                selectedCategories.forEach(element => {
-                    form.categories.push({text: element.title.en, value: element.id})
-                });
+                form.categories = formatCategories();
                 form.lang = props.selectedBlog.lang
                 form.content = props.selectedBlog.content
                 form.cover_image = props.selectedBlog.cover_image
@@ -117,6 +112,17 @@ export default defineComponent({
                 form.cover_image = null
             }
         })
+
+        function formatCategories(){
+            let selectedCategories = []
+            let categories = []
+            selectedCategories = props.selectedBlog.blog_categories
+            selectedCategories.forEach(element => {
+                categories.push({text: element.title.en, value: element.id})
+            });
+            return categories;
+        }
+
         async function getCategories() {
             await store.dispatch('BlogCategories/fetchCategories',{
                 params: {
@@ -175,17 +181,25 @@ export default defineComponent({
         function handleSubmit() {
             if (checkValidation()) {
                 if (Object.keys(props.selectedBlog).length !== 0) {
+                    let categories = [];
+                    let oldCategories = formatCategories();
+                    if(JSON.stringify(form.categories) !== JSON.stringify(oldCategories)){
+                        categories = form.categories;
+                    }
                     if (props.selectedBlog.cover_image === form.cover_image) {
                         let data = {
                             title: form.title,
                             writer: form.writer,
                             date: form.date,
-                            categories: form.categories,
                             lang: form.lang,
                             content: form.content
                         }
+                        if(categories.length !== 0)
+                            data.categories = categories
                         emit('edit', data, 'edit')
                     } else {
+                        if(categories.length === 0)
+                            delete form.categories;
                         emit('edit', form, 'edit')
                     }
                 } else {

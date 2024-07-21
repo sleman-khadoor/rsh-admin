@@ -39,7 +39,7 @@
                         <v-text-field variant="outlined" class="pa-0" label="EISBN*" type="number" v-model="form.EISBN" :rules="rules.EISBN" required></v-text-field>
                     </v-col>
                     <v-col cols="2" md="2" sm="2" class="input-field">
-                        <v-text-field variant="outlined" class="pb-3 date" label="Printing Year*" :rules="rules.printingYear" required type="number"  max_width="100%"  v-model="form.printing_year"></v-text-field>
+                        <v-text-field variant="outlined" class="pb-0 date" label="Printing Year*" :rules="rules.printingYear" required type="number"  max_width="100%"  v-model="form.printing_year"></v-text-field>
                     </v-col>
                     <v-col cols="12" md="6" sm="6">
                         <v-textarea variant="outlined" label="Abstract In English*" v-model="form.abstract.en" rows="5" persistent-hint :rules="rules.enAbstract" required></v-textarea>
@@ -131,18 +131,20 @@ export default defineComponent({
                 form.title.en = props.selectedBook.title?.en
                 form.title.ar = props.selectedBook.title?.ar
                 form.author_id = props.selectedBook.author.id
-                let selectedCategories = []
-                form.categories = []
-                selectedCategories = props.selectedBook.book_categories
-                selectedCategories.forEach(element => {
-                    form.categories.push({ text: element.title.en, value: element.id })
-                });
-                let selectedFormats = []
-                form.formats = []
-                selectedFormats = props.selectedBook.book_formats
-                selectedFormats.forEach(element => {
-                    form.formats.push({ text: element.title, value: element.id })
-                });
+                // let selectedCategories = []
+                // form.categories = []
+                // selectedCategories = props.selectedBook.book_categories
+                // selectedCategories.forEach(element => {
+                //     form.categories.push({ text: element.title.en, value: element.id })
+                // });
+                form.categories = formatCategories();
+                // let selectedFormats = []
+                // form.formats = []
+                // selectedFormats = props.selectedBook.book_formats
+                // selectedFormats.forEach(element => {
+                //     form.formats.push({ text: element.title, value: element.id })
+                // });
+                form.formats = formatBookFormats();
                 form.ISBN = props.selectedBook.ISBN
                 form.EISBN = props.selectedBook.EISBN
                 form.printing_year = props.selectedBook.printing_year
@@ -162,6 +164,27 @@ export default defineComponent({
                 form.abstract.ar = null
             }
         })
+
+        function formatCategories(){
+            let selectedCategories = []
+            let categories = []
+            selectedCategories = props.selectedBook.book_categories
+            selectedCategories.forEach(element => {
+                categories.push({text: element.title.en, value: element.id})
+            });
+            return categories;
+        }
+
+        function formatBookFormats(){
+            let selectedFormats = []
+            let formats = []
+            selectedFormats = props.selectedBook.book_formats
+            selectedFormats.forEach(element => {
+                formats.push({ text: element.title, value: element.id })
+            });
+            return formats;
+        }
+
         async function getAuthors() {
             await store.dispatch('Authors/fetchAuthors', {
                     params: {
@@ -251,6 +274,16 @@ export default defineComponent({
         function handleSubmit() {
             if (checkValidation()) {
                 if (Object.keys(props.selectedBook).length !== 0) {
+                    let categories = [];
+                    let oldCategories = formatCategories();
+                    if(JSON.stringify(form.categories) !== JSON.stringify(oldCategories)){
+                        categories = form.categories;
+                    }
+                    let formats = [];
+                    let oldFormats = formatBookFormats();
+                    if(JSON.stringify(form.formats) !== JSON.stringify(oldFormats)){
+                        formats = form.formats;
+                    }
                     if (props.selectedBook.cover_image === form.cover_image) {
                         let data = {
                             title: {
@@ -258,8 +291,6 @@ export default defineComponent({
                                 ar: form.title.ar,
                             },
                             author_id: form.author_id,
-                            categories: form.categories,
-                            formats: form.formats,
                             ISBN: form.ISBN,
                             EISBN: form.EISBN,
                             printing_year: form.printing_year,
@@ -268,8 +299,16 @@ export default defineComponent({
                                 ar: form.abstract.ar,
                             },
                         }
+                        if(categories.length !== 0)
+                            data.categories = categories
+                        if(formats.length !== 0)
+                            data.formats = formats
                         emit('edit', data, 'edit')
                     } else {
+                        if(categories.length === 0)
+                            delete form.categories;
+                        if(formats.length === 0)
+                            delete form.formats;
                         emit('edit', form, 'edit')
                     }
                 } else {

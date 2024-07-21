@@ -92,12 +92,7 @@ export default defineComponent({
                 form.username = props.selectedUser.username
                 form.first_name = props.selectedUser.first_name
                 form.last_name = props.selectedUser.last_name
-                let selectedRoles = []
-                form.roles = []
-                selectedRoles = props.selectedUser.roles
-                selectedRoles.forEach(element => {
-                    form.roles.push({text: element.name, value: element.id})
-                });
+                form.roles = formatRoles();
                 form.password = null
                 form.password_confirmation = null
             } else {
@@ -109,6 +104,17 @@ export default defineComponent({
                 form.password_confirmation = null
             }
         })
+
+        function formatRoles(){
+            let selectedRoles = []
+            let roles = []
+            selectedRoles = props.selectedUser.roles
+            selectedRoles.forEach(element => {
+                roles.push({text: element.name, value: element.id})
+            });
+            return roles;
+        }
+
         async function getRoles() {
             await store.dispatch('Users/fetchRoles',{
                 params: {
@@ -142,7 +148,14 @@ export default defineComponent({
 
         function handleSubmit() {
             if (checkValidation()) {
+                let roles = [];
+                let oldRoles = formatRoles();
+                if(JSON.stringify(form.roles) !== JSON.stringify(oldRoles)){
+                    roles = form.roles;
+                }
                 if (Object.keys(props.selectedUser).length !== 0) {
+                    if(roles.length === 0)
+                        delete form.roles;
                     emit('edit', form, 'edit');
                 } else {
                     emit('add', form, 'add');
