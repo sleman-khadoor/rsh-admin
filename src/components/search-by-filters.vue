@@ -1,7 +1,12 @@
 <template>
 <v-row class="justify-center">
     <v-col lg="8" md="7" sm="12" class="px-lg-0 p-md-0">
-        <v-text-field class="remove-shadow" label="Search.." :hide-details="true" v-model="search.value" density="comfortable" variant="solo-filled">
+        <v-select v-if="search.key === 'category'" class="remove-shadow" chips :menu-props="{ offsetY: true, maxHeight: '200px' }" label="Search.." multiple :items="props.selectItems" item-value="value" item-title="text" :hide-details="true" v-model="search.value" density="comfortable" variant="solo-filled">
+            <template v-slot:prepend-inner>
+                <img width="27" height="27" src="@/assets/icons/search-normal.svg" class="my-auto" />
+            </template>
+        </v-select>
+        <v-text-field v-else class="remove-shadow" label="Search.." :hide-details="true" v-model="search.value" density="comfortable" variant="solo-filled">
             <template v-slot:prepend-inner>
                 <img width="27" height="27" src="@/assets/icons/search-normal.svg" class="my-auto" />
             </template>
@@ -20,12 +25,11 @@
 </v-row>
 </template>
 
-  
 <script>
 import { defineComponent, ref, watch, onMounted } from 'vue';
 
 export default defineComponent({
-    props: ['items'],
+    props: ['items', 'selectType', 'selectItems'],
 
     setup(props, { emit }) {
         let search = ref({
@@ -51,8 +55,21 @@ export default defineComponent({
         watch(
             search,
             (newV) => {
-                const value = JSON.stringify(newV);
-                emit('fetchData', JSON.parse(value));
+                let value = {};
+                if (search.value.key == 'category') {
+
+                    let selected = newV.value;
+                    if (Array.isArray(selected)) {
+                        selected.forEach((item, index) => {
+                            value[`filter[${props.selectType}][${index}]`] = item
+                        });
+                        emit('fetchData', { value: {}, selectSearch: value });
+                    }
+                } else {
+                    value = JSON.stringify(newV);
+                    value = JSON.parse(value)
+                    emit('fetchData', { value: value, selectSearch: {} });
+                }
             }, { deep: true }
         );
 
@@ -64,7 +81,6 @@ export default defineComponent({
 });
 </script>
 
-  
 <style>
 .remove-shadow .v-field--variant-solo-filled {
     background: #f8f8f8 !important;

@@ -4,13 +4,13 @@
         <div class="d-flex flex-row-reverse pa-4">
             <v-row class="py-2 px-lg-16 px-md-7 px-sm-3 justify-center">
                 <v-col lg="9" md="10" sm="12">
-                    <SearchByFilters :items="filterBy" @fetchData="fetchData(1,$event)"/>
+                    <SearchByFilters :selectItems="categories" selectType="blog_category" :items="filterBy" @fetchData="fetchData(1,$event)"/>
                 </v-col>
                 <v-col lg="3" md="2" sm="12" class="px-lg-0 px-md-0">
                     <v-btn class="text-none text-white font-weight-regular" height="47" width="180" :text="`Add Blog`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
                 </v-col>
             </v-row>
-            <BlogDialog :dialog="dialog" :loading="loading" :selectedBlog="selectedBlog" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
+            <BlogDialog :categories="categories" :dialog="dialog" :loading="loading" :selectedBlog="selectedBlog" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
             <DeleteBlogDialog :deleteDialog="deleteDialog" :loading="loading" :selectedBlog="selectedBlog" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
         </div>
         <DataTable :headers="headers" itemKey="slug" :actionsTable="actionsTable" :data="data" :meta="meta" :loading="loading" @OpenDialog="openDialog($event)" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)" />
@@ -60,7 +60,7 @@ export default defineComponent({
             { 'view': false },
         ];
         
-        const filterBy = ['title', 'writer'];
+        const filterBy = ['title', 'writer', 'category'];
 
         function openDialog(e) {
             dialog.value = true;
@@ -70,6 +70,21 @@ export default defineComponent({
                 selectedBlog.value = ''
             }
         }
+
+        async function getCategories() {
+            await store.dispatch('BlogCategories/fetchCategories',{
+                params: {
+                    perPage: 1000
+                }
+            })
+                .then(response => {
+                    console.log('Add response:', response);
+            });
+        }
+        const categories = computed(() => store.getters['BlogCategories/categories'].map((category) => ({
+            text: category.title.en,
+            value: category.id
+        })))
 
         function openDeleteDialog(e) {
             deleteDialog.value = true;
@@ -112,13 +127,14 @@ export default defineComponent({
             }
         }
 
-        function fetchData(currentPage, search = {}) {
+        function fetchData(currentPage, search = {} ) {
             console.log('currentPage', currentPage);
             store.dispatch('Blogs/fetchBlogs', {
                 params: {
                     page: currentPage ? currentPage : 1,
                     perPage: 6,
-                    [`filter[${search.key}]`]: search.value,
+                    [`filter[${search.value?.key}]`]: search.value?.value,
+                    ...search.selectSearch,
                     [`include[]`]: 'blogCategories',
                 }
             });
@@ -134,6 +150,7 @@ export default defineComponent({
         }
         onMounted(() => {
             fetchData()
+            getCategories()
         })
         watch(dialog, (newV) => {
             console.log(newV);
@@ -166,7 +183,8 @@ export default defineComponent({
             meta,
             loading,
             actionsTable,
-            filterBy
+            filterBy,
+            categories
         }
     }
 })

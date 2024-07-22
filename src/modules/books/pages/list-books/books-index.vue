@@ -4,13 +4,13 @@
         <div class="d-flex flex-row-reverse pa-4">
             <v-row class="py-2 px-lg-16 px-md-7 px-sm-3 justify-center">
                 <v-col lg="9" md="10" sm="12">
-                    <SearchByFilters :items="filterBy" @fetchData="fetchData(1,$event)" />
+                    <SearchByFilters :selectItems="categories" selectType="book_category" :items="filterBy" @fetchData="fetchData(1,$event)" />
                 </v-col>
                 <v-col lg="3" md="2" sm="12" class="px-lg-0 px-md-0">
                     <v-btn class="text-none text-white font-weight-regular" height="47" width="180" :text="`Add Book`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
                 </v-col>
             </v-row>
-            <BookDialog :dialog="dialog" :loading="loading" :selectedBook="selectedBook" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
+            <BookDialog :categories="categories" :dialog="dialog" :loading="loading" :selectedBook="selectedBook" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
             <DeleteBookDialog :deleteDialog="deleteDialog" :loading="loading" :selectedBook="selectedBook" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
         </div>
         <DataTable :headers="headers" itemKey="slug" :actionsTable="actionsTable" :data="data" :meta="meta" :loading="loading" @OpenDialog="openDialog($event)" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)" @ViewReviews="viewReviews($event)" @ViewAwards="viewAwards($event)" />
@@ -77,7 +77,23 @@ export default defineComponent({
             { 'view': false },
         ];
 
-        const filterBy = ['title', 'author', 'ISBN', 'EISBN'];
+        const filterBy = ['title', 'author', 'category', 'ISBN', 'EISBN'];
+
+        async function getCategories() {
+            await store.dispatch('BookCategories/fetchCategories', {
+                    params: {
+                        perPage: 1000
+                    }
+                })
+                .then(response => {
+                    console.log('Add response:', response);
+                });
+        }
+
+        const categories = computed(() => store.getters['BookCategories/categories'].map((category) => ({
+            text: category.title.en,
+            value: category.id
+        })))
 
         function openDialog(e) {
             dialog.value = true;
@@ -135,14 +151,15 @@ export default defineComponent({
                 params: {
                     page: currentPage ? currentPage : 1,
                     perPage: 6,
-                    [`filter[${search.key}]`]: search.value,
+                    [`filter[${search.value?.key}]`]: search.value?.value,
+                    ...search.selectSearch,
                     [`include[0]`]: 'bookCategories',
                     [`include[1]`]: 'author',
                     [`include[2]`]: 'formats',
                 }
             });
         }
-
+        
         function closeDialog(e, eventType) {
             console.log(e);
             if (eventType == 'add' || eventType == 'edit') {
@@ -164,6 +181,7 @@ export default defineComponent({
 
         onMounted(() => {
             fetchData()
+            getCategories()
         })
         watch(dialog, (newV) => {
             console.log(newV);
@@ -199,6 +217,7 @@ export default defineComponent({
             filterBy,
             viewReviews,
             viewAwards,
+            categories,
         }
     }
 })

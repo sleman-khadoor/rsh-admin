@@ -27,7 +27,7 @@
                         <v-select :menu-props="{ offsetY: true, maxHeight: '200px' }" variant="outlined" label="author*" :items="authors" v-model="form.author_id" :rules="rules.author" item-title="text" item-value="value" required></v-select>
                     </v-col>
                     <v-col cols="8" md="8" sm="8" class="input-field">
-                        <v-select class="categories" chips :menu-props="{ offsetY: true, maxHeight: '200px' }" variant="outlined" label="categories*" multiple :items="categories" v-model="form.categories" :rules="rules.categories" item-title="text" item-value="value" required></v-select>
+                        <v-select class="categories" chips :menu-props="{ offsetY: true, maxHeight: '200px' }" variant="outlined" label="categories*" multiple :items="props.categories" v-model="form.categories" :rules="rules.categories" item-title="text" item-value="value" required></v-select>
                     </v-col>
                     <v-col cols="4" md="4" sm="4" class="input-field">
                         <v-select class="categories" chips :menu-props="{ offsetY: true, maxHeight: '200px' }" variant="outlined" label="Book format*" multiple :items="formats" v-model="form.formats" :rules="rules.formats" item-title="text" item-value="value" required></v-select>
@@ -68,7 +68,7 @@ import { defineComponent, onUpdated, reactive, computed, ref, onMounted } from '
 import { useStore } from 'vuex';
 
 export default defineComponent({
-    props: ['dialog', 'selectedBook', 'eventType', 'loading'],
+    props: ['dialog', 'selectedBook', 'eventType', 'loading', 'categories'],
     data: () => ({
         rules: {
             enTitle: [
@@ -131,19 +131,7 @@ export default defineComponent({
                 form.title.en = props.selectedBook.title?.en
                 form.title.ar = props.selectedBook.title?.ar
                 form.author_id = props.selectedBook.author.id
-                // let selectedCategories = []
-                // form.categories = []
-                // selectedCategories = props.selectedBook.book_categories
-                // selectedCategories.forEach(element => {
-                //     form.categories.push({ text: element.title.en, value: element.id })
-                // });
                 form.categories = formatCategories();
-                // let selectedFormats = []
-                // form.formats = []
-                // selectedFormats = props.selectedBook.book_formats
-                // selectedFormats.forEach(element => {
-                //     form.formats.push({ text: element.title, value: element.id })
-                // });
                 form.formats = formatBookFormats();
                 form.ISBN = props.selectedBook.ISBN
                 form.EISBN = props.selectedBook.EISBN
@@ -195,16 +183,6 @@ export default defineComponent({
                     console.log('Add response:', response);
                 });
         }
-        async function getCategories() {
-            await store.dispatch('BookCategories/fetchCategories', {
-                    params: {
-                        perPage: 1000
-                    }
-                })
-                .then(response => {
-                    console.log('Add response:', response);
-                });
-        }
         async function getFormats() {
             await store.dispatch('Books/fetchFormats', {
                     params: {
@@ -220,11 +198,6 @@ export default defineComponent({
             value: author.id
         })))
 
-        const categories = computed(() => store.getters['BookCategories/categories'].map((category) => ({
-            text: category.title.en,
-            value: category.id
-        })))
-
         const formats = computed(() => store.getters['Books/formats'].map((format) => ({
             text: format.title,
             value: format.id
@@ -237,7 +210,6 @@ export default defineComponent({
 
         onMounted(() => {
             getAuthors()
-            getCategories()
             getFormats()
         })
 
@@ -323,7 +295,6 @@ export default defineComponent({
             formv,
             title,
             authors,
-            categories,
             formats,
             languages,
             clickInputFile,

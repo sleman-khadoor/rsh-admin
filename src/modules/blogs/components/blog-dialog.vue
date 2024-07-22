@@ -14,7 +14,7 @@
                         <v-text-field variant="outlined" class="pb-0" label="Author Name*" :rules="rules.writer" required v-model="form.writer"></v-text-field>
                     </v-col>
                     <v-col cols="12" md="12" sm="12" class="input-field">
-                        <v-select class="categories" chips :menu-props="{ offsetY: true, maxHeight: '200px' }" variant="outlined" label="categories*" multiple :items="categories" v-model="form.categories" :rules="rules.categories" item-title="text" item-value="value" required></v-select>
+                        <v-select class="categories" chips :menu-props="{ offsetY: true, maxHeight: '200px' }" variant="outlined" label="categories*" multiple :items="props.categories" v-model="form.categories" :rules="rules.categories" item-title="text" item-value="value" required></v-select>
                     </v-col>
                     <v-col cols="12" md="5" sm="5" class="input-field">
                         <v-select class="pb-3" variant="outlined" label="language*" :items="languages" item-title="text" item-value="value" v-model="form.lang" :rules="rules.lang" required></v-select>
@@ -49,12 +49,11 @@
 
 <script>
 import { baseUrl } from '@/utils/axios';
-import { defineComponent, onUpdated, reactive, computed, ref, onMounted } from 'vue'
-import { useStore } from 'vuex';
+import { defineComponent, onUpdated, reactive, computed, ref } from 'vue'
 import { format } from 'date-fns';
 
 export default defineComponent({
-    props: ['dialog', 'selectedBlog', 'eventType', 'loading'],
+    props: ['dialog', 'selectedBlog', 'eventType', 'loading', 'categories'],
     data: () => ({
         rules: {
             title: [
@@ -80,7 +79,6 @@ export default defineComponent({
         baseUrl
     }),
     setup(props, { emit }) {
-        const store = useStore();
         let form = reactive({
             title: null,
             writer: null,
@@ -123,29 +121,10 @@ export default defineComponent({
             return categories;
         }
 
-        async function getCategories() {
-            await store.dispatch('BlogCategories/fetchCategories',{
-                params: {
-                    perPage: 1000
-                }
-            })
-                .then(response => {
-                    console.log('Add response:', response);
-            });
-        }
-        const categories = computed(() => store.getters['BlogCategories/categories'].map((category) => ({
-            text: category.title.en,
-            value: category.id
-        })))
-
         const languages = computed(() => ['English', 'Arabic'].map(item => ({
             text: item,
             value: item == 'English'? 'en':'ar'
         })))
-        
-        onMounted(() => {
-            getCategories()
-        })
 
         const title = computed(() => {
             return Object.keys(props.selectedBlog).length !== 0 ? `Edit Blog` : `Add Blog`;
@@ -213,7 +192,6 @@ export default defineComponent({
             form,
             formv,
             title,
-            categories,
             languages,
             clickInputFile,
             printFiles,
