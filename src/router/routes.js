@@ -11,6 +11,7 @@ import ContactRequestsModuleRoutes from '@/modules/contact-requests/routes'
 import BookModuleRoutes from '@/modules/books/routes'
 import ServiceRequestsModuleRoutes from '@/modules/service-requests/routes'
 import ContactModuleRoutes from '@/modules/contact/routes'
+import NewsModuleRoutes from '@/modules/news/routes'
 
 const routes = [
 	{
@@ -30,6 +31,7 @@ const routes = [
 			BookModuleRoutes,
 			ServiceRequestsModuleRoutes,
 			ContactModuleRoutes,
+			NewsModuleRoutes,
 		],
 	},
 ];

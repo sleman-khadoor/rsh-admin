@@ -12,6 +12,7 @@ import ContactRequests from '../modules/contact-requests/store'
 import Books from '../modules/books/store'
 import ServiceRequests from '../modules/service-requests/store'
 import Contacts from '../modules/contact/store'
+import News from '../modules/news/store'
 
 const store = createStore({
 	modules: {
@@ -28,6 +29,7 @@ const store = createStore({
 		Books,
 		ServiceRequests,
 		Contacts,
+		News,
 	}
 });
 
