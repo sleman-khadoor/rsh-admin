@@ -1,6 +1,6 @@
 // import Vue from 'vue';
 import { createRouter, createWebHistory} from 'vue-router';
-// import authHelper from '@/utils/auth-helper';
+import authHelper from '@/utils/auth-helper';
 import { store } from '../store';
 import routes from './routes';
 // import { const_roles } from '@/utils/authorization-helper';
@@ -38,9 +38,9 @@ export default function (/* { store, ssrContext } */) {
 				next('/reset-password');
 			}
 		} else {
-			// store
-			// 	.dispatch('Auth/getAccessToken')
-			// 	.then(() => {
+			store
+				.dispatch('Auth/getAccessToken')
+				.then(() => {
 					if (whiteList.includes(to.path)) {
 						// if is logged in, redirect to the home page
 						next('/');
@@ -52,16 +52,15 @@ export default function (/* { store, ssrContext } */) {
 							}
 						}
 					}
-				// )
-				// .catch(() => {
-				// 	if (whiteList.includes(to.path)) {
-				// 		next();
-				// 	} else {
-				// 		authHelper.reset();
-				// 		next('/unauth');
-				// 	}
-				// });
-		// }
+				).catch(() => {
+					if (whiteList.includes(to.path)) {
+						next();
+					} else {
+						authHelper.reset();
+						next('/login');
+					}
+				});
+		}
 	});
 
 	return router;

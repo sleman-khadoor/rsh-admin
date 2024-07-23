@@ -1,5 +1,6 @@
 class AuthHelper {
 	setAccessToken(token) {
+		console.log('token auth helper', token);
 		localStorage.setItem('accessToken', token);
 	}
 
@@ -31,7 +32,7 @@ class AuthHelper {
 
 	reset() {
 		localStorage.removeItem('accessToken');
-		localStorage.removeItem('refreshToken');
+		localStorage.removeItem('user');
 	}
 
 	resetAll() {
