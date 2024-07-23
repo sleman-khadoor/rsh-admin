@@ -1,3 +1,4 @@
+import LoginModuleRoutes from '@/modules/login/routes'
 import BooksModuleRoutes from '@/modules/books/routes'
 import AuthorsModuleRoutes from '@/modules/authors/routes'
 import BookCategoriesModuleRoutes from '@/modules/book-categories/routes'
@@ -16,8 +17,9 @@ import NewsModuleRoutes from '@/modules/news/routes'
 const routes = [
 	{
 		path: '/',
-		component: () => import(/* webpackChunkName: "MainLayout" */ '@/layouts/main/app-index.vue'),
+		// component: () => import(/* webpackChunkName: "MainLayout" */ '@/layouts/main/app-index.vue'),
 		children: [
+			LoginModuleRoutes,
 			BooksModuleRoutes,
 			AuthorsModuleRoutes,
 			BookCategoriesModuleRoutes,
