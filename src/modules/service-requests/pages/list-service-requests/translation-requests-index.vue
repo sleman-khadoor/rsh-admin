@@ -109,7 +109,7 @@ export default defineComponent({
                 params: {
                     page: currentPage ? currentPage : 1,
                     perPage: 6,
-                    [`filter[${search.key}]`]: search.value,
+                    [`filter[${search.value?.key}]`]: search.value?.value,
                     [`filter[service_name]`]: 'translation_service',
                 }
             });
