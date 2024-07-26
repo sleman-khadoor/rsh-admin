@@ -22,8 +22,25 @@
           ></v-progress-circular>
     </div>
   </div>
+  <div v-else-if="data.length === 0">
+    <v-data-table 
+    hide-default-footer
+    hover
+    height="50px">
+    <thead class="bg-white-grey">
+        <tr>
+            <th v-for="header in headers" :key="header.title" class="text-center font-weight-bold">
+                {{ header.title }}
+            </th>
+        </tr>
+    </thead>
+    </v-data-table>
+    <div class="d-flex flex-column justify-center align-center" style="height: 270px" >
+        <img  width="20%" src="@/assets/icons/no-data.svg">
+    </div>
+  </div>
     <v-data-table
-      v-else 
+      v-else
       hide-default-footer
       hover
       height="320px">

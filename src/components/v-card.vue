@@ -1,10 +1,17 @@
 <template>
   <div>
     <div v-if="props.loading || (!props.data && props.cardType!='achievements')">
-      <div class="d-flex justify-center align-center" style="height: 270px">
+      <div class="d-flex justify-center align-center" style="height: 300px">
         <v-progress-circular :size="50" :width="7" :color="$colors.choco" indeterminate></v-progress-circular>
       </div>
     </div>
+    
+    <div v-else-if="data.length === 0">
+      <div class="d-flex flex-column justify-center align-center">
+        <img  width="30%" src="@/assets/icons/no-data.svg">
+      </div>
+    </div>
+    
     <v-container class="container" v-else>
       <v-row dense class="pl-4 pr-4 align-content-stretch">
         <v-col v-for="(item, index ) in props.data" :key="item.id" cols="12" md="6" sm="6" class="input-field pa-1">
@@ -12,10 +19,7 @@
             <v-card-text>
               {{ langs[index] === 'en' ? truncatedText(item, 'en')  : truncatedText(item, 'ar')}}
               <p v-if="cardType == 'reviews'" class="font-dark-blue font-weight-bold" >{{item.username.en}}</p>
-
             </v-card-text>
-            <!-- <div >
-            </div> -->
             <v-card-actions class="pl-3 d-flex d-flex-column align-center justify-space-between card-actions">
               <div>
                 <img v-if="actionsTable[0]['edit']" @click="$emit('OpenDialog', item)" width="30px" src="@/assets/icons/edit.svg" class="px-1 cursor-pointer" />
