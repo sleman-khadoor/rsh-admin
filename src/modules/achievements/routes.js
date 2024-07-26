@@ -1,9 +1,12 @@
 import ModuleLayout from './module-layout.vue';
-
+import roles from '@/utils/roles.js'
 export default {
 	path: '/',
 	component: ModuleLayout,
 	redirect: '/achievements',
+	meta: {
+		roles: [roles.super_admin],
+	},
 	children: [
 		{
 			path: 'achievements',

@@ -1,7 +1,7 @@
 <template>
-    <v-row dense class="justify-center align-center main" style="height: 100vh;">
-        <!-- <v-col cols="3" md="4" sm="6" class="text-center"> -->
-        <div style="width: 40%; text-align: center">
+    <v-row dense class="justify-center align-center main"  style="height: 100vh;">
+        <v-col cols="3" md="3" sm="6" class="text-center">
+        <!-- <div style="width: 40%; text-align: center"> -->
             <img src="@/assets/white-logo.svg" class="pb-7">
             <v-text-field color="white" v-model="form.username" variant="outlined" class="input-field pb-2" label="User Name*" required>
                 <template v-slot:prepend-inner>
@@ -15,8 +15,8 @@
             </v-text-field>
             <v-btn color="white" @click="submitHandler" height="43px" class="font-dark-blue font-weight-bold" block>LOGIN</v-btn>
             <p class="font-white-grey pt-2 forget-password">Forget password?</p>
-        </div>
-        <!-- </v-col> -->
+        <!-- </div> -->
+        </v-col>
     </v-row>
 </template>
 <script>

@@ -1,11 +1,7 @@
 import Login from './pages/login/store';
-import ResetPassword from './pages/reset-password/store';
-import TwoFactorAuth from './pages/two-factor-auth/store';
 import authHelper from '@/utils/auth-helper';
 import AuthService from './service';
 import { api as axiosInstance } from '@/utils/axios';
-// import { baseUrl } from '@/utils/axios'
-// const refreshTokenAPI = baseUrl + 'api/refresh';
 
 function getState() {
 	return {
@@ -13,6 +9,7 @@ function getState() {
 		accessToken: authHelper.getRefreshToken(),
 		refreshToken: authHelper.getAccessToken(),
 		gettingAccessTokenPromise: null,
+		roles: [],
 	};
 }
 
@@ -20,8 +17,6 @@ export default {
 	namespaced: true,
 	modules: {
 		Login,
-		ResetPassword,
-		TwoFactorAuth,
 	},
 	state: getState,
 	getters: {
@@ -45,6 +40,10 @@ export default {
 			console.log('token auth helper', token);
 			authHelper.setAccessToken(token);
 			axiosInstance.defaults.headers['Authorization'] = 'Bearer ' + authHelper.getAccessToken();
+		},
+		setRoles(state, roles) {
+			state.roles = roles;
+			authHelper.setRoles(roles);
 		},
 		setRefreshToken(state, token) {
 			state.refreshToken = token;
@@ -77,38 +76,6 @@ export default {
 				}
 			}
 		},
-		// getNewAccessToken({ state, commit }) {
-		// 	if (state.gettingAccessTokenPromise) {
-		// 		return state.gettingAccessTokenPromise;
-		// 	}
-		// 	const refreshToken = authHelper.getRefreshToken();
-		// 	if (!refreshToken) {
-		// 		return Promise.reject();
-		// 	}
-
-		// 	const promise = unauthenticatedAxiosInstance.post(refreshTokenAPI, {
-		// 		refreshToken,
-		// 	});
-		// 	commit('setAccessTokenPromise', promise);
-
-		// 	promise
-		// 		.then((res) => {
-		// 			commit('setAccessToken', res.data.data.token);
-		// 			if (res.data.data.refreshToken) {
-		// 				commit('setRefreshToken', res.data.data.refreshToken);
-		// 			}
-		// 			return authHelper.getAccessToken();
-		// 		})
-		// 		.catch((error) => {
-		// 			console.warn('failed to get new access token');
-		// 			// dispatch('redirectToLogin');
-		// 			return Promise.reject(error);
-		// 		})
-		// 		.finally(() => {
-		// 			commit('setAccessTokenPromise', null);
-		// 		});
-		// 	return promise;
-		// },
 		async logout({ commit }) {
 			commit('setLoading', true);
 			try {

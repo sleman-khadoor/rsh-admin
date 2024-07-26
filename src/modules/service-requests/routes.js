@@ -1,9 +1,13 @@
 import ModuleLayout from './module-layout.vue';
+import roles from '@/utils/roles.js'
 
 export default {
 	path: '/',
 	component: ModuleLayout,
 	redirect: '/contact-requests',
+	meta: {
+		roles: [roles.super_admin, roles.services_admin],
+	},
 	children: [
 		{
 			path: 'service-requests/translation',

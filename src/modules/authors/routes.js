@@ -1,9 +1,13 @@
 import ModuleLayout from './module-layout.vue';
+import roles from '@/utils/roles.js'
 
 export default {
 	path: '/',
 	component: ModuleLayout,
 	redirect: '/authors',
+	meta: {
+		roles: [roles.super_admin, roles.authors_admin],
+	},
 	children: [
 		{
 			path: 'authors',

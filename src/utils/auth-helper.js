@@ -1,12 +1,10 @@
 class AuthHelper {
 	setAccessToken(token) {
-		console.log('token auth helper', token);
 		localStorage.setItem('accessToken', token);
 	}
-
+	
 	getAccessToken() {
 		let token = localStorage.getItem('accessToken');
-
 		return token;
 	}
 
@@ -16,7 +14,6 @@ class AuthHelper {
 
 	getRefreshToken() {
 		let token = localStorage.getItem('refreshToken');
-
 		return token;
 	}
 
@@ -26,7 +23,6 @@ class AuthHelper {
 
 	getTempAccessToken() {
 		let token = localStorage.getItem('tempAccessToken');
-
 		return token;
 	}
 

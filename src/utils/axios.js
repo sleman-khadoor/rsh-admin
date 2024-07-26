@@ -1,4 +1,3 @@
-// import store from '@/modules/authors/store';
 import axios from 'axios';
 import notify from '@/utils/notify'
 import authHelper from './auth-helper';
@@ -6,18 +5,16 @@ import { router } from '@/router';
 
 const baseUrl = 'http://127.0.0.1:8000/'
 var api = axios.create({
-  baseURL: baseUrl + 'api/auth/',
+  baseURL: baseUrl + 'api/admin/',
   headers: {
     'Content-Type': 'multipart/form-data',
     Authorization: `Bearer ${authHelper.getAccessToken()}`,
     locale: 'en'
   }
 });
-const unauthenticatedAxiosInstance = axios.create({ baseURL: baseUrl + 'api/auth/' });
+const unauthenticatedAxiosInstance = axios.create({ baseURL: baseUrl + 'api/admin/' });
 
 api.interceptors.response.use(function (response) {
-  // Any status code that lie within the range of 2xx cause this function to trigger
-  // Do something with response data
 
   return response
 }, function (error) {

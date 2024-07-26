@@ -9,13 +9,5 @@ export default {
 			path: 'login',
 			component: () => import('./pages/login/login-index.vue'),
 		},
-		// {
-		// 	path: 'reset-password',
-		// 	component: () => import('./pages/reset-password'),
-		// },
-		// {
-		// 	path: '2fa',
-		// 	component: () => import('./pages/two-factor-auth'),
-		// },
 	],
 };

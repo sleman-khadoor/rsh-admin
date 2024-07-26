@@ -7,17 +7,17 @@
         <img
             class="rounded-img"
             alt="Avatar"
-            src="@/assets/images/auther-photo.jpg"
+            src="@/assets/images/auth-user.png"
         />
         <div class="font-weight-bold size-22 mx-2 ">
-          User Name
+          {{user.first_name + ' ' + user.last_name}}
         </div>
-        <img @click="submitLogoutHandler" src="@/assets/icons/manage.svg" class="my-auto"/>
+        <img @click="submitLogoutHandler" src="@/assets/icons/logout.svg" class="my-auto"/>
     </template>
   </v-app-bar>
 </template>
 <script>
-import { defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex'
 import authHelper from '@/utils/auth-helper';
@@ -25,6 +25,7 @@ export default defineComponent({
     setup() {
         const store = useStore();
         const router = useRouter();
+        const user =  computed(() => store.getters['User/user']);
         function submitLogoutHandler() {
             store.dispatch('Auth/logout')
                     .then(response => {
@@ -34,7 +35,8 @@ export default defineComponent({
                     });
         }
         return {
-            submitLogoutHandler
+            submitLogoutHandler,
+            user
         }
     },
 })

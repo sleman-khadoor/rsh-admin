@@ -22,12 +22,8 @@ export default {
 			commit('setLoading', true);
 			try {
 				const { data } = await AuthService.login(payload);
-				console.log('object login data: ', data);
-				dispatch('User/storeUser', data.data.user, { root: true });
-				// dispatch('User/setExpiredTokenFlag', data.additional.token_expires_at, { root: true });
-				console.log('token auth helper', data.data.token);
-				commit('Auth/setAccessToken', data.data.token, { root: true });
-				// dispatch('User/storeDepartments', data.additional.departments, { root: true });
+				dispatch('User/storeUser', data.user, { root: true });
+				commit('Auth/setAccessToken', data.token, { root: true });
 			} finally {
 				commit('setLoading', false);
 			}
