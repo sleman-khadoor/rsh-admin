@@ -15,6 +15,7 @@
 <script>
 import SideBar from './side-bar.vue';
 // import SideBar from './main/side-bar.vue';
+import { mapActions } from 'vuex'
 import TopBar from './top-bar.vue';
 
 export default {
@@ -22,6 +23,23 @@ export default {
     SideBar,
     // SideBar,
     TopBar
-  }
+  },
+  data() {
+    return {
+      unreadNotificationInterval: null,
+    }
+  },
+  methods: {
+    ...mapActions('Core', ['showNotification']),
+  },
+  async created() {
+    this.showNotification();
+		this.unreadNotificationInterval = setInterval(() => {
+			this.showNotification();
+		}, 30000);
+  },
+  unmounted() {
+		clearInterval(this.unreadNotificationInterval);
+	},
 };
 </script>
