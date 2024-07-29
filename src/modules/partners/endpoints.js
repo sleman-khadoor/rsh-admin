@@ -1,2 +1,2 @@
-export const PARTNER = `partners`;
-export const PARTNER_BY_SLUG = (slug) => `partners/${slug}`;
+export const PARTNER = `admin/partners`;
+export const PARTNER_BY_SLUG = (slug) => `admin/partners/${slug}`;

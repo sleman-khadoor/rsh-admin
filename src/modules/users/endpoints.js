@@ -1,4 +1,4 @@
-export const USERS = `users`;
-export const USERS_BY_SLUG = (slug) => `users/${slug}`;
-export const ROLES = `roles`;
-export const RESET_PASSWORD = `reset-password`;
+export const USERS = `admin/users`;
+export const USERS_BY_SLUG = (slug) => `admin/users/${slug}`;
+export const ROLES = `admin/roles`;
+export const RESET_PASSWORD = `admin/reset-password`;

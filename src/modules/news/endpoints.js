@@ -1,2 +1,2 @@
-export const NEWS = `news`;
-export const NEWS_BY_SLUG = (slug) => `news/${slug}`;
+export const NEWS = `admin/news`;
+export const NEWS_BY_SLUG = (slug) => `admin/news/${slug}`;

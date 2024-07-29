@@ -5,14 +5,14 @@ import { router } from '@/router';
 
 const baseUrl = 'http://127.0.0.1:8000/'
 var api = axios.create({
-  baseURL: baseUrl + 'api/admin/',
+  baseURL: baseUrl + 'api/',
   headers: {
     'Content-Type': 'multipart/form-data',
     Authorization: `Bearer ${authHelper.getAccessToken()}`,
     locale: 'en'
   }
 });
-const unauthenticatedAxiosInstance = axios.create({ baseURL: baseUrl + 'api/admin/' });
+const unauthenticatedAxiosInstance = axios.create({ baseURL: baseUrl + 'api/' });
 
 api.interceptors.response.use(function (response) {
 

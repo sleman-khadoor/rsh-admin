@@ -1,2 +1,2 @@
-export const CONTACT = `contacts`;
-export const CONTACT_BY_SLUG = (slug) => `contacts/${slug}`;
+export const CONTACT = `admin/contacts`;
+export const CONTACT_BY_SLUG = (slug) => `admin/contacts/${slug}`;

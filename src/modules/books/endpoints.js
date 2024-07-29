@@ -1,7 +1,7 @@
-export const BOOKS = `books`;
-export const BOOKS_BY_SLUG = (slug) => `books/${slug}`;
-export const FORMATS = `book-formats`;
-export const BOOK_REVIEWS = `book-reviews`;
-export const BOOK_REVIEWS_BY_SLUG = (slug) => `book-reviews/${slug}`;
-export const BOOK_AWARDS = `book-awards`;
-export const BOOK_AWARDS_BY_SLUG = (slug) => `book-awards/${slug}`;
+export const BOOKS = `admin/books`;
+export const BOOKS_BY_SLUG = (slug) => `admin/books/${slug}`;
+export const FORMATS = `admin/book-formats`;
+export const BOOK_REVIEWS = `admin/book-reviews`;
+export const BOOK_REVIEWS_BY_SLUG = (slug) => `admin/book-reviews/${slug}`;
+export const BOOK_AWARDS = `admin/book-awards`;
+export const BOOK_AWARDS_BY_SLUG = (slug) => `admin/book-awards/${slug}`;

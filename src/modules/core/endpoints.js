@@ -1,1 +1,1 @@
-export const NOTIFICATIONS = `notifications`;
+export const NOTIFICATIONS = `admin/notifications`;
