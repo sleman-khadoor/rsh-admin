@@ -32,13 +32,28 @@ export default function (/* { store, ssrContext } */) {
 						if (canAccess(to)) {
                             next();
 						} else {
-							console.log('rolessssss', store.getters['User/user'].roles[0]?.name);
 							const userRole = store.getters['User/user'].roles[0]?.name;
-							console.log('object here2', userRole);
 							if (userRole.includes(roles.blogs_admin)) {
-								console.log('rolessssss route');
 								next('/blogs');
-							} else {
+							}else if(userRole.includes(roles.about_admin)){
+								next('/contacts');
+							}else if(userRole.includes(roles.authors_admin)){
+								next('/authors');
+							}else if(userRole.includes(roles.books_admin)){
+								next('/books');
+							}else if(userRole.includes(roles.contacts_admin)){
+								next('/contact-requests');
+							}else if(userRole.includes(roles.news_admin)){
+								next('/news');
+							}else if(userRole.includes(roles.partners_admin)){
+								next('/partners');
+							}else if(userRole.includes(roles.represented_authors_admin)){
+								next('/represented-authors');
+							}else if(userRole.includes(roles.services_admin)){
+								next('/service-requests/translation');
+							}else if(userRole.includes(roles.users_admin)){
+								next('/users');
+							}else {
 								next('/');
 							}
 						}

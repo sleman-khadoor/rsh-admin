@@ -14,7 +14,6 @@
                 </template>
             </v-text-field>
             <v-btn color="white" @click="submitHandler" height="43px" class="font-dark-blue font-weight-bold" block>LOGIN</v-btn>
-            <p class="font-white-grey pt-2 forget-password">Forget password?</p>
         <!-- </div> -->
         </v-col>
     </v-row>

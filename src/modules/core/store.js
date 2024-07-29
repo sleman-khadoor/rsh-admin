@@ -40,22 +40,35 @@ export default {
     actions: {
 		async showNotification({ commit }) {
 			try {
-                console.log('nnnnnnnnnnnnnnn');
 				const data = await CoreService.getNotifications();
-                console.log('nnnnnnnnnnnnnnn', data.data[1].type);
 				commit('setUnreadNotificationsStatus', {
+					bookDelivery: data.data.filter((e) => 
+                        e.type === 'book_delivery_service'
+                    )[0]?.count,
+					contentWriting: data.data.filter((e) => 
+                        e.type === 'content_writing_service'
+                    )[0]?.count,
+					creativeEditing: data.data.filter((e) => 
+                        e.type === 'creative_editing_service'
+                    )[0]?.count,
+					literaryAgency: data.data.filter((e) => 
+                        e.type === 'literary_agency_service'
+                    )[0]?.count,
+					organizingEventsAndConferences: data.data.filter((e) => 
+                        e.type === 'organizing_events_conferences_service'
+                    )[0]?.count,
                     marketing: data.data.filter((e) => 
                         e.type === 'marketing_service'
-                    )[0].count,
+                    )[0]?.count,
 					translation: data.data.filter((e) => 
                         e.type === 'translation_service'
-                    )[0].count,
+                    )[0]?.count,
                     proofreading: data.data.filter((e) => 
                         e.type === 'proofreading_service'
-                    )[0].count,
+                    )[0]?.count,
                     contactUs: data.data.filter((e) => 
                         e.type === 'contact_request'
-                    )[0].count,
+                    )[0]?.count,
 				});
 			} catch (error) {
 				console.log(error);
