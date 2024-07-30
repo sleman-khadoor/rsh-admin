@@ -29,18 +29,32 @@
             <h4 class="pb-2 size-16"> Message Content</h4>
             <p class="font-grey">{{ props.itemType =='contact'? props.data?.message : props.data?.description}}</p>
         </v-card-text>
+        <v-container v-if="props.data?.documents">
+            <h4 class="pb-2 size-16">Attachments</h4>
+            <div class="d-flex">
+                <v-col v-for="(attachment, index) in props.data.documents" :key="index" @click="downloadAttachment(attachment)" cols="2" md="2" sm="2" class="pa-0  mr-7">
+                    <div :class="'img-container'" @click="clickInputFile" style="position: relative; height: 200px;">
+                        <div class="w-mc ma-auto h-100 d-flex justify-center align-center pa-2" style="height: 200%; width: 100%;">
+                            <img ref="imgRef" :src="getAttachment(attachment)" class="my-auto" style="width: 100%; height: 100%; object-fit: contain;" />
+                        </div>
+                    </div>
+                </v-col>
+            </div>
+        </v-container>
     </v-card>
 </div>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
+import { baseUrl } from '@/utils/axios';
 
 export default defineComponent({
-
     props: ['headers', 'actionsTable', 'data', 'meta', 'loading', 'itemKey', 'selectedContactRequest', 'itemType'],
+    data() {
+        baseUrl
+    },
     setup(props) {
-
         function itemRouteKey(item) {
             if (props.itemKey == 'translationSlug') {
                 return item.slug.en;
@@ -50,15 +64,47 @@ export default defineComponent({
                 return item.id;
             }
         }
+
+        function getAttachment(attachment) {
+            const extension = this.getFileExtension(attachment.document_link);
+            if (extension === 'pdf') {
+                return '/src/assets/images/pdf.png';
+            }else if (extension === 'docx' || extension === 'doc') {
+                return '/src/assets/images/docx.png';
+            }else if (extension === 'xlsx' || extension === 'xls') {
+                return '/src/assets/images/xlsx.png';
+            }else if (['jpg', 'jpeg', 'png', 'gif'].includes(extension)) {
+                return baseUrl + attachment.document_link;
+            }
+        }
+
+        function getFileExtension(url) {
+            return url.split('.').pop().toLowerCase();
+        }
+
+        function downloadAttachment(attachment) {
+            const download = attachment.document_link;
+            const href = baseUrl + download;
+            const element_link = document.createElement("a");
+            element_link.href = href;
+            element_link.target = "_blank";
+            document.body.appendChild(element_link);
+            element_link.click();
+            document.body.removeChild(element_link);
+        }
+
         return {
             props,
             itemRouteKey,
+            getAttachment,
+            getFileExtension,
+            downloadAttachment,
         }
     },
 })
 </script>
 
-<style>
+<style scoped>
 .v-table--density-default {
     --v-table-header-height: 10px;
     --v-table-row-height: 10px;
@@ -80,5 +126,10 @@ export default defineComponent({
 
 .card {
     min-height: 460px;
+}
+
+.img-container {
+    height: 25vh !important;
+    border: 1px solid rgba(118, 118, 118) !important;
 }
 </style>
