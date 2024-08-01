@@ -113,6 +113,7 @@
                         [`filter[service_name]`]: 'marketing_service',
                     }
                 });
+                store.dispatch('Core/showNotification');
             }
     
             function closeDialog(e, eventType) {

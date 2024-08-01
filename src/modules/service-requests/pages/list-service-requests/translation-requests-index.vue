@@ -113,8 +113,10 @@ export default defineComponent({
                     [`filter[service_name]`]: 'translation_service',
                 }
             });
-        }
+            store.dispatch('Core/showNotification');
 
+        }
+        
         function closeDialog(e, eventType) {
             console.log(e);
             if (eventType == 'add' || eventType == 'edit') {

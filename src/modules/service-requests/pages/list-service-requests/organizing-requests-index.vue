@@ -113,6 +113,7 @@
                         [`filter[service_name]`]: 'organizing_events_conferences_service',
                     }
                 });
+                store.dispatch('Core/showNotification');
             }
     
             function closeDialog(e, eventType) {

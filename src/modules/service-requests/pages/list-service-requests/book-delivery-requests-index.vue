@@ -113,6 +113,7 @@
                         [`filter[service_name]`]: 'book_delivery_service',
                     }
                 });
+                store.dispatch('Core/showNotification');
             }
     
             function closeDialog(e, eventType) {

@@ -113,6 +113,7 @@
                         [`filter[service_name]`]: 'creative_editing_service',
                     }
                 });
+                store.dispatch('Core/showNotification');
             }
     
             function closeDialog(e, eventType) {

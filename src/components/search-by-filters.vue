@@ -46,6 +46,7 @@ export default defineComponent({
         watch(
             () => search.value.key,
             (newKey) => {
+                search.value.value = null;
                 if (newKey === null && props.items.length > 0) {
                     search.value.key = props.items[0];
                 }
@@ -57,14 +58,13 @@ export default defineComponent({
             (newV) => {
                 let value = {};
                 if (search.value.key == 'category') {
-
                     let selected = newV.value;
                     if (Array.isArray(selected)) {
                         selected.forEach((item, index) => {
                             value[`filter[${props.selectType}][${index}]`] = item
                         });
-                        emit('fetchData', { value: {}, selectSearch: value });
                     }
+                    emit('fetchData', { value: {}, selectSearch: value });
                 } else {
                     value = JSON.stringify(newV);
                     value = JSON.parse(value)

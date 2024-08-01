@@ -40,7 +40,7 @@
                         </v-list-item>
                     </template>
 
-                    <v-list-item v-for="([title, path, showBadge, notifyNum], i) in item.subtitles" :key="i" :value="title" class="white-active" @click="go(path, index)">
+                    <v-list-item v-for="([title, path, showBadge, notifyNum], i) in item.subtitles" :key="i" :value="title" class="white-active" @click="go(path, index, item.subtitles[i])">
                         <template v-if="showBadge && notifyNum" v-slot:append>
                             <v-badge color="error" :content="notifyNum" inline></v-badge>
                         </template>
@@ -177,12 +177,12 @@ export default {
     },
     computed: {
         ...mapGetters('Core', ['getUnreadNotificationsStatus']),
-        // data() { return store.getters['Books/books']}
     },
     methods: {
-        go(route, index) {
+        go(route, index, element) {
             localStorage.setItem('sidebarCurrentItem', index)
             this.$router.push(route)
+            element[3] = 0
         },
         iconUrl(icon) {
             let im

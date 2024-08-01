@@ -110,6 +110,7 @@ export default defineComponent({
                     [`filter[${search.value?.key}]`]: search.value?.value
                 }
             });
+            store.dispatch('Core/showNotification');
         }
 
         function closeDialog(e, eventType) {
