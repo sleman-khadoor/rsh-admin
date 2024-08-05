@@ -1,7 +1,7 @@
 <template>
 <v-navigation-drawer color="dark-blue" class="text-white" permanent app>
-    <v-list v-model="selectedItem" class="mt-5 mr-3" height="95%" min-height="30" v-model:opened="open" dense>
-        {{selectedItem}}
+    <v-list class="mt-5" height="95%" min-height="30" v-model:opened="open" dense>
+        <v-list-item v-model="selectedItem" mandatory class="height-100 w-100">
             <div v-for="(item, index) in sidebarRoutes" :key="index">
                 <v-list-item v-if="item.path !== undefined" :value="item.title" class="height-10-per mx-auto white-active" @click="go(item.path, index)">
                     <v-list-item-title class="size-25">
@@ -51,6 +51,7 @@
 
                 </v-list-group>
             </div>
+        </v-list-item>
     </v-list>
 </v-navigation-drawer>
 </template>
@@ -181,9 +182,7 @@ export default {
         go(route, index, element) {
             localStorage.setItem('sidebarCurrentItem', index)
             this.$router.push(route)
-            this.selectedItem = index
-            // element[3] = 0
-            console.log(element);
+            element[3] = 0
         },
         iconUrl(icon) {
             let im

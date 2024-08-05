@@ -1,11 +1,11 @@
 <template>
 <div id="achievements">
     <div class="row ma-5 bg-white">
-        <v-row class="py-2 px-16 justify-center">
+        <v-row class="py-2 px-9 justify-center">
             <v-col lg="9" md="9" sm="9">
                 <SearchByFilters :items="filterBy" @fetchData="fetchData(1,$event)" />
             </v-col>
-            <v-col lg="3" md="3" sm="3" class="px-0">
+            <v-col lg="3" md="3" sm="3" class="px-0 align-content-center">
                 <v-btn class="text-none text-white font-weight-regular" height="47" width="180" :text="`Add Achievement`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
             </v-col>
         </v-row>

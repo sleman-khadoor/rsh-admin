@@ -1,7 +1,5 @@
 <template>
-  <v-layout class="rounded rounded-md">
-    
-
+  <v-layout class="rounded rounded-md"/>
     <side-bar/>
     <top-bar/>
     <v-main class="d-flex align-center justify-center bg-white-grey" style="min-height: 100vh;">
@@ -9,7 +7,7 @@
         <router-view></router-view>
       </v-container>
     </v-main>
-  </v-layout>
+  <!-- </v-layout> -->
 </template>
 
 <script>

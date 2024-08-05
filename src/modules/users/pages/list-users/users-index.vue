@@ -69,7 +69,7 @@ export default defineComponent({
             { 'reset': true },
         ];
 
-        const filterBy = ['first_name', 'last_name', 'username'];
+        const filterBy = [{value: 'first_name', title: 'first name'}, {value: 'last_name', title: 'last name'}, {value: 'username', title: 'user name'}];
 
         function openDialog(e) {
             dialog.value = true;

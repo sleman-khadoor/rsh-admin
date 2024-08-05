@@ -37,6 +37,7 @@ export default defineComponent({
     setup() {
         const store = useStore();
         let dialog = ref(false);
+        let currentPage = ref(1);
         let deleteDialog = ref(false);
         let message = ref("");
         let selectedBook = ref('');
@@ -116,7 +117,7 @@ export default defineComponent({
                 store.dispatch('Books/createBook', e)
                     .then(response => {
                         console.log('Add response:', response);
-                        fetchData();
+                        fetchData(1);
                         dialog.value = false;
                     });
             } else if (eventType === 'edit') {
@@ -145,11 +146,12 @@ export default defineComponent({
             }
         }
 
-        function fetchData(currentPage, search = {}) {
-            console.log('currentPage', currentPage);
+        function fetchData(page, search = {}) {
+            console.log('currentPage', page);
+            page ? currentPage.value = page : null
             store.dispatch('Books/fetchBooks', {
                 params: {
-                    page: currentPage ? currentPage : 1,
+                    page: page ? page : currentPage.value,
                     perPage: 6,
                     [`filter[${search.value?.key}]`]: search.value?.value,
                     ...search.selectSearch,

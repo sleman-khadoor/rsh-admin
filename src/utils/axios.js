@@ -3,7 +3,7 @@ import notify from '@/utils/notify'
 import authHelper from './auth-helper';
 import { router } from '@/router';
 
-const baseUrl = 'http://127.0.0.1:8000/'
+const baseUrl = 'http://127.0.0.1:9000/'
 var api = axios.create({
   baseURL: baseUrl + 'api/',
   headers: {

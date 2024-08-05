@@ -7,38 +7,27 @@
     </div>
 
     <v-card v-else class="card pa-8">
-        <v-data-table hide-default-footer hover class="table">
-            <thead>
-                <tr>
-                    <th v-for="header in headers" :key="header.title" class="font-weight-bold size-16">
-                        {{ header.title }}
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td v-for="subItem in headers" :key="subItem.key" class="font-grey size-14">
-                        <div>
-                            {{ props.data?.[subItem.key] }}
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </v-data-table>
+        <v-row class="justify-space-between px-4">
+            <v-col lg="3" md="6" sm="12" v-for="header in headers" :key="header.title">
+                <span class="font-weight-bold size-16">{{ header.title }}</span>
+                <br/>
+                <span class="font-grey size-14">{{props.data?.[header.key]}}</span>
+            </v-col>
+        </v-row>
         <v-card-text>
             <h4 class="pb-2 size-16"> Message Content</h4>
             <p class="font-grey">{{ props.itemType =='contact'? props.data?.message : props.data?.description}}</p>
         </v-card-text>
         <v-container v-if="props.data?.documents">
-            <h4 class="pb-2 size-16">Attachments</h4>
-            <div class="d-flex">
-                <v-col v-for="(attachment, index) in props.data.documents" :key="index" @click="downloadAttachment(attachment)" cols="2" md="2" sm="2" class="pa-0  mr-7">
+            <h4 class="pb-2 size-16 mb-2">Attachments</h4>
+            <div class="d-flex flex-wrap">
+                <div class="col ma-1" v-for="(attachment, index) in props.data.documents" :key="index" @click="downloadAttachment(attachment)">
                     <div :class="'img-container'" @click="clickInputFile" style="position: relative; height: 200px;">
                         <div class="w-mc ma-auto h-100 d-flex justify-center align-center pa-2" style="height: 200%; width: 100%;">
                             <img ref="imgRef" :src="getAttachment(attachment)" class="my-auto" style="width: 100%; height: 100%; object-fit: contain;" />
                         </div>
                     </div>
-                </v-col>
+                </div>
             </div>
         </v-container>
     </v-card>

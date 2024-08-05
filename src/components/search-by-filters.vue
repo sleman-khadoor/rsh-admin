@@ -13,7 +13,7 @@
         </v-text-field>
     </v-col>
     <v-col lg="4" md="5" sm="12">
-        <v-select label="Search by" class="remove-shadow" :hide-details="true" :items="props.items" v-model="search.key" variant="solo-filled" density="comfortable" clearable>
+        <v-select label="Search by" class="remove-shadow" :hide-details="true" :items="props.items" item-value="value" item-title="title" v-model="search.key" variant="solo-filled" density="comfortable" clearable>
             <template v-slot:prepend-inner>
                 <img width="27" height="27" src="@/assets/icons/filter.svg" class="my-auto" />
             </template>
