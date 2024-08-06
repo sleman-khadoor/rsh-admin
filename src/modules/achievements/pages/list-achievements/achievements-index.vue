@@ -1,7 +1,7 @@
 <template>
 <div id="achievements">
     <div class="row ma-5 bg-white">
-        <v-row class="py-2 px-9 justify-center">
+        <v-row class="py-2 px-12 justify-center">
             <v-col lg="9" md="9" sm="9">
                 <SearchByFilters :items="filterBy" @fetchData="fetchData(1,$event)" />
             </v-col>
@@ -43,7 +43,8 @@ export default defineComponent({
         let selectedAchievement = ref('');
         let eventType = "";
         let viewLang = ref('');
-
+        let currentPage = ref(1);
+        
         const actionsTable = [
             { 'edit': true },
             { 'delete': true },
@@ -81,7 +82,7 @@ export default defineComponent({
                 store.dispatch('Achievements/createAchievement', e)
                     .then(response => {
                         console.log('Add response:', response);
-                        fetchData()
+                        fetchData(1);
                         dialog.value = false;
                     });
             } else if (eventType === 'edit') {
@@ -109,17 +110,18 @@ export default defineComponent({
             }
         }
 
-        function fetchData(currentPage, search = {}) {
-            console.log('currentPage', currentPage);
+        function fetchData(page, search = {}) {
+            console.log('currentPage', page);
+            page ? currentPage.value = page : null
             store.dispatch('Achievements/fetchAchievements', {
                 params: {
-                    page: currentPage ? currentPage : 1,
+                    page: page ? page : currentPage.value,
                     perPage: 4,
                     [`filter[${search.value?.key}]`]: search.value?.value
                 }
             });
         }
-
+        
         function closeDialog(e, eventType) {
             console.log(e);
             if (eventType == 'add' || eventType == 'edit') {

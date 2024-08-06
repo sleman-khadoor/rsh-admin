@@ -2,7 +2,7 @@
 <div id="users">
     <div class="row ma-5 bg-white">
         <div class="d-flex flex-row-reverse pa-4">
-            <v-row class="py-2 px-16 justify-center">
+            <v-row class="py-2 px-12 justify-center">
                 <v-col lg="9" md="9" sm="9">
                     <SearchByFilters :items="filterBy" @fetchData="fetchData(1,$event)" />
                 </v-col>

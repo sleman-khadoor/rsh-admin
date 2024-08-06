@@ -2,7 +2,7 @@
 <div id="categories">
     <div class="row ma-5 bg-white">
         <div class="d-flex flex-row-reverse pa-4">
-            <v-row class="py-2 px-16 justify-center">
+            <v-row class="py-2 px-12 justify-center">
                 <v-col lg="9" md="9" sm="9">
                     <SearchByFilters :items="filterBy" @fetchData="fetchData(1,$event)"/>
                 </v-col>
@@ -40,6 +40,7 @@ export default defineComponent({
         let message = ref("");
         let selectedCategory = ref('');
         let eventType = "";
+        let currentPage = ref(1);
 
         const headers = [{
             title: "Category name in English",
@@ -85,7 +86,7 @@ export default defineComponent({
                 store.dispatch('BlogCategories/createCategory', e)
                 .then(response => {
                         console.log('Add response:', response);
-                        fetchData()
+                        fetchData(1)
                         deleteDialog.value = false;
                     });
             } else if (eventType === 'edit') {
@@ -116,11 +117,12 @@ export default defineComponent({
 
         }
 
-        function fetchData(currentPage, search = { }) {
-            console.log('currentPage', currentPage);
+        function fetchData(page, search = { }) {
+            console.log('currentPage', page);
+            page ? currentPage.value = page : null
             store.dispatch('BlogCategories/fetchCategories', {
                 params: {
-                    page: currentPage ? currentPage : 1,
+                    page: page ? page : currentPage.value,
                     perPage: 6,
                     [`filter[${search.value?.key}]`]: search.value?.value
                 }

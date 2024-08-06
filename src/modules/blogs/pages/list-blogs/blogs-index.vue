@@ -40,6 +40,7 @@ export default defineComponent({
         let message = ref("");
         let selectedBlog = ref('');
         let eventType = "";
+        let currentPage = ref(1);
 
         const headers = [{
                 title: "Blog Title",
@@ -98,7 +99,7 @@ export default defineComponent({
                 store.dispatch('Blogs/createBlog', e)
                     .then(response => {
                             console.log('Add response:', response);
-                            fetchData();
+                            fetchData(1);
                             dialog.value = false;
                     });
             } else if (eventType === 'edit') {
@@ -127,11 +128,12 @@ export default defineComponent({
             }
         }
 
-        function fetchData(currentPage, search = {} ) {
-            console.log('currentPage', currentPage);
+        function fetchData(page, search = {} ) {
+            console.log('currentPage', page);
+            page ? currentPage.value = page : null
             store.dispatch('Blogs/fetchBlogs', {
                 params: {
-                    page: currentPage ? currentPage : 1,
+                    page: page ? page : currentPage.value,
                     perPage: 6,
                     [`filter[${search.value?.key}]`]: search.value?.value,
                     ...search.selectSearch,
