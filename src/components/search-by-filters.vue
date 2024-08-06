@@ -68,6 +68,10 @@ export default defineComponent({
                 } else {
                     value = JSON.stringify(newV);
                     value = JSON.parse(value)
+                    console.log('value is ', value);
+                    if(value.key.value){
+                        value.key = value.key.value
+                    }
                     emit('fetchData', { value: value, selectSearch: {} });
                 }
             }, { deep: true }

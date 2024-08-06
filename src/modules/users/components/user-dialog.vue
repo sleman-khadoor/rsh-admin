@@ -149,14 +149,14 @@ export default defineComponent({
         function handleSubmit() {
             if (checkValidation()) {
                 let roles = [];
-                let oldRoles = formatRoles();
-                if(JSON.stringify(form.roles) !== JSON.stringify(oldRoles)){
-                    roles = form.roles;
-                }
                 if (Object.keys(props.selectedUser).length !== 0) {
-                    if(roles.length === 0)
-                        delete form.roles;
-                    emit('edit', form, 'edit');
+                    let oldRoles = formatRoles();
+                    if(JSON.stringify(form.roles) !== JSON.stringify(oldRoles)){
+                        roles = form.roles;
+                    }
+                        if(roles.length === 0)
+                            delete form.roles;
+                        emit('edit', form, 'edit');
                 } else {
                     emit('add', form, 'add');
                 }

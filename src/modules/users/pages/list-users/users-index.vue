@@ -142,6 +142,7 @@ export default defineComponent({
 
         function fetchData(currentPage, search = {}) {
             console.log('currentPage', currentPage);
+            console.log('value is2', search);
             store.dispatch('Users/fetchUsers', {
                 params: {
                     page: currentPage ? currentPage : 1,

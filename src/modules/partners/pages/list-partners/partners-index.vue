@@ -62,7 +62,7 @@ export default defineComponent({
             { 'view': false },
         ];
 
-        const filterBy = ['name', 'website_link']
+        const filterBy = [{value: 'name', title: 'name'}, {value: 'website_link', title: 'website link'}];
 
         function openDialog(e) {
             dialog.value = true;

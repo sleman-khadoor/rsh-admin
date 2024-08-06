@@ -61,7 +61,7 @@ export default defineComponent({
             { 'view': true },
         ];
 
-        const filterBy = ['fullname', 'mobile', 'email'];
+        const filterBy = [{ value: 'fullname', title: 'full name' }, { value: 'mobile', title: 'mobile' }, { value: 'email', title: 'email' }];
 
         function openDialog(e) {
             dialog.value = true;
