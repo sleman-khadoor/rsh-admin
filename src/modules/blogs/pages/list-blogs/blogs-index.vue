@@ -10,7 +10,7 @@
                     <v-btn class="text-none text-white font-weight-regular" height="47" width="180" :text="`Add Blog`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
                 </v-col>
             </v-row>
-            <BlogDialog :categories="categories" :dialog="dialog" :loading="loading" :selectedBlog="selectedBlog" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
+            <BlogDialog :categories="categories" :dialog="dialog" :selectedBlog="selectedBlog" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
             <DeleteBlogDialog :deleteDialog="deleteDialog" :loading="loading" :selectedBlog="selectedBlog" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
         </div>
         <DataTable :headers="headers" itemKey="slug" :actionsTable="actionsTable" :data="data" :meta="meta" :loading="loading" @OpenDialog="openDialog($event)" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)" />
@@ -107,8 +107,8 @@ export default defineComponent({
                 store.dispatch('Blogs/editBlog', { 'payload': e, 'slug': selectedBlog.value.slug })
                     .then(response => {
                             console.log('Edit response:', response);
-                            fetchData();
                             dialog.value = false;
+                            fetchData();
                     });
             } else if (eventType === 'delete') {
                 store.dispatch('Blogs/deleteBlog', selectedBlog.value.slug)

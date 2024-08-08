@@ -39,7 +39,7 @@
                     <v-btn class="text-none text-white font-weight-regular close-btn" type="reset" text="Cancel" color="grey" block @click="Object.keys(props.selectedBlog).length !== 0 ? $emit('closeEditDialog', 'edit'): $emit('closeAddDialog', 'add')"></v-btn>
                 </v-col>
                 <v-col cols="12" md="3" sm="3">
-                    <v-btn type="submit" class="text-none text-white font-weight-regular" @click="handleSubmit()" text="Save" color="dark-blue" :loading="props.loading" block></v-btn>
+                    <v-btn type="submit" class="text-none text-white font-weight-regular" @click="handleSubmit()" text="Save" color="dark-blue" :loading="loading" block></v-btn>
                 </v-col>
             </v-row>
         </v-card>
@@ -49,11 +49,11 @@
 
 <script>
 import { baseUrl } from '@/utils/axios';
-import { defineComponent, onUpdated, reactive, computed, ref } from 'vue'
+import { defineComponent, reactive, computed, ref, watch } from 'vue'
 import { format } from 'date-fns';
-
+import { useStore } from 'vuex'
 export default defineComponent({
-    props: ['dialog', 'selectedBlog', 'eventType', 'loading', 'categories'],
+    props: ['dialog', 'selectedBlog', 'eventType', 'categories'],
     data: () => ({
         rules: {
             title: [
@@ -79,7 +79,8 @@ export default defineComponent({
         baseUrl
     }),
     setup(props, { emit }) {
-        let form = reactive({
+        const store = useStore();
+        const getInitialForm = () => ({
             title: null,
             writer: null,
             date: '',
@@ -87,31 +88,40 @@ export default defineComponent({
             languages: null,
             lang: null,
             content: null,
+            cover_image: null,
+        })
+        let form = reactive({
+            title: null,
+            writer: null,
+            date: '',
+            categories:  [],
+            languages: null,
+            lang: null,
+            content: null,
             cover_image: null
         })
         const formv = ref(null);
-        onUpdated(() => {
-            if (props.selectedBlog) {
-                console.log('date is', props.selectedBlog.date);
-                form.title = props.selectedBlog.title
-                form.writer = props.selectedBlog.writer
-                form.date = format(new Date(props.selectedBlog.date), 'yyyy-MM-dd');
-                form.categories = formatCategories();
-                form.lang = props.selectedBlog.lang
-                form.content = props.selectedBlog.content
-                form.cover_image = props.selectedBlog.cover_image
-            } else {
-                form.title = null
-                form.writer = null
-                form.date = null
-                form.categories = []
-                form.lang = null
-                form.content = null
-                form.cover_image = null
-            }
-        })
-
-        function formatCategories(){
+        const loading = computed(() => store.getters['Blogs/loading'])
+        watch(() => props.dialog, () => {
+                if(props.dialog) {
+                    if (props.selectedBlog) {
+                        console.log('date is', props.selectedBlog.date);
+                        console.log('date is', props.dialog);
+                        form.title = props.selectedBlog.title
+                        form.writer = props.selectedBlog.writer
+                        form.date = format(new Date(props.selectedBlog.date), 'yyyy-MM-dd');
+                        form.categories = formatCategories();
+                        form.lang = props.selectedBlog.lang
+                        form.content = props.selectedBlog.content
+                        form.cover_image = props.selectedBlog.cover_image
+                    } else {
+                        Object.assign(form, getInitialForm())
+                    }
+                } else {
+                    Object.assign(form, getInitialForm())
+                }
+            });
+       function formatCategories(){
             let selectedCategories = []
             let categories = []
             selectedCategories = props.selectedBlog.blog_categories
@@ -186,13 +196,14 @@ export default defineComponent({
                 }
             }
         }
-
+        
         return {
             props,
             form,
             formv,
             title,
             languages,
+            loading,
             clickInputFile,
             printFiles,
             handleSubmit
