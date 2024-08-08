@@ -16,7 +16,7 @@
       <v-row dense class="pl-4 pr-4 align-content-stretch">
         <v-col v-for="(item, index ) in props.data" :key="item.id" cols="12" md="6" sm="6" class="input-field pa-1">
           <v-card  class="card pa-1 h-100">
-            <v-card-text class="py-2">
+            <v-card-text class="py-2" :dir="langs[index] === 'ar' ? 'rtl' : 'ltr'">
               {{ langs[index] === 'en' ? truncatedText(item, 'en')  : truncatedText(item, 'ar')}}
               <!-- {{item.content}} -->
               <p v-if="cardType == 'reviews'" class="font-dark-blue font-weight-bold" >{{item.username.en}}</p>
@@ -29,7 +29,7 @@
               </div>
               <div>
                 <v-btn-toggle v-model="langs[index]" variant="outlined" divided class="ml-auto toggle bg-white">
-                  <v-btn value="en" class="size-18" @click="langs[index]= 'en'"> English</v-btn>
+                  <v-btn value="en" class="size-18" @click="langs[index] = 'en'"> English</v-btn>
                   <v-btn value="ar" class="size-18" @click="langs[index] = 'ar'">Arabic</v-btn>
                 </v-btn-toggle>
               </div>

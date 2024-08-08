@@ -1,9 +1,8 @@
 <template>
 	<div class="row fullscreen relative-position">
-		<div class="col-12 bg-accent">
+		<div class="col-12 bg-primary">
 			<router-view />
 		</div>
-		<span class="line"></span>
 	</div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-<v-row dense class="justify-center align-center main" style="height: 100vh;">
+<v-row dense class="justify-center align-center main" style="height: 100.6vh;">
     <v-col cols="3" md="3" sm="6" class="text-center">
         <!-- <div style="width: 40%; text-align: center"> -->
         <img src="@/assets/white-logo.svg" class="pb-7">
