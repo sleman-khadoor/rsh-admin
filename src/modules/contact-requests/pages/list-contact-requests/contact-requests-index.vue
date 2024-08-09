@@ -2,8 +2,8 @@
 <div id="contactRequests">
     <div class="row ma-5 bg-white">
         <div class="d-flex flex-row-reverse pa-4">
-            <v-row class="py-2 justify-center">
-                <v-col lg="9" md="9" sm="9">
+            <v-row class="py-2 px-lg-7 px-md-5 px-sm-3 justify-center">
+                <v-col lg="12" md="10" sm="12">
                     <SearchByFilters :items="filterBy" @fetchData="fetchData(1,$event)" />
                 </v-col>
             </v-row>

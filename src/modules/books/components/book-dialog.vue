@@ -45,11 +45,11 @@
                         <v-textarea variant="outlined" label="Abstract In English*" v-model="form.abstract.en" rows="5" persistent-hint :rules="rules.enAbstract" required></v-textarea>
                     </v-col>
                     <v-col cols="12" md="6" sm="6">
-                        <v-textarea variant="outlined" label="Abstract In Arabic*" v-model="form.abstract.ar" rows="5" persistent-hint :rules="rules.arAabstract" required></v-textarea>
+                        <v-textarea variant="outlined" label="Abstract In Arabic*" v-model="form.abstract.ar" rows="5" persistent-hint :rules="rules.arAbstract" required></v-textarea>
                     </v-col>
                 </v-row>
             </v-card-text>
-            <v-row dense class="justify-end px-6">
+            <v-row dense class="justify-end px-6 pa-1">
                 <v-col cols="12" md="3" sm="3">
                     <v-btn class="text-none text-white font-weight-regular close-btn" type="reset" text="Cancel" color="grey" block @click="Object.keys(props.selectedBook).length !== 0 ? $emit('closeEditDialog', 'edit'): $emit('closeAddDialog', 'add')"></v-btn>
                 </v-col>

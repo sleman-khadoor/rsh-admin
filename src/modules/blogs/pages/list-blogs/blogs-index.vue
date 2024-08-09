@@ -2,11 +2,11 @@
 <div id="blogs">
     <div class="row ma-5 bg-white">
         <div class="d-flex flex-row-reverse pa-4">
-            <v-row class="py-2 px-lg-16 px-md-7 px-sm-3 justify-center">
-                <v-col lg="9" md="10" sm="12">
+            <v-row class="py-2 px-lg-7 px-md-5 px-sm-3 justify-center">
+                <v-col lg="10" md="10" sm="12">
                     <SearchByFilters :selectItems="categories" selectType="blog_category" :items="filterBy" @fetchData="fetchData(1,$event)"/>
                 </v-col>
-                <v-col lg="3" md="2" sm="12" class="px-lg-0 px-md-0">
+                <v-col lg="2" md="2" sm="12" class="d-flex flex-end">
                     <v-btn class="text-none text-white font-weight-regular" height="47" width="180" :text="`Add Blog`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
                 </v-col>
             </v-row>
