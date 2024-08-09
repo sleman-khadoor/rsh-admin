@@ -1,25 +1,28 @@
 <template>
-<v-navigation-drawer color="dark-blue" class="text-white" permanent app>
-    <v-list v-model="selectedItem" class="mt-5 mr-3" height="95%" min-height="30" v-model:opened="open" dense>
-        {{selectedItem}}
+<v-navigation-drawer color="dark-blue" class="text-white" permanent app ref="nav">
+    <v-list v-model:opened="open" class="mt-5 mr-3" height="95%" min-height="30" dense>
+        {{tempSelectedItem}}
+        {{tempSelectedSubItem}}
             <div v-for="(item, index) in sidebarRoutes" :key="index">
-                <v-list-item v-if="item.path !== undefined" :value="item.title" class="height-10-per mx-auto white-active" @click="go(item.path, index)">
+                <v-list-item v-if="item.path !== undefined" :value="item.title" :class="(selectedItem === index) ? 'height-10-per mx-auto v-list-item--active white-active' : 'height-10-per mx-auto white-active'" @click="go(item.path, index)">
                     <v-list-item-title class="size-25">
                         {{item.title}}
                     </v-list-item-title>
+
                     <template v-slot:prepend>
                         <v-list-item-icon class="my-auto mr-4 height-unset">
                             <v-badge v-if="item.showBadge && item.notifyNum" color="error" :content="item.notifyNum">
-                                <img width="18" min-width="8" height="18" v-bind:src="iconUrl(item.icon)">
+                                <img class="mt-1" width="18" min-width="8" height="18" v-bind:src="iconUrl(item.icon,(selectedItem === index),item.path)">
                             </v-badge>
-                            <img v-else width="18" min-width="8" height="18" v-bind:src="iconUrl(item.icon)">
+                            <img class="mt-1" v-else width="18" min-width="8" height="18" v-bind:src="iconUrl(item.icon,(selectedItem === index),item.path)">
                         </v-list-item-icon>
                     </template>
                 </v-list-item>
-                <v-list-group v-else>
+                <!--group-->
+                <v-list-group v-else :value="item.title">
 
                     <template v-slot:activator="{ props }">
-                        <v-list-item v-bind="props">
+                        <v-list-item @click="updateSidebarItem(index)" :class="selectedItem === index ? 'v-list-item--active white-active white-hidden' : ''" v-bind="props">
                             <v-list-group-title class="size-25">
                                 {{item.title}}
                             </v-list-group-title>
@@ -39,7 +42,7 @@
                         </v-list-item>
                     </template>
 
-                    <v-list-item v-for="([title, path, showBadge, notifyNum], i) in item.subtitles" :key="i" :value="title" class="white-active" @click="go(path, index, item.subtitles[i])">
+                    <v-list-item v-for="([title, path, showBadge, notifyNum], i) in item.subtitles" :key="i" :value="title" :class="(tempSelectedItem === index && tempSelectedSubItem === i) ? ' v-list-item--active white-active' : 'white-active'" @click="go(path, index, i, item.subtitles[i])">
                         <template v-if="showBadge && notifyNum" v-slot:append>
                             <v-badge color="error" :content="notifyNum" inline></v-badge>
                         </template>
@@ -67,7 +70,10 @@ export default {
             drawer: true,
             rail: true,
             selectedItem: null,
-            open: ['Book Management', 'Blog Management', 'Service requests', ],
+            selectedSubItem: null,
+            tempSelectedItem: null,
+            tempSelectedSubItem: null,
+            open: [],
             sidebar: [{
                     title: 'Book Management',
                     icon: 'book',
@@ -177,16 +183,30 @@ export default {
         ...mapGetters('Core', ['getUnreadNotificationsStatus']),
     },
     methods: {
-        go(route, index, element) {
+        updateSidebarItem(index) {
             localStorage.setItem('sidebarCurrentItem', index)
+            this.selectedItem = index
+        },
+        go(route, index, i, element) {
+            this.tempSelectedItem = null
+            this.tempSelectedSubItem = null
+            localStorage.setItem('sidebarCurrentItem', index )
+            i ? localStorage.setItem('sidebarCurrentSubItem', i) : localStorage.setItem('sidebarCurrentSubItem', 0)
             this.$router.push(route)
             this.selectedItem = index
+            this.selectedSubItem = i
+            element[3] = 0
             console.log(element);
         },
-        iconUrl(icon) {
+        iconUrl(icon, isBlue, itemPath) {
             let im
             try {
-                im = `../../assets/icons/${icon}.svg`
+                if(isBlue || (this.$route.path === itemPath)) {
+                    im = `../../assets/icons/${icon}-blue.svg`
+                } else {
+                    im = `../../assets/icons/${icon}.svg`
+                }
+                
             } catch (err) {
                 im = '@/assets/icons/logo.svg'
             }
@@ -228,10 +248,15 @@ export default {
             });
         },
     },
-    mounted() {
-        this.selectedItem = Number(localStorage.getItem('sidebarCurrentItem'))
+    beforeMount() {
+        this.selectedItem = Number(localStorage.getItem('sidebarCurrentItem'));
+        this.selectedSubItem = Number(localStorage.getItem('sidebarCurrentSubItem'));
+        this.tempSelectedItem = this.selectedItem
+        this.tempSelectedSubItem = this.selectedSubItem
         this.updateSideBarRoutes();
-    }
+        this.open.push(this.sidebarRoutes[this.selectedItem].title)
+    },
+
 }
 </script>
 
@@ -246,6 +271,11 @@ export default {
     background-color: white !important;
     color: #0C2748;
     border-radius: 0 20px 20px 0 !important;
+}
+.white-active.v-list-item--active.white-hidden {
+    background-color: unset !important;
+    color: unset !important;
+    border-radius: unset !important;
 }
 
 .v-list-group__items .v-list-item {
