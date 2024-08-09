@@ -48,7 +48,7 @@ export default {
 	},
 	actions: {
 		async fetchCategories({ commit }, queryParams) {
-			console.log('inside fetch categories', queryParams);
+			('inside fetch categories', queryParams);
 			commit('setLoading', true);
 			try {
 				const  response  = await categoriesService.getBookCategories(queryParams);
@@ -85,7 +85,6 @@ export default {
 			commit('setLoading', true);
 			try {
 				let res = await categoriesService.deleteBookCategory(slug);
-				console.log('hiiii from delete', res);
 				return res;
 			} finally {
 				commit('setLoading', false);

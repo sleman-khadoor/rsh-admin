@@ -4,7 +4,6 @@ import notify from '@/utils/notify';
 
 export default class Service {
 	static getAchievements(qp = {}) {
-		console.log(' pagination', qp);
 		return api.get(ep.ACHIEVEMENT, qp).then((res) => res.data);
 	}
 

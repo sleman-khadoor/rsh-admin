@@ -4,7 +4,6 @@ import notify from '@/utils/notify';
 
 export default class Service {
 	static getBookCategories(qp = {}) {
-		console.log(' pagination', qp);
 		return api.get(ep.BOOK_CATEGORY, qp).then((res) => res.data);
 	}
 

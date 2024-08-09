@@ -29,22 +29,18 @@ export default {
 			return state.selectedAward;
 		},
 		books(state) {
-            console.log('object store auther', state.books);
 			return state.books;
 		},
 		formats(state) {
-            console.log('object store auther', state.formats);
 			return state.formats;
 		},
 		meta(state) {
-            console.log('object store meta', state.meta);
 			return state.meta;
 		},
 	},
 	mutations: {
 		setLoading(state, value) {
 			state.loading = value;
-			console.log('object', state.loading);
 		},
 		setSelectedBook(state, value) {
 			state.selectedBook = value;
@@ -73,7 +69,6 @@ export default {
 	},
 	actions: {
 		async fetchBooks({ commit }, queryParams) {
-			console.log('inside fetch books', queryParams);
 			commit('setLoading', true);
 			try {
 				const  response  = await BooksService.getBooks(queryParams);
@@ -130,7 +125,6 @@ export default {
 		},
 
 		async fetchFormats({ commit }, queryParams) {
-			console.log('inside fetch formats', queryParams);
 			commit('setLoading', true);
 			try {
 				const  response  = await BooksService.getFormats(queryParams);

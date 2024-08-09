@@ -81,7 +81,6 @@ export default defineComponent({
         }
 
         function submit(e, eventType) {
-            console.log(e);
             if (eventType === 'add') {
                 store.dispatch('Partners/createPartner', e)
                     .then(response => {
@@ -115,7 +114,6 @@ export default defineComponent({
         }
 
         function fetchData(page, search = {}) {
-            console.log('currentPage', page);
             page ? currentPage.value = page : null
             store.dispatch('Partners/fetchPartners', {
                 params: {

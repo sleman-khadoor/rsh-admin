@@ -19,18 +19,15 @@ export default {
 			return state.selectedContactRequest;
 		},
 		contactRequests(state) {
-            console.log('object store contactRequest', state.contactRequests);
 			return state.contactRequests;
 		},
 		meta(state) {
-            console.log('object store meta', state.meta);
 			return state.meta;
 		},
 	},
 	mutations: {
 		setLoading(state, value) {
 			state.loading = value;
-			console.log('object', state.loading);
 		},
 		setSelectedContactRequest(state, value) {
 			state.selectedContactRequest = value;
@@ -50,7 +47,6 @@ export default {
 	},
 	actions: {
 		async fetchContactRequests({ commit }, queryParams) {
-			console.log('inside fetch contactRequests', queryParams);
 			commit('setLoading', true);
 			try {
 				const  response  = await ContactRequestsService.getContactRequests(queryParams);

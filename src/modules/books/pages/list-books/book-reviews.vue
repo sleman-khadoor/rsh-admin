@@ -27,7 +27,6 @@ import ReviewDialog from '../../components/review-dialog.vue'
 import ReviewViewDialog from '@/components/view-dialog.vue'
 import DeleteReviewDialog from '@/components/delete-dialog.vue'
 import { useRoute } from 'vue-router'
-import router from '@/router/routes.js';
 import { useStore } from 'vuex'
 
 export default defineComponent({
@@ -58,12 +57,11 @@ export default defineComponent({
         const filterBy = ['content']
 
         function redirectBack(e) {
-            console.log(e, router);
+            console.log(e);
             this.$router.push({ name: 'books' });
         }
 
         function openDialog(e) {
-            console.log('event is', e);
             dialog.value = true;
             if (e) {
                 selectedReview.value = e
@@ -86,7 +84,6 @@ export default defineComponent({
         }
 
         function submit(e, eventType) {
-            console.log(e);
             if (eventType === 'add') {
                 store.dispatch('Books/createReview', e)
                     .then(response => {
@@ -121,7 +118,6 @@ export default defineComponent({
         }
 
         function fetchData() {
-            console.log('slug is', slug.value);
             store.dispatch('Books/getBook', slug.value);
         }
 

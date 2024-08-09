@@ -21,7 +21,6 @@
     import SearchByFilters from '@/components/search-by-filters.vue'
     
     import { useStore } from 'vuex'
-    import router from '@/router/routes.js';
     
     export default defineComponent({
         components: {
@@ -73,7 +72,7 @@
             }
     
             function viewItem(e) {
-                console.log(e, router);
+                console.log(e);
                 this.$router.push({ name: 'service-request', params: { slug: e.slug, serviceType:"book-delivery" }});
             }
     
@@ -84,7 +83,6 @@
             }
     
             function submit(e, eventType) {
-                console.log(e);
                 if (eventType === 'delete') {
                     store.dispatch('ServiceRequests/deleteServiceRequest', selectedServiceRequest.value.slug)
                         .then(response => {
@@ -104,7 +102,6 @@
             }
     
             function fetchData(page, search = {}) {
-                console.log('currentPage', page);
                 page ? currentPage.value = page : null
                 store.dispatch('ServiceRequests/fetchServiceRequests', {
                     params: {

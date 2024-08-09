@@ -74,21 +74,17 @@ export default function (/* { store, ssrContext } */) {
 }
 
 function canAccess(route) {
-    console.log(route);
 	let userRole = [];
 	let roles = store.getters['User/user'].roles;
 	let index = 0;
 	for (index in roles) {
 		userRole.push(roles[index].name);
 	}
-	console.log('object roles', userRole);
 	let routeRoles = [];
 
 	for (const match of route.matched) {
-		console.log('meta is', match.meta.roles);
 		if (match.meta?.roles) {
 			routeRoles = match.meta.roles;
-			console.log('object roles 3', routeRoles);
 			break;
 		}
 	}
@@ -96,13 +92,11 @@ function canAccess(route) {
 		return true;
 	} else {
 		if (routeRoles.some((e) => userRole.includes(e))) {
-			console.log('object roles 2', true);
 			return true;
 		} else {
 			return false;
 		}
 	}
-	// return true;
 }
 
 export var router;

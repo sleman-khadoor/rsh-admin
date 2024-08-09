@@ -4,7 +4,6 @@ import notify from '@/utils/notify';
 
 export default class Service {
 	static getBlogs(qp = {}) {
-		console.log(' pagination', qp);
 		return api.get(ep.BLOGS, qp).then((res) => res.data);
 	}
 

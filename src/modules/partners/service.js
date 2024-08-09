@@ -4,7 +4,6 @@ import notify from '@/utils/notify';
 
 export default class Service {
 	static getPartners(qp = {}) {
-		console.log(' pagination', qp);
 		return api.get(ep.PARTNER, qp).then((res) => res.data);
 	}
 

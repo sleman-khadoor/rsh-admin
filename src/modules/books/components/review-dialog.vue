@@ -70,7 +70,6 @@
             const formv = ref(null);
             onUpdated(() => {
                 if (props.selectedReview) {
-                    console.log('date is', props.selectedReview);
                     form.username.en = props.selectedReview.username?.en
                     form.username.ar = props.selectedReview.username?.ar
                     form.review.en = props.selectedReview.review?.en

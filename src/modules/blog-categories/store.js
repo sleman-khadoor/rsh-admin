@@ -35,7 +35,6 @@ export default {
 		},
 		setCategories(state, value) {
 			state.categories = value;
-			console.log('set categories response', state.categories);
 		},
 		setMeta(state, value) {
 			state.meta = value;
@@ -49,7 +48,6 @@ export default {
 	},
 	actions: {
 		async fetchCategories({ commit }, queryParams) {
-			console.log('inside fetch categories', queryParams);
 			commit('setLoading', true);
 			try {
 				const  response  = await categoriesService.getBlogCategories(queryParams);
@@ -86,7 +84,6 @@ export default {
 			commit('setLoading', true);
 			try {
 				let res = await categoriesService.deleteBlogCategory(slug);
-				console.log('hiiii from delete', res);
 				return res;
 			} finally {
 				commit('setLoading', false);

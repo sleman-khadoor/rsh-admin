@@ -8,9 +8,6 @@
             <v-card-text class="styled-text font-weight-bold text-center">
                 {{ props.message}}
             </v-card-text>
-            <!-- <v-card-actions class="pa-4 flex-column justify-center align-center">
-                <v-btn class="text-none text-white font-weight-regular pa-0 back-btn bg-grey" text="Back" size="large" color="black" block @click="$emit('closeDialog', 'delete')"></v-btn>
-            </v-card-actions> -->
             <v-row dense class="justify-end px-6">
                 <v-col cols="12" md="3" sm="3">
                     <v-btn class="text-none text-white font-weight-regular close-btn bg-grey" text="Cancel" block @click="$emit('closeDialog', 'delete')"></v-btn>

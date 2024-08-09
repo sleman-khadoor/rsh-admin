@@ -19,18 +19,15 @@ export default {
 			return state.selectedNews;
 		},
 		news(state) {
-            console.log('object store auther', state.news);
 			return state.news;
 		},
 		meta(state) {
-            console.log('object store meta', state.meta);
 			return state.meta;
 		},
 	},
 	mutations: {
 		setLoading(state, value) {
 			state.loading = value;
-			console.log('object', state.loading);
 		},
 		setSelectedNews(state, value) {
 			state.selectedNews = value;
@@ -50,7 +47,6 @@ export default {
 	},
 	actions: {
 		async fetchNews({ commit }, queryParams) {
-			console.log('inside fetch news', queryParams);
 			commit('setLoading', true);
 			try {
 				const  response  = await NewsService.getNews(queryParams);

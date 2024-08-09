@@ -94,7 +94,6 @@ export default defineComponent({
         }
 
         function submit(e, eventType) {
-            console.log(e);
             if (eventType === 'add') {
                 store.dispatch('Blogs/createBlog', e)
                     .then(response => {
@@ -103,7 +102,6 @@ export default defineComponent({
                             dialog.value = false;
                     });
             } else if (eventType === 'edit') {
-                console.log('payload', e);
                 store.dispatch('Blogs/editBlog', { 'payload': e, 'slug': selectedBlog.value.slug })
                     .then(response => {
                             console.log('Edit response:', response);
@@ -129,7 +127,6 @@ export default defineComponent({
         }
 
         function fetchData(page, search = {} ) {
-            console.log('currentPage', page);
             page ? currentPage.value = page : null
             store.dispatch('Blogs/fetchBlogs', {
                 params: {
@@ -143,7 +140,6 @@ export default defineComponent({
         }
 
         function closeDialog(e, eventType) {
-            console.log(e);
             if (eventType == 'add' || eventType == 'edit') {
                 dialog.value = false;
             } else if (eventType == 'delete') {

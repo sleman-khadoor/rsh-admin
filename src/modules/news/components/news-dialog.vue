@@ -53,16 +53,16 @@ export default defineComponent({
     data: () => ({
         rules: {
             arTitle: [
-                v => !!v || 'title in Arabic is required',
+                v => !!v || 'title in arabic is required',
             ],
             enTitle: [
-                v => !!v || 'title in English is required',
+                v => !!v || 'title in english is required',
             ],
             arContent: [
-                v => !!v || 'content in Arabic is required',
+                v => !!v || 'content in arabic is required',
             ],
             enContent: [
-                v => !!v || 'content in English is required',
+                v => !!v || 'content in english is required',
             ]
         },
         baseUrl
@@ -125,7 +125,6 @@ export default defineComponent({
 
                 reader.readAsDataURL(file);
             }
-            console.log('object file', form.cover_image);
         }
 
         function checkValidation() {

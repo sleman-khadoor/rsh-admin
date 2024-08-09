@@ -105,8 +105,6 @@ export default defineComponent({
         watch(() => props.dialog, () => {
                 if(props.dialog) {
                     if (props.selectedBlog) {
-                        console.log('date is', props.selectedBlog.date);
-                        console.log('date is', props.dialog);
                         form.title = props.selectedBlog.title
                         form.writer = props.selectedBlog.writer
                         form.date = format(new Date(props.selectedBlog.date), 'yyyy-MM-dd');

@@ -93,7 +93,6 @@ export default defineComponent({
         }
 
         function submit(e, eventType) {
-            console.log(e);
             if (eventType === 'add') {
                 store.dispatch('Users/createUser', e)
                     .then(response => {
@@ -141,8 +140,6 @@ export default defineComponent({
         }
 
         function fetchData(currentPage, search = {}) {
-            console.log('currentPage', currentPage);
-            console.log('value is2', search);
             store.dispatch('Users/fetchUsers', {
                 params: {
                     page: currentPage ? currentPage : 1,

@@ -37,7 +37,6 @@ export default {
 		},
 		setAccessToken(state, token) {
 			state.accessToken = token;
-			console.log('token auth helper', token);
 			authHelper.setAccessToken(token);
 			axiosInstance.defaults.headers['Authorization'] = 'Bearer ' + authHelper.getAccessToken();
 		},

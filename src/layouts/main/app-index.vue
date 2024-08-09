@@ -7,19 +7,16 @@
         <router-view></router-view>
       </v-container>
     </v-main>
-  <!-- </v-layout> -->
 </template>
 
 <script>
 import SideBar from './side-bar.vue';
-// import SideBar from './main/side-bar.vue';
 import { mapActions } from 'vuex'
 import TopBar from './top-bar.vue';
 
 export default {
   components: {
     SideBar,
-    // SideBar,
     TopBar
   },
   data() {

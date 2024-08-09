@@ -16,7 +16,6 @@
         <AwardViewDialog cardType="awards" :viewDialog="viewDialog" :viewLang="viewLang" :loading="loading" :selectedItem="selectedAward" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'view')" @closeAddDialog="closeDialog($event, 'view')" />
         <DeleteAwardDialog :deleteDialog="deleteDialog" :loading="loading" :selectedAward="selectedAward" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
         <VCard cardType="awards" itemKey="slugTranslation" :actionsTable="actionsTable" :data="data" :loading="loading" @OpenDialog="openDialog($event)" @OpenViewEnDialog="openViewDialog($event, 'en')" @OpenViewArDialog="openViewDialog($event, 'ar')" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)"></VCard>
-        <!-- <DataTable :headers="headers" itemKey="slugTranslation" :actionsTable="actionsTable" :data="data" :loading="loading" @OpenDialog="openDialog($event)" @OpenViewEnDialog="openViewDialog($event, 'en')" @OpenViewArDialog="openViewDialog($event, 'ar')" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)" /> -->
 
     </div>
 </div>
@@ -26,18 +25,15 @@
 <script>
 import { computed, defineComponent, onMounted, watch, ref } from 'vue'
 import VCard from '@/components/v-card.vue'
-// import DataTable from '@/components/data-table.vue'
 import AwardDialog from '../../components/award-dialog.vue'
 import AwardViewDialog from '@/components/view-dialog.vue'
 import DeleteAwardDialog from '@/components/delete-dialog.vue'
 import { useRoute } from 'vue-router'
-import router from '@/router/routes.js';
 import { useStore } from 'vuex'
 
 export default defineComponent({
     components: {
         VCard,
-        // DataTable,
         AwardDialog,
         DeleteAwardDialog,
         AwardViewDialog,
@@ -54,22 +50,6 @@ export default defineComponent({
         let viewLang = ref('');
         const slug = ref(route.params.slug);
 
-        //     const headers = [{
-        //         title: "Award Name In English",
-        //         align: "start",
-        //         sortable: false,
-        //         key: "title",
-        //         subKey: "en"
-        //     },
-        //     {
-        //         title: "Award Name In English",
-        //         key: "title",
-        //         subKey: "ar"
-        //     },
-        //     { title: "Actions", key: "actions", sortable: false },
-
-        // ]
-
         const actionsTable = [
             { 'edit': true },
             { 'delete': true },
@@ -79,12 +59,11 @@ export default defineComponent({
         const filterBy = ['content']
 
         function redirectBack(e) {
-            console.log(e, router);
+            console.log(e);
             this.$router.push({ name: 'books' });
         }
 
         function openDialog(e) {
-            console.log('event is', e);
             dialog.value = true;
             if (e) {
                 selectedAward.value = e
@@ -107,7 +86,6 @@ export default defineComponent({
         }
 
         function submit(e, eventType) {
-            console.log(e);
             if (eventType === 'add') {
                 store.dispatch('Books/createAward', e)
                     .then(response => {
@@ -142,7 +120,6 @@ export default defineComponent({
         }
 
         function fetchData() {
-            console.log('slug is', slug.value);
             store.dispatch('Books/getBook', slug.value);
         }
 
@@ -205,7 +182,6 @@ export default defineComponent({
             slug,
             redirectBack,
             book_id,
-            // headers
         }
     }
 })

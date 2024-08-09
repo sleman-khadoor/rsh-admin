@@ -24,7 +24,6 @@ import DataTable from '@/components/data-table.vue'
 import BookDialog from '../../components/book-dialog.vue'
 import DeleteBookDialog from '@/components/delete-dialog.vue'
 import SearchByFilters from '@/components/search-by-filters.vue'
-import router from '@/router/routes.js';
 
 import { useStore } from 'vuex'
 export default defineComponent({
@@ -112,7 +111,6 @@ export default defineComponent({
         }
 
         function submit(e, eventType) {
-            console.log(e);
             if (eventType === 'add') {
                 store.dispatch('Books/createBook', e)
                     .then(response => {
@@ -121,7 +119,6 @@ export default defineComponent({
                         dialog.value = false;
                     });
             } else if (eventType === 'edit') {
-                console.log('payload', e);
                 store.dispatch('Books/editBook', { 'payload': e, 'slug': selectedBook.value.slug.en })
                     .then(response => {
                         console.log('Edit response:', response);
@@ -147,7 +144,6 @@ export default defineComponent({
         }
 
         function fetchData(page, search = {}) {
-            console.log('currentPage', page);
             page ? currentPage.value = page : null
             store.dispatch('Books/fetchBooks', {
                 params: {
@@ -172,12 +168,12 @@ export default defineComponent({
         }
 
         function viewReviews(e) {
-            console.log(e, router);
+            console.log(e);
             this.$router.push({ name: 'book-reviews', params: { slug: e.slug.en } });
         }
 
         function viewAwards(e) {
-            console.log(e, router);
+            console.log(e);
             this.$router.push({ name: 'book-awards', params: { slug: e.slug.en } });
         }
 

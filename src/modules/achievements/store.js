@@ -19,18 +19,15 @@ export default {
 			return state.selectedAchievement;
 		},
 		achievements(state) {
-            console.log('object store achievement', state.achievements);
 			return state.achievements;
 		},
 		meta(state) {
-            console.log('object store meta', state.meta);
 			return state.meta;
 		},
 	},
 	mutations: {
 		setLoading(state, value) {
 			state.loading = value;
-			console.log('object', state.loading);
 		},
 		setSelectedAchievement(state, value) {
 			state.selectedAchievement = value;
@@ -50,7 +47,6 @@ export default {
 	},
 	actions: {
 		async fetchAchievements({ commit }, queryParams) {
-			console.log('inside fetch achievements', queryParams);
 			commit('setLoading', true);
 			try {
 				const  response  = await AchievementsService.getAchievements(queryParams);

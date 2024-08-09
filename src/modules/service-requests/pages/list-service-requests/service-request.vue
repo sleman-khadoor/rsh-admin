@@ -14,7 +14,6 @@
 import { defineComponent, onMounted, watch, ref, computed } from 'vue'
 import viewItem from '@/components/view-item.vue'
 import { useStore } from 'vuex'
-import router from '@/router/routes.js';
 import { useRoute } from 'vue-router'
 
 export default defineComponent({
@@ -49,13 +48,11 @@ export default defineComponent({
         ]
 
         function redirectBack(e) {
-            console.log(e, router);
-            console.log('props is ', serviceType.value);
+            console.log(e);
             this.$router.push({ name: serviceType.value+'-requests' });
         }
 
         function getServiceRequest() {
-            console.log('slug is', slug.value);
             store.dispatch('ServiceRequests/getServiceRequest', slug.value);
         }
 

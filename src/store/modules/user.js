@@ -38,7 +38,6 @@ export default {
 			state.user = value;
 		},
 		setExpiredPasswordFlag(state, value) {
-			console.log('object expiredTokenFlag ',value);
 			state.expiredPasswordFlag = value;
 		},
 		setNewRolesSorted(state, value) {
@@ -46,9 +45,7 @@ export default {
 			if (index !== -1) {
 				state.user.roles.splice(index, 1);
 			}
-			console.log('object roles temp arr: ', state.user.roles);
 			state.user.roles.unshift(value);
-			console.log('object roles temp arr: ', state.user);
 			localStorage.setItem('user', JSON.stringify(state.user))
 		},
 		resetState(state) {
@@ -58,7 +55,6 @@ export default {
 	actions: {
 		storeUser({ commit }, user) {
 			commit('setUser', user);
-			console.log('User: ', user);
 			localStorage.setItem('user', JSON.stringify(user));
 		},
 		setExpiredPasswordFlag({ commit }, value) {

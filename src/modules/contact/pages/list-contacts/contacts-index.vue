@@ -73,7 +73,6 @@ export default defineComponent({
         }
 
         function submit(e, eventType) {
-            console.log(e);
             if (eventType === 'edit') {
                 store.dispatch('Contacts/editContact', { 'payload': e, 'slug': selectedContact.value.slug })
                     .then(response => {
@@ -85,7 +84,6 @@ export default defineComponent({
         }
 
         function fetchData(page, search = {}) {
-            console.log('currentPage', page);
             page ? currentPage.value = page : null
             store.dispatch('Contacts/fetchContacts', {
                 params: {
@@ -97,7 +95,6 @@ export default defineComponent({
         }
 
         function closeDialog(e, eventType) {
-            console.log(e);
             if (eventType == 'add' || eventType == 'edit') {
                 dialog.value = false;
             } else if (eventType == 'delete') {

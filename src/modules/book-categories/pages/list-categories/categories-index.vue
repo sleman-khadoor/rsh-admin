@@ -81,7 +81,6 @@ export default defineComponent({
         }
 
         function submit(e, eventType) {
-            console.log(e);
             if (eventType === 'add') {
                 store.dispatch('BookCategories/createCategory', e)
                 .then(response => {
@@ -97,7 +96,6 @@ export default defineComponent({
                         deleteDialog.value = false;
                     });
             } else if (eventType === 'delete') {
-                console.log('event type is', selectedCategory.value.slug.en);
                 store.dispatch('BookCategories/deleteCategory', selectedCategory.value.slug.en)
                     .then(response => {
                         console.log('Delete response:', response);
@@ -118,7 +116,6 @@ export default defineComponent({
         }
 
         function fetchData(page, search = {}) {
-            console.log('currentPage', page);
             page ? currentPage.value = page : null
             store.dispatch('BookCategories/fetchCategories', {
                 params: {
@@ -130,7 +127,6 @@ export default defineComponent({
         }
 
         function closeDialog(e, eventType) {
-            console.log(e);
             if (eventType == 'add' || eventType == 'edit') {
                 dialog.value = false;
             } else if (eventType == 'delete') {

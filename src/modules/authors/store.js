@@ -19,18 +19,15 @@ export default {
 			return state.selectedAuthor;
 		},
 		authors(state) {
-            console.log('object store auther', state.authors);
 			return state.authors;
 		},
 		meta(state) {
-            console.log('object store meta', state.meta);
 			return state.meta;
 		},
 	},
 	mutations: {
 		setLoading(state, value) {
 			state.loading = value;
-			console.log('object', state.loading);
 		},
 		setSelectedAuthor(state, value) {
 			state.selectedAuthor = value;
@@ -50,7 +47,6 @@ export default {
 	},
 	actions: {
 		async fetchAuthors({ commit }, queryParams) {
-			console.log('inside fetch authors', queryParams);
 			commit('setLoading', true);
 			try {
 				const  response  = await AuthorsService.getAuthors(queryParams);

@@ -51,7 +51,6 @@
             const formv = ref(null);
             onUpdated(() => {
                 if (props.selectedAward) {
-                    console.log('date is', props.selectedAward);
                     form.title.en = props.selectedAward.title?.en
                     form.title.ar = props.selectedAward.title?.ar
                 } else {

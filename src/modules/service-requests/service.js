@@ -4,7 +4,6 @@ import notify from '@/utils/notify';
 
 export default class Service {
 	static getServiceRequests(qp = {}) {
-		console.log(' pagination', qp);
 		return api.get(ep.SERVICE_REQUEST, qp).then((res) => res.data);
 	}
 

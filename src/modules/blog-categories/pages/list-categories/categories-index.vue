@@ -81,7 +81,6 @@ export default defineComponent({
         }
 
         function submit(e, eventType) {
-            console.log(e);
             if (eventType === 'add') {
                 store.dispatch('BlogCategories/createCategory', e)
                 .then(response => {
@@ -118,7 +117,6 @@ export default defineComponent({
         }
 
         function fetchData(page, search = { }) {
-            console.log('currentPage', page);
             page ? currentPage.value = page : null
             store.dispatch('BlogCategories/fetchCategories', {
                 params: {
@@ -130,7 +128,6 @@ export default defineComponent({
         }
 
         function closeDialog(e, eventType) {
-            console.log(e);
             if (eventType == 'add' || eventType == 'edit') {
                 dialog.value = false;
             } else if (eventType == 'delete') {

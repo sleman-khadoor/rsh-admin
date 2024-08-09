@@ -56,7 +56,3 @@ export default {
 		},
 	],
 };
-// subtitles: [
-
-// 	['Organizing events & conferences', '/service-requests/organizing-events-conferences'],
-//   ]

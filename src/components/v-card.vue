@@ -18,7 +18,6 @@
           <v-card  class="card pa-1 h-100">
             <v-card-text class="py-2" :dir="langs[index] === 'ar' ? 'rtl' : 'ltr'">
               {{ langs[index] === 'en' ? truncatedText(item, 'en')  : truncatedText(item, 'ar')}}
-              <!-- {{item.content}} -->
               <p v-if="cardType == 'reviews'" class="font-dark-blue font-weight-bold" >{{item.username.en}}</p>
             </v-card-text>
             <v-card-actions class="pl-3 d-flex flex-wrap align-center justify-space-between py-0 card-actions">
@@ -56,7 +55,6 @@ export default defineComponent({
     let langs = ref([]);
     
     function updateLang(item, lang) {
-      console.log('Updating language to:', lang);
       if(item.lang !== lang){
         item.lang = lang;   
       }

@@ -37,10 +37,10 @@ export default defineComponent({
     data: () => ({
         rules: {
             arTitle: [
-                v => !!v || 'Category name in Arabic is required',
+                v => !!v || 'category name in arabic is required',
             ],
             enTitle: [
-                v => !!v || 'Category name in English is required',
+                v => !!v || 'category name in english is required',
             ]
         }
     }),

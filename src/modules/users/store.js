@@ -21,22 +21,18 @@ export default {
 			return state.selectedUser;
 		},
 		users(state) {
-            console.log('object store users', state.users);
 			return state.users;
 		},
 		roles(state) {
-            console.log('object store user', state.users);
 			return state.roles;
 		},
 		meta(state) {
-            console.log('object store meta', state.meta);
 			return state.meta;
 		},
 	},
 	mutations: {
 		setLoading(state, value) {
 			state.loading = value;
-			console.log('object', state.loading);
 		},
 		setSelectedUser(state, value) {
 			state.selectedUser = value;
@@ -59,7 +55,6 @@ export default {
 	},
 	actions: {
 		async fetchUsers({ commit }, queryParams) {
-			console.log('inside fetch users', queryParams);
 			commit('setLoading', true);
 			try {
 				const  response  = await UsersService.getUsers(queryParams);
@@ -103,7 +98,6 @@ export default {
 		},
 
 		async fetchRoles({ commit }, queryParams) {
-			console.log('inside fetch roles', queryParams);
 			commit('setLoading', true);
 			try {
 				const  response  = await UsersService.getRoles(queryParams);

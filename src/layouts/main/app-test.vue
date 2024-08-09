@@ -16,7 +16,6 @@
                         </v-list-item-icon>
                     </template>
                 </v-list-item>
-                <!--group-->
                 <v-list-group v-else>
 
                     <template v-slot:activator="{ props }">

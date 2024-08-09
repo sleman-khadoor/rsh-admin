@@ -127,7 +127,6 @@ export default defineComponent({
         const formv = ref(null);
         onUpdated(() => {
             if (props.selectedBook) {
-                console.log('date is', props.selectedBook);
                 form.title.en = props.selectedBook.title?.en
                 form.title.ar = props.selectedBook.title?.ar
                 form.author_id = props.selectedBook.author.id

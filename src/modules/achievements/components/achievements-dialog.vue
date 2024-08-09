@@ -36,10 +36,10 @@ export default defineComponent({
     data: () => ({
         rules: {
             arContent: [
-                v => !!v || 'Content Achievement in Arabic is required',
+                v => !!v || 'content achievement in arabic is required',
             ],
             enContent: [
-                v => !!v || 'Content Achievement in English is required',
+                v => !!v || 'content chievement in english is required',
             ]
         },
     }),

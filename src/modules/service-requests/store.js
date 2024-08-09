@@ -20,22 +20,18 @@ export default {
 			return state.selectedServiceRequest;
 		},
 		serviceRequests(state) {
-            console.log('object store serviceRequest', state.serviceRequests);
 			return state.serviceRequests;
 		},
 		meta(state) {
-            console.log('object store meta', state.meta);
 			return state.meta;
 		},
 		serviceName(state) {
-            console.log('object store meta', state.serviceName);
 			return state.serviceName;
 		},
 	},
 	mutations: {
 		setLoading(state, value) {
 			state.loading = value;
-			console.log('object', state.loading);
 		},
 		setSelectedServiceRequest(state, value) {
 			state.selectedServiceRequest = value;
@@ -58,7 +54,6 @@ export default {
 	},
 	actions: {
 		async fetchServiceRequests({ commit }, queryParams) {
-			console.log('inside fetch serviceRequests', queryParams);
 			commit('setLoading', true);
 			try {
 				const  response  = await ServiceRequestsService.getServiceRequests(queryParams);

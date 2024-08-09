@@ -16,7 +16,6 @@
                         </v-list-item-icon>
                     </template>
                 </v-list-item>
-                <!--group-->
                 <v-list-group v-else>
 
                     <template v-slot:activator="{ props }">
@@ -182,7 +181,6 @@ export default {
             localStorage.setItem('sidebarCurrentItem', index)
             this.$router.push(route)
             this.selectedItem = index
-            // element[3] = 0
             console.log(element);
         },
         iconUrl(icon) {

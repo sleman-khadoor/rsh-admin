@@ -4,7 +4,6 @@ import notify from '@/utils/notify';
 
 export default class Service {
 	static getAuthors(qp = {}) {
-		console.log(' pagination', qp);
 		return api.get(ep.MAIN_AUTHORS, qp).then((res) => res.data);
 	}
 

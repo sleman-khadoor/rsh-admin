@@ -4,7 +4,6 @@ import notify from '@/utils/notify';
 
 export default class Service {
 	static getUsers(qp = {}) {
-		console.log(' pagination', qp);
 		return api.get(ep.USERS, qp).then((res) => res.data);
 	}
 
@@ -27,7 +26,6 @@ export default class Service {
 	}
 
 	static getRoles(qp = {}) {
-		console.log(' pagination', qp);
 		return api.get(ep.ROLES, qp).then((res) => res.data);
 	}
 

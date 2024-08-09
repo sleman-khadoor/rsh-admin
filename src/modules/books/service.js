@@ -4,7 +4,6 @@ import notify from '@/utils/notify';
 
 export default class Service {
 	static getBooks(qp = {}) {
-		console.log(' pagination', qp);
 		return api.get(ep.BOOKS, qp).then((res) => res.data);
 	}
 
@@ -31,7 +30,6 @@ export default class Service {
 	}
 
 	static getFormats(qp = {}) {
-		console.log(' pagination', qp);
 		return api.get(ep.FORMATS, qp).then((res) => res.data);
 	}
 

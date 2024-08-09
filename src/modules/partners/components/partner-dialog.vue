@@ -50,13 +50,13 @@ export default defineComponent({
     data: () => ({
         rules: {
             arName: [
-                v => !!v || 'Partner name in Arabic is required',
+                v => !!v || 'partner name in arabic is required',
             ],
             enName: [
-                v => !!v || 'Partner name in English is required',
+                v => !!v || 'partner name in english is required',
             ],
             website_link: [
-                v => !!v || 'Partner URL is required',
+                v => !!v || 'partner URL is required',
             ]
         },
         baseUrl
@@ -111,7 +111,6 @@ export default defineComponent({
 
                 reader.readAsDataURL(file);
             }
-            console.log('object file', form.avatar);
         }
 
         function checkValidation() {

@@ -21,7 +21,7 @@ import DeleteContactRequestDialog from '@/components/delete-dialog.vue'
 import SearchByFilters from '@/components/search-by-filters.vue'
 
 import { useStore } from 'vuex'
-import router from '@/router/routes.js';
+
 export default defineComponent({
     components: {
         DataTable,
@@ -72,7 +72,7 @@ export default defineComponent({
         }
 
         function viewItem(e) {
-            console.log(e, router);
+            console.log(e);
             this.$router.push({ name: 'contact-request', params: { slug: e.slug } });
         }
 
@@ -83,7 +83,6 @@ export default defineComponent({
         }
 
         function submit(e, eventType) {
-            console.log(e);
             if (eventType === 'delete') {
                 store.dispatch('ContactRequests/deleteContactRequest', selectedContactRequest.value.slug)
                     .then(response => {
