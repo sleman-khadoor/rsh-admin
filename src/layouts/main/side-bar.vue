@@ -4,7 +4,7 @@
         {{tempSelectedItem}}
         {{tempSelectedSubItem}}
             <div v-for="(item, index) in sidebarRoutes" :key="index">
-                <v-list-item v-if="item.path !== undefined" :value="item.title" :class="(selectedItem === index) ? 'height-10-per mx-auto v-list-item--active white-active' : 'height-10-per mx-auto white-active'" @click="go(item.path, index)">
+                <v-list-item :id="`item_${index}`" v-if="item.path !== undefined" :value="item.title" :class="(selectedItem === index) ? 'height-10-per mx-auto v-list-item--active white-active' : 'height-10-per mx-auto white-active'" @click="go(item.path, index)">
                     <v-list-item-title class="size-25">
                         {{item.title}}
                     </v-list-item-title>
@@ -42,7 +42,7 @@
                         </v-list-item>
                     </template>
 
-                    <v-list-item v-for="([title, path, showBadge, notifyNum], i) in item.subtitles" :key="i" :value="title" :class="(tempSelectedItem === index && tempSelectedSubItem === i) ? ' v-list-item--active white-active' : 'white-active'" @click="go(path, index, i, item.subtitles[i])">
+                    <v-list-item v-for="([title, path, showBadge, notifyNum], i) in item.subtitles" :key="i" :id="`item_${index}_${i}`" :value="title" :class="(tempSelectedItem === index && tempSelectedSubItem === i) ? ' v-list-item--active white-active' : (selectedItem !== index) ? 'white-hidden' : 'white-active'" @click="go(path, index, i, item.subtitles[i])">
                         <template v-if="showBadge && notifyNum" v-slot:append>
                             <v-badge color="error" :content="notifyNum" inline></v-badge>
                         </template>
@@ -187,7 +187,16 @@ export default {
             localStorage.setItem('sidebarCurrentItem', index)
             this.selectedItem = index
         },
-        go(route, index, i, element) {
+        go(route, index, i = null, element) {
+            let list = document.getElementsByClassName('v-list-item v-list-item--active')
+            if(list && list.length) {
+                let i = 0
+                for(i; i< list.length; i++) {
+                    list[i].classList.remove('v-list-item--active');
+                }
+            }
+            let currentElement = i !== null ? document.getElementById(`item_${index}_${i}`) : document.getElementById(`item_${index}`)
+            currentElement.classList.add('v-list-item--active')
             this.tempSelectedItem = null
             this.tempSelectedSubItem = null
             localStorage.setItem('sidebarCurrentItem', index )
@@ -195,16 +204,18 @@ export default {
             this.$router.push(route)
             this.selectedItem = index
             this.selectedSubItem = i
-            element[3] = 0
+            if(element && element.notifyNum !== undefined) {
+                element[3] = 0
+            }
             console.log(element);
         },
         iconUrl(icon, isBlue, itemPath) {
             let im
             try {
-                if(isBlue || (this.$route.path === itemPath)) {
-                    im = `../../assets/icons/${icon}-blue.svg`
-                } else {
+                if(!isBlue || !(this.$route.path === itemPath)) {
                     im = `../../assets/icons/${icon}.svg`
+                } else {
+                    im = `../../assets/icons/${icon}-blue.svg`
                 }
                 
             } catch (err) {
