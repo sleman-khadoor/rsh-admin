@@ -1,8 +1,6 @@
 <template>
 <v-navigation-drawer color="dark-blue" class="text-white" permanent app ref="nav">
     <v-list v-model:opened="open" class="mt-5 mr-3" height="95%" min-height="30" dense>
-        {{tempSelectedItem}}
-        {{tempSelectedSubItem}}
             <div v-for="(item, index) in sidebarRoutes" :key="index">
                 <v-list-item :id="`item_${index}`" v-if="item.path !== undefined" :value="item.title" :class="(selectedItem === index) ? 'height-10-per mx-auto v-list-item--active white-active' : 'height-10-per mx-auto white-active'" @click="go(item.path, index)">
                     <v-list-item-title class="size-25">
