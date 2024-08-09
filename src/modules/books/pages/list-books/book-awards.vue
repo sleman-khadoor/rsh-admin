@@ -12,7 +12,7 @@
         </v-col>
     </div>
     <div class="row bg-white">
-        <AwardDialog :book_id="book_id" :dialog="dialog" :loading="loading" :selectedAward="selectedAward" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
+        <AwardDialog :book_id="book_id" :dialog="dialog" :selectedAward="selectedAward" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
         <AwardViewDialog cardType="awards" :viewDialog="viewDialog" :viewLang="viewLang" :loading="loading" :selectedItem="selectedAward" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'view')" @closeAddDialog="closeDialog($event, 'view')" />
         <DeleteAwardDialog :deleteDialog="deleteDialog" :loading="loading" :selectedAward="selectedAward" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
         <VCard cardType="awards" itemKey="slugTranslation" :actionsTable="actionsTable" :data="data" :loading="loading" @OpenDialog="openDialog($event)" @OpenViewEnDialog="openViewDialog($event, 'en')" @OpenViewArDialog="openViewDialog($event, 'ar')" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)"></VCard>
@@ -98,8 +98,8 @@ export default defineComponent({
                 store.dispatch('Books/editAward', { 'payload': e, 'slug': selectedAward.value.slug.en })
                     .then(response => {
                         console.log('Edit response:', response);
-                        fetchData()
                         dialog.value = false;
+                        fetchData()
                     })
             } else if (eventType === 'delete') {
                 store.dispatch('Books/deleteAward', selectedAward.value.slug.en)

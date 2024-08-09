@@ -66,6 +66,7 @@ export default {
 		},
 
 		async createUser({ commit }, payload) {
+			payload['_method'] = 'POST';
 			commit('setLoading', true);
 			let res = null;
 			try {

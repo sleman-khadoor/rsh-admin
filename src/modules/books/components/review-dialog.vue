@@ -26,7 +26,7 @@
                         <v-btn class="text-none text-white font-weight-regular close-btn" type="reset" text="Cancel" color="grey" block @click="Object.keys(props.selectedReview).length !== 0 ? $emit('closeEditDialog', 'edit'): $emit('closeAddDialog', 'add')"></v-btn>
                     </v-col>
                     <v-col cols="12" md="3" sm="3">
-                        <v-btn type="submit" class="text-none text-white font-weight-regular" @click="handleSubmit()" text="Save" color="dark-blue" :loading="props.loading" block></v-btn>
+                        <v-btn type="submit" class="text-none text-white font-weight-regular" @click="handleSubmit()" text="Save" color="dark-blue" :loading="loading" block></v-btn>
                     </v-col>
                 </v-row>
             </v-card>
@@ -35,10 +35,11 @@
     </template>
     
     <script>
-    import { defineComponent, onUpdated, reactive, computed, ref } from 'vue'
+    import { defineComponent, reactive, computed, ref, watch } from 'vue'
+import { useStore } from 'vuex';
     
     export default defineComponent({
-        props: ['dialog', 'selectedReview', 'eventType', 'loading', 'book_id'],
+        props: ['dialog', 'selectedReview', 'eventType', 'book_id'],
         data: () => ({
             rules: {
                 enUsername: [
@@ -57,6 +58,17 @@
             },
         }),
         setup(props, { emit }) {
+            const store = useStore();
+            const getInitialForm = () => ({
+                username: {
+                    en: null,
+                    ar: null
+                },
+                review: {
+                    en: null,
+                    ar: null
+                }
+            })
             let form = reactive({
                 username: {
                     en: null,
@@ -68,19 +80,21 @@
                 }
             })
             const formv = ref(null);
-            onUpdated(() => {
+            const loading = computed(() => store.getters['Blogs/loading'])
+            watch(() => props.dialog, () => {
+                if(props.dialog) {
                 if (props.selectedReview) {
                     form.username.en = props.selectedReview.username?.en
                     form.username.ar = props.selectedReview.username?.ar
                     form.review.en = props.selectedReview.review?.en
                     form.review.ar = props.selectedReview.review?.ar
                 } else {
-                    form.username.en = null
-                    form.username.ar = null
-                    form.review.en = null
-                    form.review.ar = null
+                        Object.assign(form, getInitialForm())
+                    }
+                } else {
+                    Object.assign(form, getInitialForm())
                 }
-            })
+            });
     
             const title = computed(() => {
                 return Object.keys(props.selectedReview).length !== 0 ? `Edit Review` : `Add Review`;
@@ -110,6 +124,7 @@
                 form,
                 formv,
                 title,
+                loading,
                 handleSubmit
             }
         },

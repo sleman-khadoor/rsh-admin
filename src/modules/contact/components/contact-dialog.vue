@@ -26,10 +26,12 @@
 </template>
 
 <script>
-import { defineComponent, onUpdated, reactive, computed, ref } from 'vue'
+import { watch } from 'vue';
+import { defineComponent, reactive, computed, ref } from 'vue'
+import { useStore } from 'vuex';
 
 export default defineComponent({
-    props: ['dialog', 'selectedContact', 'eventType', 'loading'],
+    props: ['dialog', 'selectedContact', 'eventType'],
     data: () => ({
         rules: {
             value: [
@@ -38,19 +40,26 @@ export default defineComponent({
         },
     }),
     setup(props, { emit }) {
+        const store = useStore();
+        const getInitialForm = () => ({
+            value: null,
+        })
         let form = reactive({
             value: null,
         })
         const formv = ref({
             value: null,
         });
-        onUpdated(() => {
-            if (props.selectedContact) {
-                form.value = props.selectedContact.value
+        const loading = computed(() => store.getters['Blogs/loading'])
+        watch(() => props.dialog, () => {
+            if (props.dialog) {
+                if (props.selectedContact) {
+                    form.value = props.selectedContact.value
+                }
             } else {
-                form.value = null
+                Object.assign(form, getInitialForm())
             }
-        })
+        });
         const title = computed(() => {
             return Object.keys(props.selectedContact).length !== 0 ? `Edit Contact` : `Add Contact`;
         })
@@ -77,6 +86,7 @@ export default defineComponent({
             form,
             formv,
             title,
+            loading,
             handleSubmit,
         }
     },
@@ -86,8 +96,8 @@ export default defineComponent({
 <style>
 .img-container {
     border: 1px solid #a5a5a5 !important;
-    min-height: 123px!important;
-    max-height: 123px!important;
+    min-height: 123px !important;
+    max-height: 123px !important;
 }
 
 .img-container:hover {
@@ -106,9 +116,8 @@ export default defineComponent({
 }
 
 .input-field .v-field__input {
-    min-height: 46px !important;
+    min-height: 40px !important;
     padding-top: unset !important;
     padding-bottom: unset !important
 }
-
 </style>

@@ -14,16 +14,16 @@
                     </v-col>
                     <v-col cols="12" md="6" sm="6" class="mb-0">
                         <div :class="'img-container'" @click="clickInputFile" style="position: relative; height: 200px;">
-                          <p v-if="!form.avatar" class="size-22 w-100 mb-0 pt-3 pl-3 position-absolute v-label v-field-label z-index-1" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Partner Logo*</p>
-                          <div class="w-mc ma-auto h-100 d-flex justify-center align-center pa-2" style="height: 100%; width: 100%;">
-                            <img v-if="form.avatar" ref="imgRef" :src="props.selectedPartner.avatar ? baseUrl + form.avatar : form.avatar" class="my-auto" style="width: 100%; height: 100%; object-fit: contain;" />
-                            <img v-else width="30" height="30" src="@/assets/icons/img-upload.svg" class="my-auto" />
-                            <v-file-input variant="outlined" accept="image/png, image/jpeg, image/bmp" class="mx-auto w-mc pa-0" id="hidenFileInput" hide-input v-model="form.avatar" truncate-length="15" :prepend-icon="null" append-outer="mdi-close" required @change="printFiles(form.avatar, 'image')" style="position: absolute; width: 100%; height: 100%; opacity: 0;">
-                            </v-file-input>
-                          </div>
+                            <p v-if="!form.avatar" class="size-22 w-100 mb-0 pt-3 pl-3 position-absolute v-label v-field-label z-index-1" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Partner Logo*</p>
+                            <div class="w-mc ma-auto h-100 d-flex justify-center align-center pa-2" style="height: 100%; width: 100%;">
+                                <img v-if="form.avatar" ref="imgRef" :src="props.selectedPartner.avatar ? baseUrl + form.avatar : form.avatar" class="my-auto" style="width: 100%; height: 100%; object-fit: contain;" />
+                                <img v-else width="30" height="30" src="@/assets/icons/img-upload.svg" class="my-auto" />
+                                <v-file-input variant="outlined" accept="image/png, image/jpeg, image/bmp" class="mx-auto w-mc pa-0" id="hidenFileInput" hide-input v-model="form.avatar" truncate-length="15" :prepend-icon="null" append-outer="mdi-close" required @change="printFiles(form.avatar, 'image')" style="position: absolute; width: 100%; height: 100%; opacity: 0;">
+                                </v-file-input>
+                            </div>
                         </div>
-                      </v-col>
-                     <v-col cols="12" md="12" sm="12" class="input-field">
+                    </v-col>
+                    <v-col cols="12" md="12" sm="12" class="input-field">
                         <v-text-field variant="outlined" class="pa-0" label="Partner URL*" v-model="form.website_link" :rules="rules.website_link" required></v-text-field>
                     </v-col>
                 </v-row>
@@ -33,7 +33,7 @@
                     <v-btn class="text-none text-white font-weight-regular close-btn" text="Cancel" color="grey" type="reset" block @click="Object.keys(props.selectedPartner).length !== 0 ? $emit('closeEditDialog', 'edit'): $emit('closeAddDialog', 'add')"></v-btn>
                 </v-col>
                 <v-col cols="12" md="3" sm="3">
-                    <v-btn type="submit" class="text-none text-white font-weight-regular" text="Save" @click="handleSubmit()" color="dark-blue" :loading="props.loading" block></v-btn>
+                    <v-btn type="submit" class="text-none text-white font-weight-regular" text="Save" @click="handleSubmit()" color="dark-blue" :loading="loading" block></v-btn>
                 </v-col>
             </v-row>
         </v-card>
@@ -43,10 +43,12 @@
 
 <script>
 import { baseUrl } from '@/utils/axios';
-import { defineComponent, onUpdated, reactive, computed, ref } from 'vue'
+import { watch } from 'vue';
+import { defineComponent, reactive, computed, ref } from 'vue'
+import { useStore } from 'vuex';
 
 export default defineComponent({
-    props: ['dialog', 'selectedPartner', 'eventType', 'loading'],
+    props: ['dialog', 'selectedPartner', 'eventType'],
     data: () => ({
         rules: {
             arName: [
@@ -62,6 +64,15 @@ export default defineComponent({
         baseUrl
     }),
     setup(props, { emit }) {
+        const store = useStore();
+        const getInitialForm = () => ({
+            name: {
+                ar: null,
+                en: null
+            },
+            website_link: null,
+            avatar: null
+        })
         let form = reactive({
             name: {
                 ar: null,
@@ -78,19 +89,21 @@ export default defineComponent({
             website_link: null,
             avatar: null
         });
-        onUpdated(() => {
-            if (props.selectedPartner) {
-                form.name.ar = props.selectedPartner.name?.ar
-                form.name.en = props.selectedPartner.name?.en
-                form.website_link = props.selectedPartner.website_link
-                form.avatar = props.selectedPartner.avatar
+        const loading = computed(() => store.getters['Blogs/loading'])
+        watch(() => props.dialog, () => {
+            if (props.dialog) {
+                if (props.selectedPartner) {
+                    form.name.ar = props.selectedPartner.name?.ar
+                    form.name.en = props.selectedPartner.name?.en
+                    form.website_link = props.selectedPartner.website_link
+                    form.avatar = props.selectedPartner.avatar
+                } else {
+                    Object.assign(form, getInitialForm())
+                }
             } else {
-                form.name.ar = null
-                form.name.en = null
-                form.website_link = null
-                form.avatar = null
+                Object.assign(form, getInitialForm())
             }
-        })
+        });
         const title = computed(() => {
             return Object.keys(props.selectedPartner).length !== 0 ? `Edit Partner` : `Add Partner`;
         })
@@ -146,6 +159,7 @@ export default defineComponent({
             form,
             formv,
             title,
+            loading,
             clickInputFile,
             printFiles,
             handleSubmit,
@@ -157,8 +171,8 @@ export default defineComponent({
 <style>
 .img-container {
     border: 1px solid #a5a5a5 !important;
-    min-height: 123px!important;
-    max-height: 123px!important;
+    min-height: 111px !important;
+    max-height: 111px !important;
 }
 
 .img-container:hover {
@@ -177,9 +191,8 @@ export default defineComponent({
 }
 
 .input-field .v-field__input {
-    min-height: 46px !important;
+    min-height: 40px !important;
     padding-top: unset !important;
     padding-bottom: unset !important
 }
-
 </style>

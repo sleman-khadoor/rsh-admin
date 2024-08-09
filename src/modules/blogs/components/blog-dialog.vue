@@ -213,8 +213,8 @@ export default defineComponent({
 <style>
 .img-container {
     border: 1px solid #a5a5a5 !important;
-    min-height: 90px!important;
-    max-height: 90px!important;
+    min-height: 100px!important;
+    max-height: 100px!important;
 }
 
 .img-container:hover {
@@ -231,7 +231,7 @@ export default defineComponent({
 }
 
 .input-field .v-field__input {
-    min-height: 45px !important;
+    min-height: 40px !important;
     padding-top: 1% !important;
     padding-bottom: 1% !important
 }
