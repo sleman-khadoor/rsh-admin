@@ -36,7 +36,7 @@
                     <v-btn class="text-none text-white font-weight-regular close-btn" text="Cancel" color="grey" type="reset" block @click="Object.keys(props.selectedAuthor).length !== 0 ? $emit('closeEditDialog', 'edit'): $emit('closeAddDialog', 'add')"></v-btn>
                 </v-col>
                 <v-col cols="12" md="3" sm="3">
-                    <v-btn type="submit" class="text-none text-white font-weight-regular" text="Save" @click="handleSubmit()" color="dark-blue" :loading="props.loading" block></v-btn>
+                    <v-btn type="submit" class="text-none text-white font-weight-regular" text="Save" @click="handleSubmit()" color="dark-blue" :loading="loading" block></v-btn>
                 </v-col>
             </v-row>
         </v-card>
@@ -46,10 +46,11 @@
 
 <script>
 import { baseUrl } from '@/utils/axios';
-import { defineComponent, onUpdated, reactive, computed, ref } from 'vue'
+import { defineComponent, reactive, computed, ref, watch } from 'vue'
+import { useStore } from 'vuex';
 
 export default defineComponent({
-    props: ['dialog', 'selectedAuthor', 'eventType', 'loading'],
+    props: ['dialog', 'selectedAuthor', 'eventType'],
     data: () => ({
         rules: {
             arName: [
@@ -68,6 +69,18 @@ export default defineComponent({
         baseUrl
     }),
     setup(props, { emit }) {
+        const store = useStore();
+        const getInitialForm = () => ({
+            name: {
+                ar: null,
+                en: null
+            },
+            about: {
+                ar: null,
+                en: null
+            },
+            avatar: null
+        })
         let form = reactive({
             name: {
                 ar: null,
@@ -90,21 +103,23 @@ export default defineComponent({
             },
             avatar: null
         });
-        onUpdated(() => {
-            if (props.selectedAuthor) {
-                form.name.ar = props.selectedAuthor.name?.ar
-                form.name.en = props.selectedAuthor.name?.en
-                form.about.ar = props.selectedAuthor.about?.ar
-                form.about.en = props.selectedAuthor.about?.en
-                form.avatar = props.selectedAuthor.avatar
-            } else {
-                form.name.ar = null
-                form.name.en = null
-                form.about.ar = null
-                form.about.en = null
-                form.avatar = null
-            }
-        })
+
+        const loading = computed(() => store.getters['Blogs/loading'])
+        watch(() => props.dialog, () => {
+            if(props.dialog) {
+                if (props.selectedAuthor) {
+                    form.name.ar = props.selectedAuthor.name?.ar
+                    form.name.en = props.selectedAuthor.name?.en
+                    form.about.ar = props.selectedAuthor.about?.ar
+                    form.about.en = props.selectedAuthor.about?.en
+                    form.avatar = props.selectedAuthor.avatar
+                } else {
+                        Object.assign(form, getInitialForm())
+                    }
+                } else {
+                    Object.assign(form, getInitialForm())
+                }
+        });
         const title = computed(() => {
             return Object.keys(props.selectedAuthor).length !== 0 ? `Edit Author` : `Add Author`;
         })
@@ -163,6 +178,7 @@ export default defineComponent({
             form,
             formv,
             title,
+            loading,
             clickInputFile,
             printFiles,
             handleSubmit,
@@ -174,8 +190,8 @@ export default defineComponent({
 <style>
 .img-container {
     border: 1px solid #a5a5a5 !important;
-    min-height: 123px!important;
-    max-height: 123px!important;
+    min-height: 111px!important;
+    max-height: 111px!important;
 }
 
 .img-container:hover {
@@ -194,7 +210,7 @@ export default defineComponent({
 }
 
 .input-field .v-field__input {
-    min-height: 46px !important;
+    min-height: 40px !important;
     padding-top: unset !important;
     padding-bottom: unset !important
 }

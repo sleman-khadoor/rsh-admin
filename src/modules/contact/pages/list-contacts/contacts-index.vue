@@ -7,7 +7,7 @@
                     <SearchByFilters :items="filterBy" @fetchData="fetchData(1,$event)" />
                 </v-col>
             </v-row>
-            <ContactDialog :dialog="dialog" :loading="loading" :selectedContact="selectedContact" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
+            <ContactDialog :dialog="dialog" :selectedContact="selectedContact" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
         </div>
         <DataTable :headers="headers" itemKey="slug" :actionsTable="actionsTable" :data="data" :meta="meta" :loading="loading" @OpenDialog="openDialog($event)" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)" />
     </div>
@@ -77,8 +77,8 @@ export default defineComponent({
                 store.dispatch('Contacts/editContact', { 'payload': e, 'slug': selectedContact.value.slug })
                     .then(response => {
                         console.log('Edit response:', response);
-                        fetchData(1)
                         dialog.value = false;
+                        fetchData(1)
                 })
             }
         }

@@ -10,7 +10,7 @@
                     <v-btn class="text-none text-white font-weight-regular" height="47" width="180" :text="`Add Category`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
                 </v-col>
             </v-row>
-            <CategoryDialog :dialog="dialog" :selectedCategory="selectedCategory" :loading="loading" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
+            <CategoryDialog :dialog="dialog" :selectedCategory="selectedCategory" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
             <DeleteCategoryDialog :deleteDialog="deleteDialog" :loading="loading" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
         </div>
         <DataTable :headers="headers" itemKey="slugTranslation" :actionsTable="actionsTable" :data="data" :meta="meta" :loading="loading" @OpenDialog="openDialog($event)" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)" />
@@ -92,8 +92,8 @@ export default defineComponent({
                 store.dispatch('BookCategories/editCategory', { 'payload': e, 'slug': selectedCategory.value.slug.en })
                 .then(response => {
                         console.log('Edit response:', response);
-                        fetchData()
                         deleteDialog.value = false;
+                        fetchData()
                     });
             } else if (eventType === 'delete') {
                 store.dispatch('BookCategories/deleteCategory', selectedCategory.value.slug.en)

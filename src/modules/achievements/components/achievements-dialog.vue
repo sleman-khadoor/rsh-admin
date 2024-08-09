@@ -11,7 +11,7 @@
                         <v-textarea variant="outlined" label="Content of the achievment in English*" v-model="form.content.en" rows="7" :rules="rules.enContent" required></v-textarea>
                     </v-col>
                     <v-col cols="6" md="6" sm="6">
-                        <v-textarea variant="outlined" label="Content of the achievment in Arabic*" v-model="form.content.ar" rows="7"  :rules="rules.arContent" required></v-textarea>
+                        <v-textarea variant="outlined" label="Content of the achievment in Arabic*" v-model="form.content.ar" rows="7" :rules="rules.arContent" required></v-textarea>
                     </v-col>
                 </v-row>
             </v-card-text>
@@ -20,7 +20,7 @@
                     <v-btn class="text-none text-white font-weight-regular close-btn" text="Cancel" color="grey" type="reset" block @click="Object.keys(props.selectedAchievement).length !== 0 ? $emit('closeEditDialog', 'edit'): $emit('closeAddDialog', 'add')"></v-btn>
                 </v-col>
                 <v-col cols="12" md="3" sm="3">
-                    <v-btn type="submit" class="text-none text-white font-weight-regular" text="Save" @click="handleSubmit()" color="dark-blue" :loading="props.loading" block></v-btn>
+                    <v-btn type="submit" class="text-none text-white font-weight-regular" text="Save" @click="handleSubmit()" color="dark-blue" :loading="loading" block></v-btn>
                 </v-col>
             </v-row>
         </v-card>
@@ -29,10 +29,12 @@
 </template>
 
 <script>
-import { defineComponent, onUpdated, reactive, computed, ref } from 'vue'
+import { watch } from 'vue';
+import { defineComponent, reactive, computed, ref } from 'vue'
+import { useStore } from 'vuex';
 
 export default defineComponent({
-    props: ['dialog', 'selectedAchievement', 'eventType', 'loading'],
+    props: ['dialog', 'selectedAchievement', 'eventType'],
     data: () => ({
         rules: {
             arContent: [
@@ -44,6 +46,13 @@ export default defineComponent({
         },
     }),
     setup(props, { emit }) {
+        const store = useStore();
+        const getInitialForm = () => ({
+            content: {
+                ar: null,
+                en: null
+            },
+        })
         let form = reactive({
             content: {
                 ar: null,
@@ -56,15 +65,19 @@ export default defineComponent({
                 en: null
             },
         });
-        onUpdated(() => {
-            if (props.selectedAchievement) {
-                form.content.ar = props.selectedAchievement.content?.ar
-                form.content.en = props.selectedAchievement.content?.en
+        const loading = computed(() => store.getters['Blogs/loading'])
+        watch(() => props.dialog, () => {
+            if (props.dialog) {
+                if (props.selectedAchievement) {
+                    form.content.ar = props.selectedAchievement.content?.ar
+                    form.content.en = props.selectedAchievement.content?.en
+                } else {
+                    Object.assign(form, getInitialForm())
+                }
             } else {
-                form.content.ar = null
-                form.content.en = null
+                Object.assign(form, getInitialForm())
             }
-        })
+        });
         const title = computed(() => {
             return Object.keys(props.selectedAchievement).length !== 0 ? `Edit Achievement` : `Add Achievement`;
         })
@@ -101,6 +114,7 @@ export default defineComponent({
             form,
             formv,
             title,
+            loading,
             handleSubmit,
         }
     },

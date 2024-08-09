@@ -21,7 +21,7 @@
                     <v-btn class="text-none text-white font-weight-regular close-btn" text="Cancel" color="grey" block @click="Object.keys(props.selectedCategory).length !== 0 ? $emit('closeEditDialog', 'edit'): $emit('closeAddDialog', 'add')"></v-btn>
                 </v-col>
                 <v-col cols="12" md="4" sm="4">
-                    <v-btn type="submit" class="text-none text-white font-weight-regular" text="Save" :loading="props.loading" color="dark-blue" block @click="handleSubmit()"></v-btn>
+                    <v-btn type="submit" class="text-none text-white font-weight-regular" text="Save" :loading="loading" color="dark-blue" block @click="handleSubmit()"></v-btn>
                 </v-col>
             </v-row>
         </v-card>
@@ -30,10 +30,11 @@
 </template>
 
 <script>
-import { defineComponent, onUpdated, reactive, computed, ref } from 'vue'
+import { defineComponent, reactive, computed, ref, watch } from 'vue'
+import { useStore } from 'vuex';
 
 export default defineComponent({
-    props: ['dialog', 'selectedCategory', 'eventType', 'loading'],
+    props: ['dialog', 'selectedCategory', 'eventType'],
     data: () => ({
         rules: {
             arTitle: [
@@ -45,22 +46,34 @@ export default defineComponent({
         }
     }),
     setup(props, { emit }) {
+        const store = useStore();
+        const getInitialForm = () => ({
+            title: {
+                ar: null,
+                en: null
+            },
+        })
         let form = reactive({
             title: {
                 ar: null,
                 en: null
-            }
+            },
         })
+        
         const formv = ref(null);
-        onUpdated(() => {
-            if (props.selectedCategory) {
-                form.title.ar = props.selectedCategory.title?.ar
-                form.title.en = props.selectedCategory.title?.en
-            } else {
-                form.title.ar = null
-                form.title.en = null
-            }
-        })
+        const loading = computed(() => store.getters['Blogs/loading'])
+        watch(() => props.dialog, () => {
+            if(props.dialog) {
+                if (props.selectedCategory) {
+                    form.title.ar = props.selectedCategory.title?.ar
+                    form.title.en = props.selectedCategory.title?.en
+                } else {
+                        Object.assign(form, getInitialForm())
+                    }
+                } else {
+                    Object.assign(form, getInitialForm())
+                }
+        });
         const title = computed(() => {
             return Object.keys(props.selectedCategory).length !== 0 ? `Edit Category` : `Add Category`;
         })
@@ -97,6 +110,7 @@ export default defineComponent({
             form,
             formv,
             title,
+            loading,
             handleSubmit,
         }
     },
@@ -114,7 +128,7 @@ export default defineComponent({
 }
 
 .input-field .v-field__input {
-  min-height: 46px !important;
+  min-height: 40px !important;
   padding-top: unset !important;
   padding-bottom: unset !important
 }

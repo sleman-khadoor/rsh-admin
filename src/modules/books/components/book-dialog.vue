@@ -54,7 +54,7 @@
                     <v-btn class="text-none text-white font-weight-regular close-btn" type="reset" text="Cancel" color="grey" block @click="Object.keys(props.selectedBook).length !== 0 ? $emit('closeEditDialog', 'edit'): $emit('closeAddDialog', 'add')"></v-btn>
                 </v-col>
                 <v-col cols="12" md="3" sm="3">
-                    <v-btn type="submit" class="text-none text-white font-weight-regular" @click="handleSubmit()" text="Save" color="dark-blue" :loading="props.loading" block></v-btn>
+                    <v-btn type="submit" class="text-none text-white font-weight-regular" @click="handleSubmit()" text="Save" color="dark-blue" :loading="loading" block></v-btn>
                 </v-col>
             </v-row>
         </v-card>
@@ -64,11 +64,11 @@
 
 <script>
 import { baseUrl } from '@/utils/axios';
-import { defineComponent, onUpdated, reactive, computed, ref, onMounted } from 'vue'
+import { defineComponent, reactive, computed, ref, onMounted, watch } from 'vue'
 import { useStore } from 'vuex';
 
 export default defineComponent({
-    props: ['dialog', 'selectedBook', 'eventType', 'loading', 'categories'],
+    props: ['dialog', 'selectedBook', 'eventType', 'categories'],
     data: () => ({
         rules: {
             enTitle: [
@@ -107,6 +107,23 @@ export default defineComponent({
     }),
     setup(props, { emit }) {
         const store = useStore();
+        const getInitialForm = () => ({
+            title: {
+                en: null,
+                ar: null
+            },
+            author_id: null,
+            categories: [],
+            formats: [],
+            ISBN: null,
+            EISBN: null,
+            printing_year: null,
+            abstract: {
+                en: null,
+                ar: null
+            },
+            cover_image: null
+        })
         let form = reactive({
             title: {
                 en: null,
@@ -125,32 +142,28 @@ export default defineComponent({
             cover_image: null
         })
         const formv = ref(null);
-        onUpdated(() => {
-            if (props.selectedBook) {
-                form.title.en = props.selectedBook.title?.en
-                form.title.ar = props.selectedBook.title?.ar
-                form.author_id = props.selectedBook.author.id
-                form.categories = formatCategories();
-                form.formats = formatBookFormats();
-                form.ISBN = props.selectedBook.ISBN
-                form.EISBN = props.selectedBook.EISBN
-                form.printing_year = props.selectedBook.printing_year
-                form.abstract.en = props.selectedBook.abstract?.en
-                form.abstract.ar = props.selectedBook.abstract?.ar
-                form.cover_image = props.selectedBook.cover_image
+        const loading = computed(() => store.getters['Blogs/loading'])
+        watch(() => props.dialog, () => {
+            if(props.dialog) {
+                if (props.selectedBook) {
+                    form.title.en = props.selectedBook.title?.en
+                    form.title.ar = props.selectedBook.title?.ar
+                    form.author_id = props.selectedBook.author.id
+                    form.categories = formatCategories();
+                    form.formats = formatBookFormats();
+                    form.ISBN = props.selectedBook.ISBN
+                    form.EISBN = props.selectedBook.EISBN
+                    form.printing_year = props.selectedBook.printing_year
+                    form.abstract.en = props.selectedBook.abstract?.en
+                    form.abstract.ar = props.selectedBook.abstract?.ar
+                    form.cover_image = props.selectedBook.cover_image
             } else {
-                form.title.en = null
-                form.title.ar = null
-                form.author_id = null
-                form.categories = []
-                form.formats = []
-                form.ISBN = null
-                form.EISBN = null
-                form.printing_year = null
-                form.abstract.en = null
-                form.abstract.ar = null
+                        Object.assign(form, getInitialForm())
+                }
+            } else {
+                Object.assign(form, getInitialForm())
             }
-        })
+        });
 
         function formatCategories(){
             let selectedCategories = []
@@ -296,6 +309,7 @@ export default defineComponent({
             authors,
             formats,
             languages,
+            loading,
             clickInputFile,
             printFiles,
             handleSubmit

@@ -9,7 +9,7 @@
                 <v-btn class="text-none text-white font-weight-regular" height="47" width="180" :text="`Add Achievement`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
             </v-col>
         </v-row>
-        <AchievementDialog :dialog="dialog" :loading="loading" :selectedAchievement="selectedAchievement" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
+        <AchievementDialog :dialog="dialog" :selectedAchievement="selectedAchievement" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
         <AchievementViewDialog cardType="achievements" :viewDialog="viewDialog" :viewLang="viewLang" :loading="loading" :selectedItem="selectedAchievement" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'view')" @closeAddDialog="closeDialog($event, 'view')" />
         <DeleteAchievementDialog :deleteDialog="deleteDialog" :loading="loading" :selectedAchievement="selectedAchievement" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
         <VCard cardType="achievements" itemKey="slugTranslation" :actionsTable="actionsTable" :data="data" :meta="meta" :loading="loading" @OpenDialog="openDialog($event)" @OpenViewEnDialog="openViewDialog($event, 'en')" @OpenViewArDialog="openViewDialog($event, 'ar')" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)"></VCard>
@@ -87,8 +87,8 @@ export default defineComponent({
                 store.dispatch('Achievements/editAchievement', { 'payload': e, 'slug': selectedAchievement.value.slug.en })
                     .then(response => {
                         console.log('Edit response:', response);
-                        fetchData()
                         dialog.value = false;
+                        fetchData()
                     })
             } else if (eventType === 'delete') {
                 store.dispatch('Achievements/deleteAchievement', selectedAchievement.value.slug.en)

@@ -10,7 +10,7 @@
                     <v-btn class="text-none text-white font-weight-regular" height="47" width="180" :text="`Add User`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
                 </v-col>
             </v-row>
-            <UserDialog :dialog="dialog" :loading="loading" :selectedUser="selectedUser" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
+            <UserDialog :dialog="dialog" :selectedUser="selectedUser" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
             <ResetPasswordDialog :resetDialog="resetDialog" :loading="loading" :selectedUser="selectedUser" @reset="submit($event, 'reset')" @closeDialog="closeDialog($event, 'reset')" />
             <DeleteUserDialog :deleteDialog="deleteDialog" :loading="loading" :selectedUser="selectedUser" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
         </div>
@@ -104,8 +104,8 @@ export default defineComponent({
                 store.dispatch('Users/editUser', { 'payload': e, 'slug': selectedUser.value.slug })
                     .then(response => {
                         console.log('Edit response:', response);
-                        fetchData();
                         dialog.value = false;
+                        fetchData();
                     });
             } else if (eventType === 'delete') {
                 store.dispatch('Users/deleteUser', selectedUser.value.slug)

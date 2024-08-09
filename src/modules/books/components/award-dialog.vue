@@ -27,10 +27,12 @@
     </template>
     
     <script>
-    import { defineComponent, onUpdated, reactive, computed, ref } from 'vue'
+    import { watch } from 'vue';
+import { defineComponent, reactive, computed, ref } from 'vue'
+import { useStore } from 'vuex';
     
     export default defineComponent({
-        props: ['dialog', 'selectedAward', 'eventType', 'loading', 'book_id'],
+        props: ['dialog', 'selectedAward', 'eventType','book_id'],
         data: () => ({
             rules: {
                 entitle: [
@@ -42,6 +44,13 @@
             },
         }),
         setup(props, { emit }) {
+            const store = useStore();
+            const getInitialForm = () => ({
+                title: {
+                    ar: null,
+                    en: null
+                },
+            })
             let form = reactive({
                 title: {
                     en: null,
@@ -49,15 +58,19 @@
                 },
             })
             const formv = ref(null);
-            onUpdated(() => {
-                if (props.selectedAward) {
-                    form.title.en = props.selectedAward.title?.en
-                    form.title.ar = props.selectedAward.title?.ar
+            const loading = computed(() => store.getters['Blogs/loading'])
+            watch(() => props.dialog, () => {
+                if(props.dialog) {
+                    if (props.selectedAward) {
+                        form.title.en = props.selectedAward.title?.en
+                        form.title.ar = props.selectedAward.title?.ar
                 } else {
-                    form.title.en = null
-                    form.title.ar = null
+                        Object.assign(form, getInitialForm())
+                    }
+                } else {
+                    Object.assign(form, getInitialForm())
                 }
-            })
+            });
     
             const title = computed(() => {
                 return Object.keys(props.selectedAward).length !== 0 ? `Edit Award` : `Add Award`;
@@ -87,6 +100,7 @@
                 form,
                 formv,
                 title,
+                loading,
                 handleSubmit
             }
         },

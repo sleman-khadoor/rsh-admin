@@ -10,7 +10,7 @@
                     <v-btn class="text-none text-white font-weight-regular" height="47" width="180" :text="`Add Author`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
                 </v-col>
             </v-row>
-            <AuthorDialog :dialog="dialog" :loading="loading" :selectedAuthor="selectedAuthor" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
+            <AuthorDialog :dialog="dialog" :selectedAuthor="selectedAuthor" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
             <DeleteAuthorDialog :deleteDialog="deleteDialog" :loading="loading" :selectedAuthor="selectedAuthor" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
         </div>
         <DataTable :headers="headers" itemKey="slugTranslation" :actionsTable="actionsTable" :data="data" :meta="meta" :loading="loading" @OpenDialog="openDialog($event)" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)" />
@@ -92,8 +92,8 @@ export default defineComponent({
                 store.dispatch('Authors/editAuthor', { 'payload': e, 'slug': selectedAuthor.value.slug.en })
                     .then(response => {
                         console.log('Edit response:', response);
-                        fetchData()
                         dialog.value = false;
+                        fetchData()
                     })
             } else if (eventType === 'delete') {
                 store.dispatch('Authors/deleteAuthor', selectedAuthor.value.slug.en)
