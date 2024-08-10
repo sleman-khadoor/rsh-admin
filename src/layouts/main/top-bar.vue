@@ -41,10 +41,15 @@ export default defineComponent({
     },
 })
 </script>
-<style scoped>
+<style >
 .rounded-img{
   border-radius: 50%;
   height: 55px;
   width: 55px;
 }
+
+.v-toolbar__content {
+  height: 84px !important;
+}
+
 </style>

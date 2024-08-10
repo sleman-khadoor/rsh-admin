@@ -7,7 +7,7 @@
                     <SearchByFilters :selectItems="categories" selectType="book_category" :items="filterBy" @fetchData="fetchData(1,$event)" />
                 </v-col>
                 <v-col lg="2" md="2" sm="12" class="d-flex flex-end">
-                    <v-btn class="text-none text-white font-weight-regular ml-auto" height="47" width="180" :text="`Add Book`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
+                    <v-btn class="text-none text-white font-weight-regular"  height="47" width="180" :text="`Add Book`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
                 </v-col>
             </v-row>
             <BookDialog :categories="categories" :dialog="dialog" :selectedBook="selectedBook" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />

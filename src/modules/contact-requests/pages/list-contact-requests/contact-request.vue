@@ -1,7 +1,7 @@
 <template>
 <div id="contactRequests">
     <div class="row ma-5">
-        <v-col lg="3" md="3" sm="3" class="px-1 d-flex pt-2">
+        <v-col lg="3" md="3" sm="3" class="px-1 d-flex pt-7">
             <img @click="redirectBack" width="33px" src="@/assets/icons/back.svg" class="px-1 cursor-pointer" />
             <p class="font-dark-blue size-30 font-weight-bold">Message Content</p>
         </v-col>

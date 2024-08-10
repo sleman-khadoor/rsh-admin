@@ -15,7 +15,7 @@
     <v-container class="container pb-0 h-auto" v-else>
       <v-row dense class="pa-4 align-content-stretch h-auto">
         <v-col v-for="(item, index ) in props.data" :key="item.id" cols="6" md="6" sm="12" class="input-field pa-2">
-          <v-card  class="card pa-1" height="200px">
+          <v-card  class="card pa-1" height="165px">
             <v-card-text class="py-2" :dir="langs[index] === 'ar' ? 'rtl' : 'ltr'">
               {{ langs[index] === 'en' ? truncatedText(item, 'en')  : truncatedText(item, 'ar')}}
               <p v-if="cardType == 'reviews'" class="font-dark-blue font-weight-bold" >{{item.username.en}}</p>

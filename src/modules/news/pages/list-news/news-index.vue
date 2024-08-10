@@ -1,5 +1,5 @@
 <template>
-<div id="news">
+<div id="news" class="h-100 mt-6">
     <div class="row ma-5 bg-white">
         <div class="d-flex flex-row-reverse pa-4">
             <v-row class="py-2 px-lg-7 px-md-5 px-sm-3 justify-center">
@@ -118,7 +118,7 @@ export default defineComponent({
             store.dispatch('News/fetchNews', {
                 params: {
                     page: page ? page : currentPage.value,
-                    perPage: 6,
+                    perPage: 7,
                     [`filter[${search.value?.key}]`]: search.value?.value
                 }
             });

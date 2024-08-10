@@ -1,5 +1,5 @@
 <template>
-<div id="awards">
+<div id="awards" class="min-h-90 h-auto">
     <div class="py-2 d-flex justify-space-between header">
         <div>
             <v-col lg="3" md="3" sm="3" class="px-1 d-flex pt-6">
@@ -7,11 +7,11 @@
                 <p class="font-dark-blue size-30 font-weight-bold">Book Awards</p>
             </v-col>
         </div>
-        <v-col lg="3" md="3" sm="3">
+        <v-col lg="3" md="3" sm="3" class="d-flex justify-end">
             <v-btn class="text-none text-white font-weight-regular" height="47" width="180" :text="`Add Award`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
         </v-col>
     </div>
-    <div class="row bg-white">
+    <div class="row bg-white h-90">
         <AwardDialog :book_id="book_id" :dialog="dialog" :selectedAward="selectedAward" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
         <AwardViewDialog cardType="awards" :viewDialog="viewDialog" :viewLang="viewLang" :loading="loading" :selectedItem="selectedAward" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'view')" @closeAddDialog="closeDialog($event, 'view')" />
         <DeleteAwardDialog :deleteDialog="deleteDialog" :loading="loading" :selectedAward="selectedAward" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
