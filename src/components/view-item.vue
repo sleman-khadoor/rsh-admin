@@ -20,8 +20,8 @@
         </v-card-text>
         <v-container v-if="props.data?.documents">
             <h4 class="pb-2 size-16 mb-2">Attachments</h4>
-            <div class="d-flex flex-wrap">
-                <div class="col ma-1" v-for="(attachment, index) in props.data.documents" :key="index" @click="downloadAttachment(attachment)">
+            <div class="d-flex flex-wrap justify-space-between">
+                <div class="col ma-1" style="width: 18%" v-for="(attachment, index) in props.data.documents" :key="index" @click="downloadAttachment(attachment)">
                     <div :class="'img-container'" @click="clickInputFile" style="position: relative; height: 200px;">
                         <div class="w-mc ma-auto h-100 d-flex justify-center align-center pa-2" style="height: 200%; width: 100%;">
                             <img ref="imgRef" :src="getAttachment(attachment)" class="my-auto" style="width: 100%; height: 100%; object-fit: contain;" />

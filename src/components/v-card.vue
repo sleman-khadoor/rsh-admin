@@ -1,21 +1,21 @@
 <template>
-  <div>
-    <div v-if="props.loading || (!props.data && props.cardType!='achievements')">
+  <div class="min-h-100 h-auto">
+    <div class="h-100" v-if="props.loading || (!props.data && props.cardType!='achievements')">
       <div class="d-flex justify-center align-center" style="height: 300px">
         <v-progress-circular :size="50" :width="7" :color="$colors.choco" indeterminate></v-progress-circular>
       </div>
     </div>
     
-    <div v-else-if="data.length === 0">
-      <div class="d-flex flex-column justify-center align-center">
-        <img  width="30%" src="@/assets/icons/no-data.svg">
+    <div class="h-100" v-else-if="data.length === 0">
+      <div class="d-flex flex-column justify-center align-center h-100">
+        <img  width="30%" class="ma-auto" src="@/assets/icons/no-data.svg">
       </div>
     </div>
     
-    <v-container class="container pb-0" v-else>
-      <v-row dense class="pl-4 pr-4 align-content-stretch">
-        <v-col v-for="(item, index ) in props.data" :key="item.id" cols="12" md="6" sm="6" class="input-field pa-1">
-          <v-card  class="card pa-1 h-100">
+    <v-container class="container pb-0 h-auto" v-else>
+      <v-row dense class="pa-4 align-content-stretch h-auto">
+        <v-col v-for="(item, index ) in props.data" :key="item.id" cols="6" md="6" sm="12" class="input-field pa-2">
+          <v-card  class="card pa-1" height="200px">
             <v-card-text class="py-2" :dir="langs[index] === 'ar' ? 'rtl' : 'ltr'">
               {{ langs[index] === 'en' ? truncatedText(item, 'en')  : truncatedText(item, 'ar')}}
               <p v-if="cardType == 'reviews'" class="font-dark-blue font-weight-bold" >{{item.username.en}}</p>
@@ -80,7 +80,7 @@ export default defineComponent({
       }else if(props.cardType === 'awards'){
         text = lang == 'en'? item.title?.en : item.title?.ar;
       }
-      const maxLength = 135;
+      const maxLength = 240;
       return text?.length > maxLength? text.substring(0, maxLength) + '...' : text;
     }
 

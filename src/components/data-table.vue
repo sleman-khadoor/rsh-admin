@@ -43,7 +43,7 @@
       v-else
       hide-default-footer
       hover
-      height="320px">
+      height="375">
       <thead class="bg-white-grey">
         <tr>
           <th v-for="header in headers" :key="header.title" class="text-center font-weight-bold">

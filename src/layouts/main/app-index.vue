@@ -3,7 +3,7 @@
     <side-bar/>
     <top-bar/>
     <v-main class="d-flex align-center justify-center bg-white-grey" style="min-height: 100vh;">
-      <v-container fluid>
+      <v-container class="h-100 mt-0" fluid>
         <router-view></router-view>
       </v-container>
     </v-main>
