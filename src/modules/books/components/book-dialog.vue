@@ -80,11 +80,11 @@ export default defineComponent({
             author: [
                 v => !!v || 'author is required',
             ],
-            categories: [
-                v => !!v || 'categories is required',
+            categories: [                
+                v => !!v.length >= 1 || 'categories is required',
             ],
             formats: [
-                v => !!v || 'book formats is required',
+                v => !!v.length >= 1 || 'book formats is required',
             ],
             ISBN: [
                 v => !!v || 'ISBN is required',
@@ -180,7 +180,7 @@ export default defineComponent({
             let formats = []
             selectedFormats = props.selectedBook.book_formats
             selectedFormats.forEach(element => {
-                formats.push({ text: element.title, value: element.id })
+                formats.push({ text: element.title.en, value: element.id })
             });
             return formats;
         }
@@ -211,7 +211,7 @@ export default defineComponent({
         })))
 
         const formats = computed(() => store.getters['Books/formats'].map((format) => ({
-            text: format.title,
+            text: format.title.en,
             value: format.id
         })))
 

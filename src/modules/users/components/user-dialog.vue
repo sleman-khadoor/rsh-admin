@@ -67,10 +67,9 @@ export default defineComponent({
             ],
             password_confirmation: [
                 v => !!v || 'password confirmation is required',
-                v => v === this.form.password || 'password confirmation does not match password',
             ],
             roles: [
-                v => !!v || 'roles required',
+                v => !!v.length >= 1 || 'roles required',
             ]
         },
     }),
@@ -154,7 +153,7 @@ export default defineComponent({
             }
         }
 
-        function handleSubmit() {
+        function handleSubmit() {            
             if (checkValidation()) {
                 let roles = [];
                 if (Object.keys(props.selectedUser).length !== 0) {

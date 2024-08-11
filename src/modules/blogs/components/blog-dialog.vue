@@ -69,7 +69,7 @@ export default defineComponent({
                 v => !!v || 'language is required',
             ],
             categories: [
-                v => !!v || 'categories is required',
+                v => !!v.length >= 1 || 'categories is required',
             ],
             content: [
                 v => !!v || 'content required',
