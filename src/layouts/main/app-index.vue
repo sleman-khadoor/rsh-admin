@@ -13,6 +13,8 @@
 import SideBar from './side-bar.vue';
 import { mapActions } from 'vuex'
 import TopBar from './top-bar.vue';
+import { useStore } from 'vuex';
+import roles from '@/utils/roles';
 
 export default {
   components: {
@@ -28,10 +30,21 @@ export default {
     ...mapActions('Core', ['showNotification']),
   },
   async created() {
-    this.showNotification();
-		this.unreadNotificationInterval = setInterval(() => {
-			this.showNotification();
-		}, 30000);
+    const store = useStore();
+    const userRoles = store.getters['User/user']?.roles;
+    let refetchNotification = false;
+    userRoles.forEach(userRole => {
+      if(userRole.name == roles.services_admin){
+        this.showNotification();
+        refetchNotification = true;
+        return 
+      }
+    });
+    if(refetchNotification){
+      this.unreadNotificationInterval = setInterval(() => {
+          this.showNotification();
+        }, 30000);
+    }
   },
   unmounted() {
 		clearInterval(this.unreadNotificationInterval);

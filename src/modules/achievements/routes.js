@@ -5,7 +5,7 @@ export default {
 	component: ModuleLayout,
 	redirect: '/achievements',
 	meta: {
-		roles: [roles.super_admin],
+		roles: [roles.super_admin, roles.contacts_admin],
 	},
 	children: [
 		{

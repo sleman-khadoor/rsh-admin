@@ -14,10 +14,10 @@
                             <v-text-field variant="outlined" class="pa-1" label="Writer Name In Arabic*" v-model="form.username.ar" :rules="rules.arUsername" required></v-text-field>
                         </v-col>
                         <v-col cols="6" md="6" sm="6">
-                            <v-textarea variant="outlined" class="pa-1" label="Review Text In English*" v-model="form.review.en" rows="6" persistent-hint :rules="rules.enReview" required></v-textarea>
+                            <v-textarea variant="outlined" class="pa-1 pt-0" label="Review Text In English*" v-model="form.review.en" rows="6" persistent-hint :rules="rules.enReview" required></v-textarea>
                         </v-col>
                         <v-col cols="6" md="6" sm="6">
-                            <v-textarea variant="outlined" class="pa-1" label="Review Text In Arabic*" v-model="form.review.ar" rows="6" persistent-hint :rules="rules.arReview" required></v-textarea>
+                            <v-textarea variant="outlined" class="pa-1 pt-0" label="Review Text In Arabic*" v-model="form.review.ar" rows="6" persistent-hint :rules="rules.arReview" required></v-textarea>
                         </v-col>
                     </v-row>
                 </v-card-text>

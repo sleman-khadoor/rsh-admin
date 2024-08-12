@@ -113,7 +113,7 @@ export default {
                     path: '/represented-authors',
                     icon: 'user-tag',
                     meta: {
-                        roles: [roles.super_admin, roles.represented_authors_admin],
+                        roles: [roles.super_admin, roles.contacts_admin],
                     },
                 },
                 {
@@ -121,7 +121,7 @@ export default {
                     path: '/partners',
                     icon: 'partner',
                     meta: {
-                        roles: [roles.super_admin, roles.partners_admin],
+                        roles: [roles.super_admin, roles.contacts_admin],
                     },
                 },
                 {
@@ -129,7 +129,7 @@ export default {
                     path: '/achievements',
                     icon: 'award',
                     meta: {
-                        roles: [roles.super_admin, roles.achievements_admin],
+                        roles: [roles.super_admin, roles.contacts_admin],
                     },
                 },
                 {
@@ -137,7 +137,7 @@ export default {
                     path: '/contacts',
                     icon: 'contact',
                     meta: {
-                        roles: [roles.super_admin, roles.about_admin],
+                        roles: [roles.super_admin, roles.contacts_admin],
                     },
                 },
                 {
@@ -147,7 +147,7 @@ export default {
                     showBadge: 'contactUs',
                     notifyNum: 0,
                     meta: {
-                        roles: [roles.super_admin, roles.contacts_admin],
+                        roles: [roles.super_admin, roles.services_admin],
                     },
                 },
                 {
@@ -178,11 +178,13 @@ export default {
         ...mapGetters('Core', ['getUnreadNotificationsStatus']),
     },
     methods: {
-        go(route, index, element) {
-            localStorage.setItem('sidebarCurrentItem', index)
-            this.$router.push(route)
-            element[3] = 0
-        },
+        // go(route, index, element) {
+        //     console.log('slkdvmlkvm');
+        //     localStorage.setItem('sidebarCurrentItem', index)
+        //     this.$router.push(route)
+        //     element[3] = 0
+        //     console.log(element);
+        // },
         iconUrl(icon) {
             let im
             try {

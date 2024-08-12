@@ -6,7 +6,7 @@ export default {
 	component: ModuleLayout,
 	redirect: '/represented-authors',
 	meta: {
-		roles: [roles.super_admin, roles.represented_authors_admin],
+		roles: [roles.super_admin, roles.contacts_admin],
 	},
 	children: [
 		{

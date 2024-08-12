@@ -18,7 +18,9 @@
           <v-card  class="card pa-1" height="165px">
             <v-card-text class="py-2" :dir="langs[index] === 'ar' ? 'rtl' : 'ltr'">
               {{ langs[index] === 'en' ? truncatedText(item, 'en')  : truncatedText(item, 'ar')}}
-              <p v-if="cardType == 'reviews'" class="font-dark-blue font-weight-bold" >{{item.username.en}}</p>
+              <p v-if="cardType == 'reviews'" class="font-dark-blue font-weight-bold" >
+                {{ langs[index] === 'en'? item.username.en : item.username.ar  }}
+              </p>
             </v-card-text>
             <v-card-actions class="pl-3 d-flex flex-wrap align-center justify-space-between py-0 card-actions">
               <div class="d-flex flex-wrap">

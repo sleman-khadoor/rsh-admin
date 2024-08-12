@@ -6,7 +6,7 @@ export default {
 	component: ModuleLayout,
 	redirect: '/contacts',
 	meta: {
-		roles: [roles.super_admin, roles.about_admin],
+		roles: [roles.super_admin, roles.contacts_admin],
 	},
 	children: [
 		{

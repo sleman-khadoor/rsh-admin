@@ -6,7 +6,7 @@ export default {
 	component: ModuleLayout,
 	redirect: '/authors',
 	meta: {
-		roles: [roles.super_admin, roles.authors_admin],
+		roles: [roles.super_admin, roles.books_admin],
 	},
 	children: [
 		{

@@ -116,7 +116,7 @@ export default {
                     path: '/represented-authors',
                     icon: 'user-tag',
                     meta: {
-                        roles: [roles.super_admin, roles.represented_authors_admin],
+                        roles: [roles.super_admin, roles.contacts_admin],
                     },
                 },
                 {
@@ -124,7 +124,7 @@ export default {
                     path: '/partners',
                     icon: 'partner',
                     meta: {
-                        roles: [roles.super_admin, roles.partners_admin],
+                        roles: [roles.super_admin, roles.contacts_admin],
                     },
                 },
                 {
@@ -132,7 +132,7 @@ export default {
                     path: '/achievements',
                     icon: 'award',
                     meta: {
-                        roles: [roles.super_admin, roles.achievements_admin],
+                        roles: [roles.super_admin, roles.contacts_admin],
                     },
                 },
                 {
@@ -140,7 +140,7 @@ export default {
                     path: '/contacts',
                     icon: 'contact',
                     meta: {
-                        roles: [roles.super_admin, roles.about_admin],
+                        roles: [roles.super_admin, roles.contacts_admin],
                     },
                 },
                 {
@@ -150,7 +150,7 @@ export default {
                     showBadge: 'contactUs',
                     notifyNum: 0,
                     meta: {
-                        roles: [roles.super_admin, roles.contacts_admin],
+                        roles: [roles.super_admin, roles.services_admin],
                     },
                 },
                 {
@@ -202,7 +202,7 @@ export default {
             this.$router.push(route)
             this.selectedItem = index
             this.selectedSubItem = i
-            if(element && element.notifyNum !== undefined) {
+            if(element[3]) {
                 element[3] = 0
             }
             console.log(element);
@@ -263,7 +263,7 @@ export default {
         this.tempSelectedItem = this.selectedItem
         this.tempSelectedSubItem = this.selectedSubItem
         this.updateSideBarRoutes();
-        this.open.push(this.sidebarRoutes[this.selectedItem].title)
+        this.open.push(this.sidebarRoutes[this.selectedItem]?.title)
     },
 
 }

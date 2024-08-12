@@ -6,7 +6,7 @@ export default {
 	component: ModuleLayout,
 	redirect: '/partners',
 	meta: {
-		roles: [roles.super_admin, roles.partners_admin],
+		roles: [roles.super_admin, roles.contacts_admin],
 	},
 	children: [
 		{

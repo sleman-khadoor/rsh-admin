@@ -9,7 +9,7 @@
                 <v-row dense>
 
                     <v-col cols="12" md="6" sm="6" class="input-field">
-                        <v-text-field variant="outlined" class="pb-2" label="Partner Name In English*" :rules="rules.enName" required v-model="form.name.en"></v-text-field>
+                        <v-text-field variant="outlined" class="pb-1" label="Partner Name In English*" :rules="rules.enName" required v-model="form.name.en"></v-text-field>
                         <v-text-field variant="outlined" class="pb-1" label="Partner Name In Arabic*" :rules="rules.arName" required v-model="form.name.ar"></v-text-field>
                     </v-col>
                     <v-col cols="12" md="6" sm="6" class="mb-0">
@@ -171,8 +171,8 @@ export default defineComponent({
 <style>
 .img-container {
     border: 1px solid #a5a5a5 !important;
-    min-height: 111px !important;
-    max-height: 111px !important;
+    min-height: 107px !important;
+    max-height: 107px !important;
 }
 
 .img-container:hover {
