@@ -9,7 +9,7 @@
                     <v-row dense>
                         <v-col cols="12" md="12" sm="12">
                             <v-textarea v-if="props.viewLang =='en' " readonly variant="outlined" :label="getLabel()"  v-model="form.content.en" rows="7"></v-textarea>
-                            <v-textarea v-else readonly variant="outlined" :label="getLabel()" v-model="form.content.ar" rows="7"></v-textarea>
+                            <v-textarea v-else readonly variant="outlined" :label="getLabel()" v-model="form.content.ar" rows="7" dir="rtl"></v-textarea>
                         </v-col>
                     </v-row>
                 </v-card-text>

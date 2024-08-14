@@ -2,11 +2,6 @@
 <div id="contacts" class="h-100 mt-6">
     <div class="row ma-5 bg-white">
         <div class="d-flex flex-row-reverse pa-4">
-            <v-row class="py-2 px-lg-7 px-md-5 px-sm-3 justify-center">
-                <v-col lg="12" md="10" sm="12">
-                    <SearchByFilters :items="filterBy" @fetchData="fetchData(1,$event)" />
-                </v-col>
-            </v-row>
             <ContactDialog :dialog="dialog" :selectedContact="selectedContact" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
         </div>
         <DataTable :headers="headers" itemKey="slug" :actionsTable="actionsTable" :data="data" :meta="meta" :loading="loading" @OpenDialog="openDialog($event)" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)" />
@@ -17,7 +12,6 @@
 <script>
 import { computed, defineComponent, onMounted, watch, ref } from 'vue'
 import DataTable from '@/components/data-table.vue'
-import SearchByFilters from '@/components/search-by-filters.vue'
 import ContactDialog from '../../components/contact-dialog.vue'
 
 import { useStore } from 'vuex'
@@ -25,7 +19,6 @@ export default defineComponent({
     components: {
         DataTable,
         ContactDialog,
-        SearchByFilters
     },
     setup() {
         const store = useStore();
@@ -54,8 +47,6 @@ export default defineComponent({
             { 'delete': false },
             { 'view': false },
         ];
-
-        const filterBy = ['value']
 
         function openDialog(e) {
             dialog.value = true;
@@ -134,7 +125,6 @@ export default defineComponent({
             data,
             meta,
             loading,
-            filterBy,
             actionsTable
         }
     }

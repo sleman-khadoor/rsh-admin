@@ -61,7 +61,7 @@ export default defineComponent({
             { 'view': false },
         ];
         
-        const filterBy = ['title', 'writer', 'category'];
+        const filterBy = ['title', { value: 'writer', title: 'author' }, 'category'];
 
         function openDialog(e) {
             dialog.value = true;

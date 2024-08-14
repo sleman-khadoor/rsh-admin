@@ -11,7 +11,7 @@
                         <v-textarea variant="outlined" label="Content of the achievment in English*" v-model="form.content.en" rows="7" :rules="rules.enContent" required></v-textarea>
                     </v-col>
                     <v-col cols="6" md="6" sm="6">
-                        <v-textarea variant="outlined" label="Content of the achievment in Arabic*" v-model="form.content.ar" rows="7" :rules="rules.arContent" required></v-textarea>
+                        <v-textarea variant="outlined" label="Content of the achievment in Arabic*" v-model="form.content.ar" rows="7" :rules="rules.arContent" required dir="rtl"></v-textarea>
                     </v-col>
                 </v-row>
             </v-card-text>

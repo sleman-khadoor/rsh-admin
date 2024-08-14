@@ -9,7 +9,7 @@
                 <v-row dense>
                     <v-col cols="12" md="7" sm="7" class="input-field">
                         <v-text-field variant="outlined" class="pa-0" label="Book Title In English*" v-model="form.title.en" :rules="rules.enTitle" required></v-text-field>
-                        <v-text-field variant="outlined" class="pa-0" label="Book Title In Arabic*" v-model="form.title.ar" :rules="rules.arTitle" required></v-text-field>
+                        <v-text-field variant="outlined" class="pa-0" label="Book Title In Arabic*" v-model="form.title.ar" :rules="rules.arTitle" required dir='rtl'></v-text-field>
                     </v-col>
                     <v-col cols="12" md="5" sm="5" class="input-field">
                         <div :class="'img-container'" @click="clickInputFile" style="position: relative; height: 200px;">
@@ -26,10 +26,10 @@
                     <v-col cols="4" md="4" sm="4" class="input-field">
                         <v-select :menu-props="{ offsetY: true, maxHeight: '200px' }" variant="outlined" label="author*" :items="authors" v-model="form.author_id" :rules="rules.author" item-title="text" item-value="value" required></v-select>
                     </v-col>
-                    <v-col cols="8" md="8" sm="8" class="input-field">
+                    <v-col cols="8" md="8" sm="8" class="select_input-field">
                         <v-select class="categories" chips :menu-props="{ offsetY: true, maxHeight: '200px' }" variant="outlined" label="categories*" multiple :items="props.categories" v-model="form.categories" :rules="rules.categories" item-title="text" item-value="value" required></v-select>
                     </v-col>
-                    <v-col cols="4" md="4" sm="4" class="input-field">
+                    <v-col cols="4" md="4" sm="4" class="select_input-field">
                         <v-select class="categories" chips :menu-props="{ offsetY: true, maxHeight: '200px' }" variant="outlined" label="Book format*" multiple :items="formats" v-model="form.formats" :rules="rules.formats" item-title="text" item-value="value" required></v-select>
                     </v-col>
                     <v-col cols="3" md="3" sm="3" class="input-field">
@@ -45,7 +45,7 @@
                         <v-textarea variant="outlined" label="Abstract In English*" v-model="form.abstract.en" rows="5" persistent-hint :rules="rules.enAbstract" required></v-textarea>
                     </v-col>
                     <v-col cols="12" md="6" sm="6">
-                        <v-textarea variant="outlined" label="Abstract In Arabic*" v-model="form.abstract.ar" rows="5" persistent-hint :rules="rules.arAbstract" required></v-textarea>
+                        <v-textarea variant="outlined" label="Abstract In Arabic*" v-model="form.abstract.ar" rows="5" persistent-hint :rules="rules.arAbstract" required dir='rtl'></v-textarea>
                     </v-col>
                 </v-row>
             </v-card-text>
@@ -343,6 +343,12 @@ export default defineComponent({
     max-height: 40px !important;
     padding-top: 0% !important;
     padding-bottom: 0% !important
+}
+
+.select_input-field .v-field__input {
+    min-height: 40px !important;
+    padding-top: unset !important;
+    padding-bottom: unset !important
 }
 
 .date .v-field__input {

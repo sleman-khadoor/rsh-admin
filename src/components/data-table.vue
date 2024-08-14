@@ -78,7 +78,7 @@
           <div v-else-if="subItem.key === 'author'">
             {{ item.author.name.en }}
           </div>
-          <div v-else>
+          <div v-else :dir="subItem.subKey == 'ar'? 'rtl' : 'ltr'">
             {{ item[subItem.key]?.[subItem.subKey]?? item[subItem.key] }}
           </div>
           </td>

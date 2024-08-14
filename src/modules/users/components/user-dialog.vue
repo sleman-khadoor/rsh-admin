@@ -22,7 +22,7 @@
                     <v-col v-if="Object.keys(props.selectedUser).length === 0" cols="6" md="6" sm="6" class="input-field">
                         <v-text-field variant="outlined" type="password" class="pb-0" label="Confirm Password*" :rules="rules.password_confirmation" required v-model="form.password_confirmation"></v-text-field>
                     </v-col>
-                    <v-col cols="12" md="12" sm="12" class="input-field">
+                    <v-col cols="12" md="12" sm="12" class="select_input-field">
                         <v-select class="roles" chips :menu-props="{ offsetY: true, maxHeight: '200px' }" variant="outlined" label="User Roles*" multiple :items="roles" v-model="form.roles" :rules="rules.roles" item-title="text" item-value="value" required></v-select>
                     </v-col>
                 </v-row>
@@ -155,6 +155,8 @@ export default defineComponent({
 
         function handleSubmit() {            
             if (checkValidation()) {
+                console.log('roles',form.roles);
+                
                 let roles = [];
                 if (Object.keys(props.selectedUser).length !== 0) {
                     let oldRoles = formatRoles();
@@ -163,6 +165,7 @@ export default defineComponent({
                     }
                     if (roles.length === 0)
                         delete form.roles;
+
                     emit('edit', form, 'edit');
                 } else {
                     emit('add', form, 'add');
@@ -191,6 +194,12 @@ export default defineComponent({
 .input-field .v-field__input {
     min-height: 40px !important;
     max-height: 40px !important;
+    padding-top: unset !important;
+    padding-bottom: unset !important
+}
+
+.select_input-field .v-field__input {
+    min-height: 40px !important;
     padding-top: unset !important;
     padding-bottom: unset !important
 }

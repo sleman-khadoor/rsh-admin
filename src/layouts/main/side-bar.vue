@@ -201,9 +201,9 @@ export default {
             i ? localStorage.setItem('sidebarCurrentSubItem', i) : localStorage.setItem('sidebarCurrentSubItem', 0)
             this.$router.push(route)
             this.selectedItem = index
-            this.selectedSubItem = i
-            if(element[3]) {
-                element[3] = 0
+            this.selectedSubItem = i            
+            if (element && element.length > 3 && element[3] != null) {
+                element[3] = 0;
             }
             console.log(element);
         },

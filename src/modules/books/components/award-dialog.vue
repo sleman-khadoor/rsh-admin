@@ -9,7 +9,7 @@
                     <v-row dense>
                         <v-col cols="12" md="12" sm="12" class="input-field">
                             <v-text-field variant="outlined" class="pb-1" label="Award Name In English*" v-model="form.title.en" :rules="rules.entitle" required></v-text-field>
-                            <v-text-field variant="outlined" class="pa-0" label="Award Name In Arabic*" v-model="form.title.ar" :rules="rules.artitle" required></v-text-field>
+                            <v-text-field variant="outlined" class="pa-0" label="Award Name In Arabic*" v-model="form.title.ar" :rules="rules.artitle" required dir='rtl'></v-text-field>
                         </v-col>
                     </v-row>
                 </v-card-text>

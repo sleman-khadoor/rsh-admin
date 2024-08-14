@@ -1,14 +1,9 @@
 <template>
 <div id="achievements" class="h-100 mt-9">
-    <div class="row ma-5 bg-white">
-        <v-row class="py-2 px-lg-7 px-md-5 px-sm-3 justify-center">
-            <v-col lg="10" md="10" sm="12">
-                <SearchByFilters :items="filterBy" @fetchData="fetchData(1,$event)" />
-            </v-col>
-            <v-col lg="2" md="2" sm="12" class="d-flex flex-end">
-                <v-btn class="text-none text-white font-weight-regular" height="47" width="180" :text="`Add Achievement`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
-            </v-col>
-        </v-row>
+    <div class="row ma-5 bg-white">          
+        <v-col lg="2" md="2" sm="12" class="d-flex jusctify_end ml-auto pb-0">
+            <v-btn class="text-none text-white font-weight-regular" height="47" width="180" :text="`Add Achievement`" size="large" color="dark-blue" @click="openDialog()"></v-btn>
+        </v-col>
         <AchievementDialog :dialog="dialog" :selectedAchievement="selectedAchievement" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
         <AchievementViewDialog cardType="achievements" :viewDialog="viewDialog" :viewLang="viewLang" :loading="loading" :selectedItem="selectedAchievement" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'view')" @closeAddDialog="closeDialog($event, 'view')" />
         <DeleteAchievementDialog :deleteDialog="deleteDialog" :loading="loading" :selectedAchievement="selectedAchievement" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
@@ -20,7 +15,6 @@
 <script>
 import { computed, defineComponent, onMounted, watch, ref } from 'vue'
 import VCard from '@/components/v-card.vue'
-import SearchByFilters from '@/components/search-by-filters.vue'
 import AchievementDialog from '../../components/achievements-dialog.vue'
 import AchievementViewDialog from '@/components/view-dialog.vue'
 import DeleteAchievementDialog from '@/components/delete-dialog.vue'
@@ -32,7 +26,6 @@ export default defineComponent({
         AchievementDialog,
         DeleteAchievementDialog,
         AchievementViewDialog,
-        SearchByFilters
     },
     setup() {
         const store = useStore();
@@ -50,8 +43,6 @@ export default defineComponent({
             { 'delete': true },
             { 'view': true },
         ];
-
-        const filterBy = ['content']
 
         function openDialog(e) {
             dialog.value = true;
@@ -171,7 +162,6 @@ export default defineComponent({
             data,
             meta,
             loading,
-            filterBy,
             actionsTable,
             viewLang
         }

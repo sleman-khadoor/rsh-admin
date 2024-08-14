@@ -8,9 +8,6 @@
             <v-card-text :v-if="props.eventType!=='delete'" class="pb-0">
                 <v-row dense>
                     <v-col cols="12" md="12" sm="12" class="input-field">
-                        <v-text-field variant="outlined" type="password" class="pb-0" label="Old Password*" :rules="rules.old_password" required v-model="form.old_password"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" md="12" sm="12" class="input-field">
                         <v-text-field variant="outlined" type="password" class="pb-0" label="New Password*" :rules="rules.new_password" required v-model="form.new_password"></v-text-field>
                     </v-col>
                     <v-col cols="12" md="12" sm="12" class="input-field">
@@ -23,7 +20,7 @@
                     <v-btn class="text-none text-white font-weight-regular close-btn" type="reset" text="Cancel" color="grey" block @click="$emit('closeDialog', 'reset')"></v-btn>
                 </v-col>
                 <v-col cols="12" md="3" sm="3">
-                    <v-btn type="submit" class="text-none text-white font-weight-regular" @click="handleSubmit()" text="Save" color="dark-blue" :loading="props.loading" block></v-btn>
+                    <v-btn type="submit" class="text-none text-white font-weight-regular" @click="handleSubmit()" text="Save" color="dark-blue" :loading="loading" block></v-btn>
                 </v-col>
             </v-row>
         </v-card>
@@ -32,15 +29,14 @@
 </template>
 
 <script>
-import { defineComponent, onUpdated, reactive, ref } from 'vue'
+import { computed, onUpdated } from 'vue';
+import { defineComponent, reactive, ref } from 'vue'
+import { useStore } from 'vuex';
 
 export default defineComponent({
-    props: ['resetDialog', 'selectedUser', 'eventType', 'loading'],
+    props: ['resetDialog', 'selectedUser', 'eventType'],
     data: () => ({
         rules: {
-            old_password: [
-                v => !!v || 'old password is required',
-            ],
             new_password: [
                 v => !!v || 'password is required',
                 v => v.length >= 8 || 'password must be at least 8 characters long',
@@ -54,22 +50,22 @@ export default defineComponent({
         },
     }),
     setup(props, { emit }) {
+        const store = useStore();
         let form = reactive({
-            old_password: null,
             new_password: null,
             new_password_confirmation: null,
         })
-
         const formv = ref(null);
 
+        const loading = computed(() => store.getters['Blogs/loading'])
+
         onUpdated(() => {
-            form.old_password = null
             form.new_password = null
             form.new_password_confirmation = null
         })
 
         function checkValidation() {
-            return form.old_password && form.new_password && form.new_password_confirmation;
+            return form.new_password && form.new_password_confirmation;
         }
 
         function handleSubmit() {
@@ -83,6 +79,7 @@ export default defineComponent({
             props,
             form,
             formv,
+            loading,
             handleSubmit,
         }
     },

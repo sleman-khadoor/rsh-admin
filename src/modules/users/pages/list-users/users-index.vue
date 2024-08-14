@@ -11,7 +11,7 @@
                 </v-col>
             </v-row>
             <UserDialog :dialog="dialog" :selectedUser="selectedUser" :eventType="eventType" @edit="submit($event, 'edit')" @add="submit($event, 'add')" @closeEditDialog="closeDialog($event, 'edit')" @closeAddDialog="closeDialog($event, 'add')" />
-            <ResetPasswordDialog :resetDialog="resetDialog" :loading="loading" :selectedUser="selectedUser" @reset="submit($event, 'reset')" @closeDialog="closeDialog($event, 'reset')" />
+            <ResetPasswordDialog :resetDialog="resetDialog" :selectedUser="selectedUser" @reset="submit($event, 'reset')" @closeDialog="closeDialog($event, 'reset')" />
             <DeleteUserDialog :deleteDialog="deleteDialog" :loading="loading" :selectedUser="selectedUser" @delete="submit($event, 'delete')" @closeDialog="closeDialog($event, 'delete')" />
         </div>
         <DataTable :headers="headers" itemKey="slug" :actionsTable="actionsTable" :data="data" :meta="meta" :loading="loading" @OpenDialog="openDialog($event)" @OpenResetDialog="openResetDialog($event)" @openDeleteDialog="openDeleteDialog($event)" @newPage="fetchData($event)" />

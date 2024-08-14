@@ -9,7 +9,7 @@
                 <v-row dense>
                     <v-col cols="12" md="6" sm="6" class="input-field">
                         <v-text-field variant="outlined" class="pb-1" label="News Title In English*" :rules="rules.enTitle" required v-model="form.title.en"></v-text-field>
-                        <v-text-field variant="outlined" class="pb-1" label="News Title In Arabic*" v-model="form.title.ar" :rules="rules.arTitle" required></v-text-field>
+                        <v-text-field variant="outlined" class="pb-1" label="News Title In Arabic*" v-model="form.title.ar" :rules="rules.arTitle" required dir='rtl'></v-text-field>
                     </v-col>
                     <v-col cols="12" md="6" sm="6" class=" mb-0">
                         <div :class="'img-container'" @click="clickInputFile" style="position: relative; height: 200px;">
@@ -27,7 +27,7 @@
                         <v-textarea variant="outlined" label="Content News In English*" v-model="form.content.en" rows="8" :rules="rules.enContent" required></v-textarea>
                     </v-col>
                     <v-col cols="6" md="6" sm="6">
-                        <v-textarea variant="outlined" label="Content News In Arabic*" v-model="form.content.ar" rows="8" persistent-hint :rules="rules.arContent" required></v-textarea>
+                        <v-textarea variant="outlined" label="Content News In Arabic*" v-model="form.content.ar" rows="8" persistent-hint :rules="rules.arContent" required dir='rtl'></v-textarea>
                     </v-col>
                 </v-row>
             </v-card-text>

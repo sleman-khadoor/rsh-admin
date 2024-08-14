@@ -14,7 +14,7 @@ export default {
 		loading(state) {
 			return state.loading;
 		},
-		user(state) {
+		user(state) {			
 			return state.user;
 		},
 		userRoles(state) {

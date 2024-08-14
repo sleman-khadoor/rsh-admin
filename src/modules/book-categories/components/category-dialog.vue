@@ -12,7 +12,7 @@
                     </v-col>
 
                     <v-col cols="12" md="12" sm="12">
-                        <v-text-field variant="outlined" class="pa-0" label="Category Name In Arabic*" v-model="form.title.ar" :rules="rules.arTitle" required></v-text-field>
+                        <v-text-field variant="outlined" class="pa-0" label="Category Name In Arabic*" v-model="form.title.ar" :rules="rules.arTitle" required dir='rtl'></v-text-field>
                     </v-col>
                 </v-row>
             </v-card-text>

@@ -13,7 +13,7 @@
                     <v-col cols="4" md="4" sm="4" class="input-field">
                         <v-text-field variant="outlined" class="pb-0" label="Author Name*" :rules="rules.writer" required v-model="form.writer"></v-text-field>
                     </v-col>
-                    <v-col cols="12" md="12" sm="12" class="input-field">
+                    <v-col cols="12" md="12" sm="12" class="select_input-field">
                         <v-select class="categories" chips :menu-props="{ offsetY: true, maxHeight: '200px' }" variant="outlined" label="categories*" multiple :items="props.categories" v-model="form.categories" :rules="rules.categories" item-title="text" item-value="value" required></v-select>
                     </v-col>
                     <v-col cols="12" md="5" sm="5" class="input-field">
@@ -234,6 +234,12 @@ export default defineComponent({
     min-height: 40px !important;
     padding-top: 1% !important;
     padding-bottom: 1% !important
+}
+
+.select_input-field .v-field__input {
+    min-height: 40px !important;
+    padding-top: unset !important;
+    padding-bottom: unset !important
 }
 
 .date .v-field__input{
