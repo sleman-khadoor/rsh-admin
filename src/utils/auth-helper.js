@@ -29,6 +29,8 @@ class AuthHelper {
 	reset() {
 		localStorage.removeItem('accessToken');
 		localStorage.removeItem('user');
+		localStorage.removeItem('sidebarCurrentItem');
+		localStorage.removeItem('sidebarCurrentSubItem');
 	}
 
 	resetAll() {
