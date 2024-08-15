@@ -108,7 +108,10 @@ export default defineComponent({
                     Object.assign(form, getInitialForm())
                 }
             } else {
-                Object.assign(form, getInitialForm())
+                if (!props.selectedUser) {
+                    console.log('tesst');
+                     Object.assign(form, getInitialForm())
+                }
             }
         });
 
@@ -160,13 +163,24 @@ export default defineComponent({
                 let roles = [];
                 if (Object.keys(props.selectedUser).length !== 0) {
                     let oldRoles = formatRoles();
+                    let payload = {}
                     if (JSON.stringify(form.roles) !== JSON.stringify(oldRoles)) {
                         roles = form.roles;
+                        payload = {
+                            username: form.username,
+                            last_name: form.last_name,
+                            first_name: form.first_name,
+                            roles: form.roles
+                        }
                     }
                     if (roles.length === 0)
-                        delete form.roles;
+                        payload = {
+                            username: form.username,
+                            last_name: form.last_name,
+                            first_name: form.first_name
+                        }
 
-                    emit('edit', form, 'edit');
+                    emit('edit', payload, 'edit');
                 } else {
                     emit('add', form, 'add');
                 }
