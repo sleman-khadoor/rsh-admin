@@ -34,9 +34,9 @@ export default function (/* { store, ssrContext } */) {
 						} else {
 							const userRole = store.getters['User/user'].roles[0]?.name;
 							if (userRole.includes(roles.blogs_admin)) {
-								next('/blogs');
+								next('/blog-categories');
 							}else if(userRole.includes(roles.books_admin)){
-								next('/books');
+								next('/book-categories');
 							}else if(userRole.includes(roles.services_admin)){
 								next('/contact-requests');
 							}else if(userRole.includes(roles.news_admin)){

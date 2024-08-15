@@ -10,9 +10,9 @@
                     <template v-slot:prepend>
                         <v-list-item-icon class="my-auto mr-4 height-unset">
                             <v-badge v-if="item.showBadge && item.notifyNum" color="error" :content="item.notifyNum">
-                                <img class="mt-1" width="18" min-width="8" height="18" v-bind:src="iconUrl(item.icon,(selectedItem === index),item.path)">
+                                <img class="mt-1" width="18" min-width="8" height="18" :src="iconUrl(item.icon,(selectedItem === index),item.path)">
                             </v-badge>
-                            <img class="mt-1" v-else width="18" min-width="8" height="18" v-bind:src="iconUrl(item.icon,(selectedItem === index),item.path)">
+                            <img class="mt-1" v-else width="18" min-width="8" height="18" :src="iconUrl(item.icon,(selectedItem === index),item.path)">
                         </v-list-item-icon>
                     </template>
                 </v-list-item>
@@ -211,9 +211,9 @@ export default {
             let im
             try {
                 if(!isBlue || !(this.$route.path === itemPath)) {
-                    im = `../../assets/icons/${icon}.svg`
+                    im = new URL(`../../assets/icons/${icon}.svg`, import.meta.url).href
                 } else {
-                    im = `../../assets/icons/${icon}-blue.svg`
+                    im = new URL(`../../assets/icons/${icon}-blue.svg`, import.meta.url).href
                 }
                 
             } catch (err) {

@@ -12,7 +12,7 @@
         <div class="font-weight-bold size-22 mx-2 ">
           {{user.first_name + ' ' + user.last_name}}
         </div>
-        <img @click="submitLogoutHandler" src="@/assets/icons/logout.svg" class="my-auto"/>
+        <img @click="submitLogoutHandler" src="@/assets/icons/logout.svg" class="my-auto cursor-pointer"/>
     </template>
   </v-app-bar>
 </template>

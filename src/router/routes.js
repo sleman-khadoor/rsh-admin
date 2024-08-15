@@ -19,9 +19,9 @@ const routes = [
 		path: '/',
 		component: () => import(/* webpackChunkName: "MainLayout" */ '@/layouts/main/app-index.vue'),
 		children: [
+			BookCategoriesModuleRoutes,
 			BooksModuleRoutes,
 			AuthorsModuleRoutes,
-			BookCategoriesModuleRoutes,
 			BlogCategoriesModuleRoutes,
 			BlogModuleRoutes,
 			RepresentedModuleRoutes,
