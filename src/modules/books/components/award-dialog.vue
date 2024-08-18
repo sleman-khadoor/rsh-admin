@@ -58,7 +58,7 @@ import { useStore } from 'vuex';
                 },
             })
             const formv = ref(null);
-            const loading = computed(() => store.getters['Blogs/loading'])
+            const loading = computed(() => store.getters['Books/loading'])
             watch(() => props.dialog, () => {
                 if(props.dialog) {
                     if (props.selectedAward) {

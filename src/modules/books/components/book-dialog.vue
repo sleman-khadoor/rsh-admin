@@ -142,7 +142,7 @@ export default defineComponent({
             cover_image: null
         })
         const formv = ref(null);
-        const loading = computed(() => store.getters['Blogs/loading'])
+        const loading = computed(() => store.getters['Books/loading'])
         watch(() => props.dialog, () => {
             if(props.dialog) {
                 if (props.selectedBook) {
@@ -248,7 +248,7 @@ export default defineComponent({
         }
 
         function checkValidation() {
-            if (form.title.en && form.title.ar && form.author_id && form.categories && form.formats && form.EISBN && form.printing_year && form.abstract.en && form.abstract.ar ) {
+            if (form.title.en && form.title.ar && form.author_id && form.categories.length > 0 && form.formats.length > 0 && form.EISBN && form.printing_year && form.abstract.en && form.abstract.ar ) {
                 return true
             } else {
                 return false

@@ -104,7 +104,7 @@ export default defineComponent({
             },
             cover_image: null
         });
-        const loading = computed(() => store.getters['Blogs/loading'])
+        const loading = computed(() => store.getters['News/loading'])
         watch(() => props.dialog, () => {
             if (props.dialog) {
                 if (props.selectedNews) {

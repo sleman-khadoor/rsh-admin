@@ -158,7 +158,7 @@ export default defineComponent({
         }
 
         function checkValidation() {
-            if (form.title && form.writer && form.date && form.categories && form.lang && form.content) {
+            if (form.title && form.writer && form.date && form.categories.length > 0 && form.lang && form.content) {
                 return true
             } else {
                 return false

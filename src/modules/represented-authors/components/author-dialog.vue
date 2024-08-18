@@ -104,7 +104,7 @@ export default defineComponent({
             },
             avatar: null
         });
-        const loading = computed(() => store.getters['Blogs/loading'])
+        const loading = computed(() => store.getters['RepresentedAuthors/loading'])
         watch(() => props.dialog, () => {
             if (props.dialog) {
                 if (props.selectedAuthor) {

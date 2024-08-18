@@ -50,7 +50,7 @@ export default defineComponent({
         const formv = ref({
             value: null,
         });
-        const loading = computed(() => store.getters['Blogs/loading'])
+        const loading = computed(() => store.getters['Contacts/loading'])
         watch(() => props.dialog, () => {
             if (props.dialog) {
                 if (props.selectedContact) {

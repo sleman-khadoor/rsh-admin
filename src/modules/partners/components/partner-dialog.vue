@@ -89,7 +89,7 @@ export default defineComponent({
             website_link: null,
             avatar: null
         });
-        const loading = computed(() => store.getters['Blogs/loading'])
+        const loading = computed(() => store.getters['Partners/loading'])
         watch(() => props.dialog, () => {
             if (props.dialog) {
                 if (props.selectedPartner) {
