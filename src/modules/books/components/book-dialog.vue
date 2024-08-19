@@ -33,10 +33,10 @@
                         <v-select class="categories" chips :menu-props="{ offsetY: true, maxHeight: '200px' }" variant="outlined" label="Book format*" multiple :items="formats" v-model="form.formats" :rules="rules.formats" item-title="text" item-value="value" required></v-select>
                     </v-col>
                     <v-col cols="3" md="3" sm="3" class="input-field">
-                        <v-text-field variant="outlined" class="pa-0" label="ISBN*" type="number" v-model="form.ISBN" :rules="rules.ISBN" required></v-text-field>
+                        <v-text-field variant="outlined" class="pa-0" label="ISBN*" v-model="form.ISBN" :rules="rules.ISBN" required></v-text-field>
                     </v-col>
                     <v-col cols="3" md="3" sm="3" class="input-field">
-                        <v-text-field variant="outlined" class="pa-0" label="EISBN*" type="number" v-model="form.EISBN" :rules="rules.EISBN" required></v-text-field>
+                        <v-text-field variant="outlined" class="pa-0" label="EISBN*" v-model="form.EISBN" :rules="rules.EISBN" required></v-text-field>
                     </v-col>
                     <v-col cols="2" md="2" sm="2" class="input-field">
                         <v-text-field variant="outlined" class="pb-0 date" label="Printing Year*" :rules="rules.printingYear" required type="number"  max_width="100%"  v-model="form.printing_year"></v-text-field>
@@ -54,7 +54,7 @@
                     <v-btn class="text-none text-white font-weight-regular close-btn" type="reset" text="Cancel" color="grey" block @click="Object.keys(props.selectedBook).length !== 0 ? $emit('closeEditDialog', 'edit'): $emit('closeAddDialog', 'add')"></v-btn>
                 </v-col>
                 <v-col cols="12" md="3" sm="3">
-                    <v-btn type="submit" class="text-none text-white font-weight-regular" @click="handleSubmit()" text="Save" color="dark-blue" :loading="loading" block></v-btn>
+                    <v-btn type="submit" class="text-none text-white font-weight-regular" @click="handleSubmit()" text="Save" color="dark-blue" :loading="loading"  block></v-btn>
                 </v-col>
             </v-row>
         </v-card>
