@@ -1,6 +1,6 @@
 <template>
 <div class="text-center">
-    <v-dialog v-model="props.dialog" max-width="650" class="dialog">
+    <v-dialog v-model="props.dialog" max-width="650" class="dialog" persistent>
         <v-card class="pa-5 font-dark-blue">
             <div class="px-6">
                 <v-icon icon="mdi-account" class="mr-2" /><span class="size-35">{{title}}</span>
