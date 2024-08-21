@@ -94,7 +94,6 @@ export default defineComponent({
                         dialog.value = false;
                     });
             } else if (eventType === 'edit') {
-                console.log('slug is', selectedAward.value.slug.en);
                 store.dispatch('Books/editAward', { 'payload': e, 'slug': selectedAward.value.slug.en })
                     .then(response => {
                         console.log('Edit response:', response);

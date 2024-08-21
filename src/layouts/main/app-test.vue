@@ -178,13 +178,6 @@ export default {
         ...mapGetters('Core', ['getUnreadNotificationsStatus']),
     },
     methods: {
-        // go(route, index, element) {
-        //     console.log('slkdvmlkvm');
-        //     localStorage.setItem('sidebarCurrentItem', index)
-        //     this.$router.push(route)
-        //     element[3] = 0
-        //     console.log(element);
-        // },
         iconUrl(icon) {
             let im
             try {

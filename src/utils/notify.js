@@ -1,9 +1,12 @@
 import ms from '../utils/messeging'
 const notify = async (request) => {
   const data = await request
+    
   if (data.status === true || data.success == true) {
     ms.successMessage(data.message)
-  } else {
+  }else if(data.status === false){
+    ms.errorMessage(data.message)
+  }else {
     if (data.errors) {
       for (const [key, messages] of Object.entries(data.errors)) {
         console.log(key);

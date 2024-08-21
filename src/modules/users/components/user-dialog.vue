@@ -109,7 +109,6 @@ export default defineComponent({
                 }
             } else {
                 if (!props.selectedUser) {
-                    console.log('tesst');
                      Object.assign(form, getInitialForm())
                 }
             }
@@ -158,8 +157,6 @@ export default defineComponent({
 
         function handleSubmit() {            
             if (checkValidation()) {
-                console.log('roles',form.roles);
-                
                 let roles = [];
                 if (Object.keys(props.selectedUser).length !== 0) {
                     let oldRoles = formatRoles();

@@ -92,7 +92,6 @@ export default defineComponent({
                         dialog.value = false;
                     });
             } else if (eventType === 'edit') {
-                console.log('slug is',selectedReview.value.slug.en);
                 store.dispatch('Books/editReview', { 'payload': e, 'slug': selectedReview.value.slug.en })
                     .then(response => {
                         console.log('Edit response:', response);

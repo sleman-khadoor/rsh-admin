@@ -19,7 +19,6 @@
             <p class="font-grey">{{ props.itemType =='contact'? props.data?.message : props.data?.description}}</p>
         </v-card-text>
         <v-container v-if="props.data?.documents?.length > 0">
-            {{console.log('achevment', props.data?.documents.length)}}
             <h4 class="pb-2 size-16 mb-2">Attachments</h4>
             <div class="d-flex flex-wrap justify-space-between">
                 <div class="col ma-1" style="width: 18%" v-for="(attachment, index) in props.data.documents" :key="index" @click="downloadAttachment(attachment)">
