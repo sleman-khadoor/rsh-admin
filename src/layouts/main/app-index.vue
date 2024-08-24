@@ -34,7 +34,7 @@ export default {
     const userRoles = store.getters['User/user']?.roles.sort((a, b) => a.id - b.id);    
     let refetchNotification = false;
     userRoles.forEach(userRole => {
-      if(userRole.name == roles.services_admin){
+      if(userRole.name == roles.services_admin || userRole.name == roles.super_admin){
         this.showNotification();
         refetchNotification = true;
         return 
